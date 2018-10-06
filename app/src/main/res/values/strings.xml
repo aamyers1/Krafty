@@ -12,4 +12,12 @@
     <string name="pass">Password</string>
     <string name="confirmpass">Confirm Password</string>
     <string name="icon">User Icon</string>
+    <string name = "lblLoginMessage">Please login to begin</string>
+    <string name = "lblUsername">Username</string>
+    <string name = "lblPassword">Password</string>
+    <string name = "txtUsername">Username</string>
+    <string name = "txtPassword">Password</string>
+    <string name = "btnLogin">Login</string>
+    <string name = "txtRegisterMessage">Do not have an account?</string>
+    <string name = "btnRegister">Register</string>
 </resources>
