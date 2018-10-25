@@ -86,6 +86,7 @@
         app:layout_constraintTop_toTopOf="@+id/lblLoginMessage" />
 
     <Button
+        android:onClick="goToRegister"
         android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
