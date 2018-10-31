@@ -6,3 +6,7 @@
 	git push
 
 
+*************GIT Force Pull****************
+	git reset --hard HEAD
+        git pull
+
