@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText7"
+        android:id="@+id/txtFirstName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -37,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
 
     <EditText
         android:id="@+id/password"
@@ -51,7 +51,7 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Location" />
+        app:layout_constraintTop_toBottomOf="@+id/txtCity" />
 
     <EditText
         android:id="@+id/confirmPassword"
@@ -68,7 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <EditText
-        android:id="@+id/bio"
+        android:id="@+id/txtBio"
         android:gravity="top"
         android:layout_width="0dp"
         android:layout_height="202dp"
@@ -95,11 +95,11 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText7"
+        app:layout_constraintTop_toBottomOf="@+id/txtFirstName"
         />
 
     <EditText
-        android:id="@+id/Location"
+        android:id="@+id/txtCity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -111,7 +111,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bio" />
+        app:layout_constraintTop_toBottomOf="@+id/txtBio" />
 
     <Button
         android:id="@+id/button4"
@@ -125,7 +125,7 @@
         app:layout_constraintTop_toBottomOf="@+id/confirmPassword" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgProfile"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginEnd="8dp"
