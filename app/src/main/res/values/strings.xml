@@ -33,4 +33,6 @@
     <string name="krafteedesc">As a Kraftee, you can find events, add them to your schedule, and find the vendors you\'re looking for!</string>
     <string name="submit">Submit</string>
     <string name="bio_prompt">Tell us something about yourself!</string>
+    <string name="inventory">Inventory</string>
+    <string name="krafterdesc">As a krafter, you will receive all the benefits of a Kraftee, plus inventory management and the ability to schedule your own crafting times and events!</string>
 </resources>

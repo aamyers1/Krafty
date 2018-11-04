@@ -69,6 +69,7 @@
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <EditText
+        android:inputType="textMultiLine"
         android:id="@+id/txtBio"
         android:layout_width="0dp"
         android:layout_height="202dp"
@@ -78,7 +79,6 @@
         android:ems="10"
         android:gravity="top"
         android:hint="@string/bio_prompt"
-        android:inputType="textPersonName"
         android:selectAllOnFocus="false"
         android:singleLine="false"
         app:layout_constraintEnd_toEndOf="parent"
