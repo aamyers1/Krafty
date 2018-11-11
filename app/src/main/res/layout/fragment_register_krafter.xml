@@ -3,7 +3,6 @@
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
 <android.support.constraint.ConstraintLayout
@@ -135,7 +134,8 @@
         android:src="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/KrafterExplaination" />
+        app:layout_constraintTop_toBottomOf="@+id/KrafterExplaination"
+        android:scaleType="centerCrop"/>
 
     <EditText
         android:id="@+id/txtFname"

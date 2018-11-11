@@ -35,4 +35,11 @@
     <string name="bio_prompt">Tell us something about yourself!</string>
     <string name="inventory">Inventory</string>
     <string name="krafterdesc">As a krafter, you will receive all the benefits of a Kraftee, plus inventory management and the ability to schedule your own crafting times and events!</string>
+
+    <string-array name="testMats">
+        <item>Test 1</item>
+        <item>Test 2</item>
+        <item>Test 3</item>
+        <item>Test 4</item>
+    </string-array>
 </resources>

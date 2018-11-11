@@ -15,10 +15,13 @@ android:id="@+id/drawer_layout">
         layout="@layout/toolbar_layout"
         android:id="@+id/toolbar" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login Success!"/>
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </FrameLayout>
 </LinearLayout>
 
 <android.support.design.widget.NavigationView
