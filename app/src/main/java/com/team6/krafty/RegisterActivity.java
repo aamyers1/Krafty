@@ -1,5 +1,6 @@
 package com.team6.krafty;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 public class RegisterActivity extends AppCompatActivity {
+    public static Context contextOfApplication;
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
         pager.setAdapter(pa);
         TabLayout tl = findViewById(R.id.registerTabs);
         tl.setupWithViewPager(pager);
+        contextOfApplication = getApplicationContext();
 
     }
 
