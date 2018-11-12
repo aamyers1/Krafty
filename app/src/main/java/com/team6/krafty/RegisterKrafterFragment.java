@@ -94,7 +94,7 @@ public class RegisterKrafterFragment extends Fragment {
         et = getView().findViewById(R.id.business);
         businessName = et.getText().toString();
         RegistrationController rc = new RegistrationController();
-        boolean isCreated =rc.createNewKrafter(userType, username, email,  password,
+        boolean isCreated =rc.createNewUser(userType, username, email,  password,
                 firstName,lastName, city, state, encodedImage,
                 bio, website, etsy, facebook,
                 instagram,businessName,getContext());

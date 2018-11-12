@@ -12,15 +12,49 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class DBManager {
+class DBManager {
 
-    private String ip= "http://75.128.150.130:2283";
-
-    public DBManager() {
+    DBManager() {
 
     }
 
+    public boolean checkEmail(String email){
+        HttpURLConnection connection = generatePostConnection("/api/user/email/");
+        String APICall = "email=" + email;
+        byte[] post = APICall.getBytes();
+        String response = getResponse(connection, post);
+        if(response.contains("Email Available")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
+    public String getResponse(HttpURLConnection connection, byte[] request){
+        try{
+            connection.connect();
+            try(DataOutputStream out = new DataOutputStream(connection.getOutputStream())){
+                out.write(request);
+            }
+            catch (Exception e){
+                return e.getMessage();
+            }
+            StringBuilder response;
+            try(BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))){
+                String line;
+                response = new StringBuilder();
+                while((line = in.readLine())!=null){
+                    response.append(line);
+                }
+            }
+            return response.toString();
+        }
+        catch(Exception e){
+            return e.getMessage();
+        }
+
+    }
     public boolean checkUsername(String username){
         HttpURLConnection connection = generatePostConnection("/api/user/username/");
         String APIcall ="username="+username;

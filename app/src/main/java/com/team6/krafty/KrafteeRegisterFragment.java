@@ -16,8 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
-import org.w3c.dom.Text;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,6 +25,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class KrafteeRegisterFragment extends Fragment {
 
+    String encodedImage="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,7 +58,35 @@ public class KrafteeRegisterFragment extends Fragment {
     }
 
     public void onButtonClick(){
-
+        String username, firstName, lastName, email, bio,city, state, password;
+        EditText et = getView().findViewById(R.id.username);
+        username = et.getText().toString();
+        et = getView().findViewById(R.id.password);
+        password = et.getText().toString();
+        et = getView().findViewById(R.id.confirmPassword);
+        if(!et.getText().toString().equals(password)){
+            Toast.makeText(getContext(), "Password and Confirm Password do not match. Try again", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        et = getView().findViewById(R.id.firstName);
+        firstName = et.getText().toString();
+        et = getView().findViewById(R.id.txtLastName);
+        lastName = et.getText().toString();
+        et = getView().findViewById(R.id.email);
+        email = et.getText().toString();
+        et = getView().findViewById(R.id.txtBio);
+        bio = et.getText().toString();
+        et = getView().findViewById(R.id.txtCity);
+        city = et.getText().toString();
+        et = getView().findViewById(R.id.txtState);
+        state = et.getText().toString();
+        RegistrationController rc = new RegistrationController();
+        boolean created = rc.createNewUser(2, username,email,password,firstName,lastName,
+                city,state, encodedImage,bio,"","","","","",getContext());
+        if(created){
+            Intent intent = new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     //For results of requests
@@ -85,7 +113,7 @@ public class KrafteeRegisterFragment extends Fragment {
             ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();
-            String encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT);
+            encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT);
         }
     }
 }
