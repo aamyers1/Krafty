@@ -12,7 +12,10 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,7 +24,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class RegisterKrafterFragment extends Fragment {
-
+    String encodedImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +48,48 @@ public class RegisterKrafterFragment extends Fragment {
                 startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), 100);
             }
         });
+        Button registerButton = (Button)getView().findViewById(R.id.submit);
+        registerButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                onButtonClick();
+            }
+        });
+
+    }
+
+    public  void onButtonClick(){
+        //gather all the data fields and send them to the controller for processing;
+        int userType = 1;
+        String username, email, password, firstName, lastName, city, state, bio, website, etsy, facebook, instagram, businessName;
+        EditText et = (EditText) getView().findViewById(R.id.username);
+        username = et.getText().toString();
+        et = getView().findViewById(R.id.password);
+        password = et.getText().toString();
+        et = getView().findViewById(R.id.confirmPassword);
+        if(!et.getText().toString().equals(password)){
+            Toast.makeText(getContext(), "Passwords do not match. Try again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        et = getView().findViewById(R.id.txtFname);
+        firstName = et.getText().toString();
+        et = getView().findViewById(R.id.txtLName);
+        lastName = et.getText().toString();
+        et = getView().findViewById(R.id.txtBio);
+        bio = et.getText().toString();
+        et = getView().findViewById(R.id.txtCity);
+        city = et.getText().toString();
+        et = getView().findViewById(R.id.txtState);
+        state = et.getText().toString();
+        et = getView().findViewById(R.id.txtWebsite);
+        website = et.getText().toString();
+        et = getView().findViewById(R.id.txtEtsy);
+        etsy = et.getText().toString();
+        et = getView().findViewById(R.id.txtFacebook);
+        facebook = et.getText().toString();
+        et = getView().findViewById(R.id.txtInstagram);
+        instagram = et.getText().toString();
+        
 
     }
 
@@ -72,7 +117,7 @@ public class RegisterKrafterFragment extends Fragment {
             ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();
-            String encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT);
+            encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT);
         }
     }
 }

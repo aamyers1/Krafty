@@ -33,7 +33,6 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
     }
 
     //navigation drawer menu listener
-    //todo: other tabs
     @Override
     public boolean onNavigationItemSelected(MenuItem item){
         int id = item.getItemId();

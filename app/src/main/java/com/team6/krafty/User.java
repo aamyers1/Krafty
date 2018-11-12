@@ -5,17 +5,18 @@ package com.team6.krafty;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class User {
-     private static int userType;
-     private static String username, email, password;
-     private static String first, last, city, state;
-     private static String imageString;
-     private static String bio, businessName;
-     private static String website, etsy, facebook, instagram;
-     private static String phone, dateJoined;
-    //todo: constructor
-    //todo: method to generate a json object
-    //todo: method to parse a json object for user
+     private int userType;
+     private String username, email, password;
+     private String first, last, city, state;
+     private String imageString;
+     private String bio, businessName;
+     private String website, etsy, facebook, instagram;
+     private String dateJoined;
+
 
     User(){
     }
@@ -31,11 +32,14 @@ public class User {
         this.city = city;
         this.state = state;
         this.imageString = imageString;
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+        dateJoined = (sdf.format(date));
     }
     User(int userType, String username, String email, String password,
          String first, String last, String city, String state, String imageString,
          String bio, String website, String etsy, String facebook,
-         String instagram, String phone, String dateJoined, String businessName){
+         String instagram, String businessName){
         this.userType = userType;
         this.username = username;
         this.email = email;
@@ -50,12 +54,14 @@ public class User {
         this.etsy = etsy;
         this.facebook = facebook;
         this.instagram = instagram;
-        this.phone = phone;
         this.dateJoined = dateJoined;
         this.businessName = businessName;
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+        dateJoined = (sdf.format(date));
     }
 
-    public static JSONObject createJson(){
+    public JSONObject createJson(){
         JSONObject json = new JSONObject();
         try{
             json.put("first", first);
@@ -72,7 +78,6 @@ public class User {
             json.put("etsy", etsy);
             json.put("facebook", facebook);
             json.put("instagram", instagram);
-            json.put("phone", phone);
         }
             catch(Exception e){
             e.printStackTrace();
@@ -80,32 +85,36 @@ public class User {
         return json;
     }
     
-    public static User parseJson(JSONObject json){
+    public User parseJson(JSONObject json){
         try {
-            userType = json.getJSONObject("").getInt("usertype");
-            username = json.getJSONObject("").getString("username");
-            email = json.getJSONObject("").getString("email");
-            password = json.getJSONObject("").getString("password");
-            first = json.getJSONObject("").getString("first");
-            last = json.getJSONObject("").getString("last");
-            city = json.getJSONObject("").getString("city");
-            state = json.getJSONObject("").getString("state");
+            this.userType = json.getJSONObject("").getInt("usertype");
+            this.username = json.getJSONObject("").getString("username");
+            this.email = json.getJSONObject("").getString("email");
+            this.password = json.getJSONObject("").getString("password");
+            this.first = json.getJSONObject("").getString("first");
+            this.last = json.getJSONObject("").getString("last");
+            this.city = json.getJSONObject("").getString("city");
+            this.state = json.getJSONObject("").getString("state");
             //imageString = json.getJSONObject("").getString("imageString");
-            bio = json.getJSONObject("").getString("bio");
-            website = json.getJSONObject("").getString("website");
-            etsy = json.getJSONObject("").getString("etsy");
-            facebook = json.getJSONObject("").getString("facebook");
-            instagram = json.getJSONObject("").getString("instagram");
-            phone = json.getJSONObject("").getString("phone");
-            dateJoined = json.getJSONObject("").getString("dateJoined");
-            businessName = json.getJSONObject("").getString("businessName");
+            this.bio = json.getJSONObject("").getString("bio");
+            this.website = json.getJSONObject("").getString("website");
+            this.etsy = json.getJSONObject("").getString("etsy");
+            this.facebook = json.getJSONObject("").getString("facebook");
+            this.instagram = json.getJSONObject("").getString("instagram");
+            this.dateJoined = json.getJSONObject("").getString("dateJoined");
+            this.businessName = json.getJSONObject("").getString("businessName");
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        User user = new User(userType, username, email, password,  first,
-                last, city, state, imageString, bio, website, etsy, facebook,
-                instagram, phone, dateJoined, businessName);
-       return  user;
+       return  this;
+    }
+
+    public String getUsername(){
+        return username;
+    }
+
+    public String getEmail(){
+        return email;
     }
 }
