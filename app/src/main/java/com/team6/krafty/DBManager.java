@@ -23,7 +23,7 @@ public class DBManager {
 
     public boolean checkUsername(String username){
         HttpURLConnection connection = generatePostConnection("/api/user/username/");
-        String APIcall ="{username="+username+"}";
+        String APIcall ="username="+username;
         byte[] post = APIcall.getBytes();
         try{
             connection.connect();
@@ -45,10 +45,9 @@ public class DBManager {
                 return false;
             }
 
-            JSONObject json = new JSONObject(response.toString());
-            String message = json.getString("Username Available");
 
-            if(message.equals("")){
+
+            if(response.toString().contains("Username Available")){
                 return true;
             }
             else{
@@ -61,10 +60,40 @@ public class DBManager {
 
     }
 
-    public boolean createUser(User user){
-        String username = user.getUsername();
-        JSONObject request = user.createJson();
-        return false;
+    public String createUser(User user){
+        String APIPath =  "/api/user/create/";
+        String request = user.createJson();
+       byte[] post = request.getBytes();
+       HttpURLConnection connection = generatePostConnection(APIPath);
+       try{
+           connection.connect();
+           try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
+               wr.write(post);
+           }
+           catch(Exception e){
+               return  e.getMessage();
+           }
+           StringBuilder response = new StringBuilder();
+           try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+               String line;
+               while ((line = in.readLine()) != null) {
+                   response.append(line);
+               }
+           }
+           catch(Exception e){
+               return "E3" + e.getMessage();
+           }
+           String finalResponse = response.toString();
+           if(finalResponse.contains("Registered Successfully")){
+               return "Registration successful!";
+           }
+           else{
+               return "Database Error";
+           }
+       }
+       catch(Exception f){
+           return f.getMessage();
+       }
     }
 
     //sets up the basic url connection for ANY database transaction
@@ -109,7 +138,7 @@ public class DBManager {
             }
 
             catch(Exception e){
-                return connection.getResponseMessage() + connection.getResponseCode();
+                return null;
             }
             String resp = response.toString();
             return resp.substring(resp.indexOf(":") + 2, resp.lastIndexOf("\""));

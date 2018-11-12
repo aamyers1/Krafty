@@ -4,12 +4,15 @@ import android.content.Context;
 import android.widget.Toast;
 
 public class RegistrationController {
-    boolean isValid = false;
+    private boolean isValid = false;
+    private String returnString  = "";
+
+
     public boolean createNewKrafter(int userType, String username, String email, String password,
                                  String first, String last, String city, String state, String imageString,
                                  String bio, String website, String etsy, String facebook,
                                  String instagram, String businessName, Context context){
-        User newUser = new User( userType, username, email, password,
+        final User newUser = new User( userType, username, email, password,
                 first, last, city, state,imageString,
                 bio,website, etsy, facebook,
                 instagram, businessName);
@@ -21,8 +24,34 @@ public class RegistrationController {
             Toast.makeText(context,"Email In Use",Toast.LENGTH_SHORT).show();
             return false;
         }
-        return false;
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBManager dbManager = new DBManager();
+                returnString = dbManager.createUser(newUser);
+            }
+        });
+        t.start();
+        try{
+            t.join();
+            if(returnString.equals("Registration successful!")){
+                isValid = true;
+                Toast.makeText(context, returnString, Toast.LENGTH_LONG).show();
+                return true;
+
+            }
+            else{
+                Toast.makeText(context, returnString, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        catch(Exception e){
+            return false;
+        }
     }
+
+
 
     private boolean checkUsername(final User user){
         final DBManager dbManager = new DBManager();
@@ -50,6 +79,6 @@ public class RegistrationController {
     }
 
     public boolean checkEmail(User user){
-        return false;
+        return true;
     }
 }

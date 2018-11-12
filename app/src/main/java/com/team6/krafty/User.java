@@ -57,32 +57,16 @@ public class User {
         this.dateJoined = dateJoined;
         this.businessName = businessName;
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
         dateJoined = (sdf.format(date));
     }
 
-    public JSONObject createJson(){
-        JSONObject json = new JSONObject();
-        try{
-            json.put("first", first);
-            json.put("last", last);
-            json.put("city", city);
-            json.put("state", state);
-            json.put("usertype", userType);
-            json.put("email",email);
-            json.put("username", username);
-            json.put("password", password);
-            json.put("bio", bio);
-            json.put("website",website);
-            json.put("businessname", businessName);
-            json.put("etsy", etsy);
-            json.put("facebook", facebook);
-            json.put("instagram", instagram);
-        }
-            catch(Exception e){
-            e.printStackTrace();
-        }
-        return json;
+    public String createJson(){
+
+        String jsonObj = "first=" + first +"&last=" + last + "&city=" + city + "&state=" + state +
+                "&usertype=" +userType +"&email=" + email + "&username=" + username + "&bio=" + bio +  "&website=" + website + "&password=" + password + "&businessname=" + businessName +
+                "&etsy=" + etsy + "&facebook=" + facebook + "&instagram=" + instagram  + "&image=" +imageString ;
+        return jsonObj;
     }
     
     public User parseJson(JSONObject json){
@@ -95,7 +79,7 @@ public class User {
             this.last = json.getJSONObject("").getString("last");
             this.city = json.getJSONObject("").getString("city");
             this.state = json.getJSONObject("").getString("state");
-            //imageString = json.getJSONObject("").getString("imageString");
+            this.imageString = json.getJSONObject("").getString("imageString");
             this.bio = json.getJSONObject("").getString("bio");
             this.website = json.getJSONObject("").getString("website");
             this.etsy = json.getJSONObject("").getString("etsy");

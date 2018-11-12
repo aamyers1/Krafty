@@ -24,7 +24,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class RegisterKrafterFragment extends Fragment {
-    String encodedImage;
+    String encodedImage = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,6 +71,8 @@ public class RegisterKrafterFragment extends Fragment {
             Toast.makeText(getContext(), "Passwords do not match. Try again.", Toast.LENGTH_SHORT).show();
             return;
         }
+        et = getView().findViewById(R.id.email);
+        email = et.getText().toString();
         et = getView().findViewById(R.id.txtFname);
         firstName = et.getText().toString();
         et = getView().findViewById(R.id.txtLName);
@@ -89,8 +91,17 @@ public class RegisterKrafterFragment extends Fragment {
         facebook = et.getText().toString();
         et = getView().findViewById(R.id.txtInstagram);
         instagram = et.getText().toString();
-        
-
+        et = getView().findViewById(R.id.business);
+        businessName = et.getText().toString();
+        RegistrationController rc = new RegistrationController();
+        boolean isCreated =rc.createNewKrafter(userType, username, email,  password,
+                firstName,lastName, city, state, encodedImage,
+                bio, website, etsy, facebook,
+                instagram,businessName,getContext());
+        if(isCreated){
+            Intent intent = new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     //For results of requests

@@ -13,6 +13,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -45,10 +46,20 @@ public class KrafteeRegisterFragment extends Fragment {
             startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), 100);
         }
         });
+        Button registerButton = getView().findViewById(R.id.btnSubmit);
+        //register listener for the button click event
+        registerButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                onButtonClick();
+            }
+        });
 
     }
 
+    public void onButtonClick(){
 
+    }
 
     //For results of requests
     @Override
