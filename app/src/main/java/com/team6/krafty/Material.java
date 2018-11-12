@@ -1,3 +1,5 @@
+package com.team6.krafty;
+
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -7,33 +9,18 @@ public class Material {
     private String name, image, purchased;
     private  int quantity;
     private  double price;
-    Material(){
-    }
 
-    Material(String name, String image, int quantity,
-             double price){
+    Material(String name, String image, int quantity,double price){
         this.name = name;
         this.image = image;
         this.quantity = quantity;
         this.price = price;
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
-        purchased = (sdf.format(date));;
     }
 
-    public JSONObject createJson(){
-        JSONObject json = new JSONObject();
-        try{
-            json.put("name", name);
-            json.put("image", image);
-            json.put("quantity", quantity);
-            json.put("price", price);
-            //json.put("purchased",purchased);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return json;
+    public String createJson(){
+       String jsonMaterial = "name=" + name + "&image=" + image + "purchased=" + purchased +
+                "&quantity=" + quantity + "&price=" + price;
+       return jsonMaterial;
     }
 
     public Material parseJson(JSONObject json){

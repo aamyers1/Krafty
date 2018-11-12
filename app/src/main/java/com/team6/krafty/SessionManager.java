@@ -20,6 +20,7 @@ public class SessionManager {
     //logs the user in using the username and password provided
     public static boolean login(final Context context, final String username, final String password){
         final DBManager dbManager = new DBManager();
+
         //NETWORKING MUST BE RUN IN A SEPERATE THREAD
         Thread t = new Thread(new Runnable() {
             @Override
@@ -31,7 +32,7 @@ public class SessionManager {
         try{
             //wait for thread to finish
             t.join();
-            if(token != null && !token.equals("")){
+            if(token != null && !token.equals("") && !token.contains("error")){
                 SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit = sp.edit();
                 edit.putString("token", token);

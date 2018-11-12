@@ -56,6 +56,7 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
         if(fragment != null){
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame,fragment);
+            ft.addToBackStack(null);
             ft.commit();
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);

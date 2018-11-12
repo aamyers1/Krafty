@@ -31,6 +31,7 @@ class DBManager {
         }
     }
 
+    //sends byte stream and gets the response as a string to return to calling method.
     public String getResponse(HttpURLConnection connection, byte[] request){
         try{
             connection.connect();
@@ -79,8 +80,6 @@ class DBManager {
                 return false;
             }
 
-
-
             if(response.toString().contains("Username Available")){
                 return true;
             }
@@ -105,7 +104,7 @@ class DBManager {
                wr.write(post);
            }
            catch(Exception e){
-               return  e.getMessage();
+               return  "Database Error" + e.getMessage();
            }
            StringBuilder response = new StringBuilder();
            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
@@ -115,7 +114,7 @@ class DBManager {
                }
            }
            catch(Exception e){
-               return "E3" + e.getMessage();
+               return "Database Error" + e.getMessage();
            }
            String finalResponse = response.toString();
            if(finalResponse.contains("Registered Successfully")){
@@ -126,11 +125,11 @@ class DBManager {
            }
        }
        catch(Exception f){
-           return f.getMessage();
+           return "Database Error" + f.getMessage();
        }
     }
 
-    //sets up the basic url connection for ANY database transaction
+    //sets up the basic url connection for ANY post database transaction
     //the api path must be specified
     public HttpURLConnection generatePostConnection(String APIPath){
         HttpURLConnection connection;
@@ -151,36 +150,23 @@ class DBManager {
 
     //returns token string if user successfully logged in or null obj if not successful
     public String login(Context context, String username, String password){
-        try {
+
             HttpURLConnection connection = generatePostConnection("/api/login/");
             String obj = "username=" + username+"&password=" + password;
             byte[] post = obj.getBytes(StandardCharsets.UTF_8);
-            connection.connect();
-            try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
-                wr.write(post);
+            String response = getResponse(connection, post);
+            if(response.contains("token")) {
+                return response.substring(response.indexOf(":") + 2, response.lastIndexOf("\""));
             }
-            catch(Exception e){
-                return null;
-            }
-            StringBuilder response;
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                String line;
-                response = new StringBuilder();
-                while ((line = in.readLine()) != null) {
-                    response.append(line);
+            else{
+                if(response.contains("Database error")){
+                    return response;
+                }
+                else{
+                    return "Invalid credentials error";
                 }
             }
 
-            catch(Exception e){
-                return null;
-            }
-            String resp = response.toString();
-            return resp.substring(resp.indexOf(":") + 2, resp.lastIndexOf("\""));
-
-        }
-        catch(Exception e){
-            return null;
-        }
     }
 
 
