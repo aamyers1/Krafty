@@ -36,10 +36,21 @@
     <string name="inventory">Inventory</string>
     <string name="krafterdesc">As a krafter, you will receive all the benefits of a Kraftee, plus inventory management and the ability to schedule your own crafting times and events!</string>
     <string name="business">Business name</string>
+    <string name="materialLabel">Create A New Material</string>
+    <string name="matName">Material Name</string>
+    <string name="purchasedFrom">Purchase Location</string>
+    <string name="price">Price</string>
+    <string name="quantity">Quantity</string>
+
+
+
     <string-array name="testMats">
         <item>Test 1</item>
         <item>Test 2</item>
         <item>Test 3</item>
         <item>Test 4</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

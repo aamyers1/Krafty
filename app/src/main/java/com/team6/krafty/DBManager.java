@@ -2,13 +2,16 @@ package com.team6.krafty;
 
 
 import android.content.Context;
+import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -93,6 +96,7 @@ class DBManager {
 
     }
 
+    //creates a new User in the database.
     public String createUser(User user){
         String APIPath =  "/api/user/create/";
         String request = user.createJson();
@@ -149,7 +153,7 @@ class DBManager {
 
 
     //returns token string if user successfully logged in or null obj if not successful
-    public String login(Context context, String username, String password){
+    public String login( String username, String password){
 
             HttpURLConnection connection = generatePostConnection("/api/login/");
             String obj = "username=" + username+"&password=" + password;
@@ -169,10 +173,52 @@ class DBManager {
 
     }
 
+    public String getMaterial(String token){
+        try {
+            URL url = new URL("http://75.128.150.130:2283/api/material/view/");
+            try {
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty ("Authorization", "token " + token);
+                StringBuilder response;
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    String line;
+                    response = new StringBuilder();
+                    while ((line = in.readLine()) != null) {
+                        response.append(line);
+                    }
+                    return response.toString();
+                }
+                catch(Exception i){
+                    return token;
+                }
+            }
+            catch(java.io.IOException e){
+                return"bad connection";
+            }
+
+        }
+        catch(MalformedURLException e){
+            return "bad url";
+        }
+
+    }
 
 
-    public boolean createMaterial(){
-        return false;
+    public boolean createMaterial(Material material, String token){
+        HttpURLConnection connection = generatePostConnection("/api/material/create/");
+        //extra header for authentification
+        connection.setRequestProperty ("Authorization", "token " + token);
+        String materialString = material.createJson();
+        byte[] request = materialString.getBytes();
+        String response = getResponse(connection,request);
+        if(response.contains("created successfully")){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
 }

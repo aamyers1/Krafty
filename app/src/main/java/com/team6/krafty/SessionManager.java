@@ -8,10 +8,15 @@ import android.widget.Toast;
 public class SessionManager {
     private static String token;
 
+    //gets the current token
+    public static String getToken(Context context){
+        SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
+        return sp.getString("token", "0");
+    }
+
     //checks if a user is logged in;
     public static boolean isLoggedIn(Context context){
-        SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
-        if(!sp.getString("token", "0").equals("0")){
+        if(!getToken(context).equals("0")){
             return true;
         }
         return false;
@@ -25,7 +30,7 @@ public class SessionManager {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                token = dbManager.login(context, username, password);
+                token = dbManager.login(username, password);
             }
         });
         t.start();
