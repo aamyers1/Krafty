@@ -1,6 +1,5 @@
 package com.team6.krafty;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,10 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
 
 public class CreateMaterialActivity extends AppCompatActivity {
     String encodedImage;
@@ -55,9 +52,10 @@ public class CreateMaterialActivity extends AppCompatActivity {
         et = findViewById(R.id.location);
         matLocation = et.getText().toString();
         MaterialController mc = new MaterialController();
-        mc.addMaterial(matName, encodedImage, matQuantity, matPrice, matLocation,this);
+        if(mc.addMaterial(matName, encodedImage, matQuantity, matPrice, matLocation,this)){
+            finish();
+        }
     }
-
 
     //For results of requests
     @Override

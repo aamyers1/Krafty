@@ -11,10 +11,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MaterialController {
+
     boolean isCreated;
     String token;
     String response = "";
 
+    //adds a material to database
     public boolean addMaterial(final String name,final String image,final  String quantity, final String price,final  String location, final Context context){
         //first get the user token so the db knows who the material will belong to
         SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
@@ -39,7 +41,6 @@ public class MaterialController {
             else{
                 Toast.makeText(context, "Creation Failure!", Toast.LENGTH_SHORT).show();
                 return false;
-
             }
         }
         catch(Exception e){
