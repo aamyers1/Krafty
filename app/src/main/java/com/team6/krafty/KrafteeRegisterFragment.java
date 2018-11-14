@@ -1,14 +1,21 @@
 package com.team6.krafty;
 
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +26,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -40,11 +49,33 @@ public class KrafteeRegisterFragment extends Fragment {
         // getView() because is a fragment, then find imageView by id
          ImageView imgProfile = (ImageView)getView().findViewById(R.id.imgProfile);
         imgProfile.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            //start activity passing pick media intent and PICK_IMAGE code (100)
-            startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), 100);
-        }
+            @Override
+            public void onClick(View v) {
+
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        // Should we show an explanation?
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                        } else {
+
+                            // No explanation needed, we can request the permission.
+
+                            ActivityCompat.requestPermissions(getActivity(),
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                    111);
+                        }
+                    }else{
+                        startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), 100);
+                    }
+                }else {
+                    startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), 100);
+                }
+            }
         });
         Button registerButton = getView().findViewById(R.id.btnSubmit);
         //register listener for the button click event
@@ -96,14 +127,25 @@ public class KrafteeRegisterFragment extends Fragment {
 
         //If result was ok and was of PICK_IMAGE activity
         if(resultCode == RESULT_OK && requestCode == 100){
-            Uri imageUri = data.getData();
+                Uri imageUri = data.getData();
+                Context applicationContext = RegisterActivity.getContextOfApplication();
+                InputStream imageStream = null;
+                try {
+                    imageStream = applicationContext.getContentResolver().openInputStream(imageUri);
+                } catch (FileNotFoundException e) {
+                    Toast.makeText(applicationContext, "File not found.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                } catch (RuntimeException e) {
+                    Toast.makeText(applicationContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
 
-            //Put image in imageview
-            ImageView imgProfile = getView().findViewById(R.id.imgProfile);
-            imgProfile.setImageURI(imageUri);
+                //Put image in imageview
+                ImageView imgProfile = getView().findViewById(R.id.imgProfile);
+                imgProfile.setImageBitmap(selectedImage);
+
 
             //Convert image to bitmap, then into base64
-            Context applicationContext = RegisterActivity.getContextOfApplication();
             Bitmap imageAsBitmap = null;
             try {
                 imageAsBitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(), imageUri);
@@ -114,6 +156,22 @@ public class KrafteeRegisterFragment extends Fragment {
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();
             encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT);
+            }
+        }
+
+
+        @Override
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (requestCode == 111) {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                    photoPickerIntent.setType("image/*");
+                    startActivityForResult(photoPickerIntent, 100);
+                } else {
+                    Toast.makeText(RegisterActivity.getContextOfApplication(), "Image Permission Denied", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
-}
