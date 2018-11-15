@@ -2,14 +2,14 @@ package com.team6.krafty;
 
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Material {
+
     private String name, image, purchased;
     private  int quantity;
     private  double price;
+    //keeps all user materials in static arrayList
     static ArrayList<Material> allMats = new ArrayList<>();
 
     Material(){
@@ -31,7 +31,7 @@ public class Material {
 
 
 
-    public Material parseJson(JSONObject json){
+    public void parseJson(JSONObject json){
         try{
             this.name = json.getString("name");
             this.image = json.getString("image");
@@ -42,7 +42,6 @@ public class Material {
         catch (Exception e){
 
         }
-        return  this;
     }
 
     public String getName(){

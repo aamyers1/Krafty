@@ -2,19 +2,16 @@ package com.team6.krafty;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 
 public class MaterialController {
 
-    boolean isCreated;
-    String token;
-    String response = "";
+    private boolean isCreated;
+    private String token;
+    private String response = "";
 
     //adds a material to database
     public boolean addMaterial(final String name,final String image,final  String quantity, final String price,final  String location, final Context context){

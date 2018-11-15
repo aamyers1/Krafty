@@ -1,3 +1,8 @@
+/* FileName: BlankFragment.java
+ * Purpose:  Simple GUI for a fragment containing only a textbox displaying a login message.
+ *          used as a temporary placeholder until actual fragment is complete.
+ */
+
 package com.team6.krafty;
 
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 public class RegistrationController {
+
     private boolean isValidUsername = false;
     private boolean isValidEmail = false;
     private String returnString  = "";

@@ -11,8 +11,7 @@
     <ListView
         android:id="@+id/materialsList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:entries="@array/testMats"/>
+        android:layout_height="match_parent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addInventory"

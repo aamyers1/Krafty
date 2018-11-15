@@ -33,7 +33,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class RegisterKrafterFragment extends Fragment {
-    String encodedImage = "";
+   private String encodedImage = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
