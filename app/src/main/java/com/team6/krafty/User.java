@@ -37,9 +37,6 @@ public class User {
         this.facebook = facebook;
         this.instagram = instagram;
         this.businessName = businessName;
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
-        dateJoined = (sdf.format(date));
     }
 
     public String createJson(){
