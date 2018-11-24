@@ -37,6 +37,7 @@ public class SessionManager {
         try{
             //wait for thread to finish
             t.join();
+            //todo: clean this up
             if(token != null && !token.equals("") && !token.contains("error")){
                 SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit = sp.edit();

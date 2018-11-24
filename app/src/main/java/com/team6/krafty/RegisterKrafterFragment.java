@@ -49,10 +49,10 @@ public class RegisterKrafterFragment extends Fragment {
         //Define the image view and set listener
         //  getView() because is a fragment, then find imageView by id
         ImageView imgProfile = (ImageView)getView().findViewById(R.id.imgProfile);
-        imgProfile = (ImageView)getView().findViewById(R.id.imgProfile);
         imgProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //check for permission to access
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -170,6 +170,10 @@ public class RegisterKrafterFragment extends Fragment {
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();
             encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT);
+            //CODE TO DECODE THE IMAGE:
+            //byte[] decode = Base64.decode(encodedImage, Base64.DEFAULT);
+            //Bitmap decodedByte = BitmapFactory.decodeByteArray(decode, 0, decode.length);
+            //imgProfile.setImageBitmap(decodedByte);
         }
     }
 

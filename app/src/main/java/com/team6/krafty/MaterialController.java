@@ -2,6 +2,8 @@ package com.team6.krafty;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.JsonReader;
+import android.view.ViewGroup;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -10,8 +12,8 @@ import org.json.JSONObject;
 public class MaterialController {
 
     private boolean isCreated;
-    private String token;
-    private String response = "";
+    private static String token;
+    private static String response = "";
 
     //adds a material to database
     public boolean addMaterial(final String name,final String image,final  String quantity, final String price,final  String location, final Context context){
@@ -46,7 +48,7 @@ public class MaterialController {
     }
 
     //gets all materials for a given user based on token recieved on login
-    public void getMaterials(Context context){
+    public static Material[] getMaterials(Context context){
         Material.allMats.clear();
         token = SessionManager.getToken(context);
         Thread t = new Thread(new Runnable() {
@@ -59,23 +61,34 @@ public class MaterialController {
         t.start();
         try{
             t.join();
-            JSONObject obj = new JSONObject(response);
-            JSONArray jArr = obj.getJSONArray("result");
-
-            for(int i = 0; i < jArr.length(); i++){
-                JSONObject jobj = jArr.getJSONObject(i);
-                try{
-                    Material a = new Material();
-                    a.parseJson(jobj);
-                    Material.allMats.add(a);
-                }
-                catch(Exception e){
-                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
+            Material[] allMats = parseForMats(response);
+            if(allMats != null){
+                return allMats;
+            }else return null;
         }
         catch(Exception e){
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
+
+
+    private static Material[] parseForMats(String jsonObject){
+        Material[] allMaterials;
+        try {
+            JSONObject primaryObject = new JSONObject(jsonObject);
+            JSONArray jsonArray = primaryObject.getJSONArray("result");
+            allMaterials = new Material[jsonArray.length()];
+            for(int i = 0; i < jsonArray.length(); i++){
+                JSONObject singleMat = jsonArray.getJSONObject(i);
+                Material newMat = new Material();
+                newMat.parseJson(singleMat);
+                allMaterials[i] = newMat;
+            }
+            return allMaterials;
+        }
+        catch(Exception e){
+            return null;
         }
     }
 }

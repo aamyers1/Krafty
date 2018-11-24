@@ -41,7 +41,9 @@ public class CreateMaterialActivity extends AppCompatActivity {
         });
     }
 
+    //handles submit click
     public void onSubmitClick(){
+        //essentially just gathers strings from various editTexts
         String matName, matPrice, matQuantity, matLocation;
         EditText et = findViewById(R.id.materialName);
         matName = et.getText().toString();

@@ -33,7 +33,7 @@ import java.io.InputStream;
 import static android.app.Activity.RESULT_OK;
 
 public class KrafteeRegisterFragment extends Fragment {
-
+    //TODO: put the encoding / decoding of images into a thread + new class because of complexity
     String encodedImage="";
 
     @Override

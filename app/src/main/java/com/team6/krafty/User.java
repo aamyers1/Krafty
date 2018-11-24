@@ -39,14 +39,15 @@ public class User {
         this.businessName = businessName;
     }
 
+    //creates a simple json object that can be handled by the api
     public String createJson(){
-
         String jsonObj = "first=" + first +"&last=" + last + "&city=" + city + "&state=" + state +
                 "&usertype=" +userType +"&email=" + email + "&username=" + username + "&bio=" + bio +  "&website=" + website + "&password=" + password + "&businessname=" + businessName +
                 "&etsy=" + etsy + "&facebook=" + facebook + "&instagram=" + instagram  + "&image=" +imageString ;
         return jsonObj;
     }
-    
+
+    //gets the fields from a json object for a user and stores them in the user object
     public void parseJson(JSONObject json){
         try {
             this.userType = json.getInt("usertype");

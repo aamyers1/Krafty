@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     //login button click
     //sends to session manager.
     public void onClickLogin(){
+
         EditText tv = findViewById(R.id.txtUsername);
         String username = tv.getText().toString();
         tv = findViewById(R.id.txtPassword);

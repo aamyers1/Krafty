@@ -10,6 +10,7 @@ public class Material {
     private  int quantity;
     private  double price;
     //keeps all user materials in static arrayList
+    //TODO:Decide the best place to store this? Seems uncool to put it here but at least it's static
     static ArrayList<Material> allMats = new ArrayList<>();
 
     Material(){

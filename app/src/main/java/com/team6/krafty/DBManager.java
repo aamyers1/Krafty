@@ -9,7 +9,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 class DBManager {
-
+    //TODO: Decide if this should be a singleton class or maybe just static?
     DBManager() {
 
     }
@@ -89,6 +89,7 @@ class DBManager {
 
     }
 
+    //TODO: refactor
     //creates a new User in the database.
     public String createUser(User user){
         String APIPath =  "/api/user/create/";
@@ -166,6 +167,7 @@ class DBManager {
 
     }
 
+    //do not refactor unless we have other get requests
     public String getMaterial(String token){
         try {
             URL url = new URL("http://75.128.150.130:2283/api/material/view/");
