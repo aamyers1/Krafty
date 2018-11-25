@@ -35,6 +35,7 @@ import static android.app.Activity.RESULT_OK;
 public class RegisterKrafterFragment extends Fragment {
    private String encodedImage = "";
 
+   //displays krafter registration fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class RegisterKrafterFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_register_krafter, container, false);
     }
 
+    //sets listeners for image upload and register button tap
     //Need to define listeners when view has been created
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

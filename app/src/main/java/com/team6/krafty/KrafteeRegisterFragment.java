@@ -36,23 +36,29 @@ public class KrafteeRegisterFragment extends Fragment {
 
     String encodedImage="";
 
+    //Displays the kraftee register fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_kraftee_register, container, false);
     }
 
+    //loads image viewer and fileds and sets action for button is tapped and
+    //when image viewer is tapped
     //Need to define listeners when view has been created
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //Define the image view and set listener
         // getView() because is a fragment, then find imageView by id
          ImageView imgProfile = (ImageView)getView().findViewById(R.id.imgProfile);
+        //loads the image uploader and lets user upload image
         imgProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //checks if the android version is older than API 23,
                 if (Build.VERSION.SDK_INT >= 23) {
+                    //selects image from external storage in API 23 or older
+                    //requires external storage read permission
                     if (ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.READ_EXTERNAL_STORAGE)
                             != PackageManager.PERMISSION_GRANTED) {
@@ -73,6 +79,7 @@ public class KrafteeRegisterFragment extends Fragment {
                         startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), 100);
                     }
                 }else {
+                    //can select image files without requiring external storage permission
                     startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), 100);
                 }
             }
@@ -88,13 +95,16 @@ public class KrafteeRegisterFragment extends Fragment {
 
     }
 
+    //action for when register button is clicked
     public void onButtonClick(){
         String username, firstName, lastName, email, bio,city, state, password;
+        //gets all user inputs from the GUI
         EditText et = getView().findViewById(R.id.username);
         username = et.getText().toString();
         et = getView().findViewById(R.id.password);
         password = et.getText().toString();
         et = getView().findViewById(R.id.confirmPassword);
+        //checks if both passwords match
         if(!et.getText().toString().equals(password)){
             Toast.makeText(getContext(), "Password and Confirm Password do not match. Try again", Toast.LENGTH_SHORT).show();
             return;
@@ -159,7 +169,7 @@ public class KrafteeRegisterFragment extends Fragment {
             }
         }
 
-
+        //lets user select profile image depending upon the access granted for the program
         @Override
         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
