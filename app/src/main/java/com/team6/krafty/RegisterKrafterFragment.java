@@ -88,6 +88,7 @@ public class RegisterKrafterFragment extends Fragment {
 
     }
 
+    //TODO:Field Validation
     public  void onButtonClick(){
         //gather all the data fields and send them to the controller for processing;
         int userType = 1;

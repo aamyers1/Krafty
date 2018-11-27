@@ -14,12 +14,19 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //if login credentials exist already
         if(SessionManager.isLoggedIn(this)){
+            //clear current inventory in case still exists
+            Inventory.clearAll();
+            //Get all materials from DB and add to material list in inventory
+            MaterialController.getMaterials(this);
+            //launch the Splash Activity class
             Intent intent = new Intent(this, SplashActivity.class);
             startActivity(intent);
+            //make so user cannot return to this screen without logging out
+            finish();
         }
         Button loginButton  = findViewById(R.id.btnLogin);
-
         //set the login button listener
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -31,14 +38,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //login button click
-    //sends to session manager.
+    //sends username/password to session manager.
     public void onClickLogin(){
-
+        //get the necessary values from user input
         EditText tv = findViewById(R.id.txtUsername);
         String username = tv.getText().toString();
         tv = findViewById(R.id.txtPassword);
         String password = tv.getText().toString();
+        //attempt to login via SessionManager
         if(SessionManager.login(this, username, password)) {
+            //clear any previous inventory
+            Inventory.clearAll();
+            //get all materials for inventory
+            MaterialController.getMaterials(this);
+            //launch the SplashActivity
             Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
             startActivity(intent);
             //end the activity so that it cannot be returned to

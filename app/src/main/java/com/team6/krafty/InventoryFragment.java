@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,12 @@ public class InventoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_material, container, false);
+        return inflater.inflate(R.layout.fragment_inventory, container, false);
     }
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        //Create a floating action button to add materials, set listener for click
         FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.addInventory);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,12 +38,33 @@ public class InventoryFragment extends Fragment {
                 onButtonClick();
             }
         });
-        Material[] allMaterials = MaterialController.getMaterials(this.getContext());
-        ListView lv = getView().findViewById(R.id.materialsList);
-        ArrayAdapter<Material> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, allMaterials);
-        lv.setAdapter(adapter);
+        //create arrays for images and captions of inventory materials
+        String[] imgs = new String[Inventory.getCount()];
+        String[] caps = new String[Inventory.getCount()];
+        for(int i = 0; i < Inventory.getCount(); i ++){
+            imgs[i] = Inventory.getMaterial(i).getImage();
+            caps[i] = Inventory.getMaterial(i).getName();
+        }
+        RecyclerView rv = getView().findViewById(R.id.matRecycler);
+        //create card adapter
+        cardAdapter ca = new cardAdapter(caps, imgs);
+        //set recycler view to use the cardAdapter in a Grid Layout
+        rv.setAdapter(ca);
+        rv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
+        //create click listener for each RecyclerView object
+        ca.setListener(new cardAdapter.Listener() {
+            @Override
+            public void onClick(int position) {
+                //Start a new Modify Material Activity, pass the position for processing
+                Intent intent = new Intent(getView().getContext(),ModifyMaterialActivity.class );
+                intent.putExtra("EXTRA_ID", position);
+                startActivity(intent);
+            }
+        });
+
     }
 
+    //The floating action button listener method. Starts Create Material Activity
     public void onButtonClick(){
         Intent intent = new Intent(getActivity(), CreateMaterialActivity.class);
         startActivity(intent);

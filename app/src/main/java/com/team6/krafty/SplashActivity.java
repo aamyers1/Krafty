@@ -33,7 +33,7 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
         toggle.syncState();
 
         //fill the frame with a lame blank fragment for now
-        //TODO:THIS WILL BE THE PROFILE PAGE
+        //TODO:THIS WILL BE THE PROFILE PAGE WHEN COMPLETE
         Fragment fragment = new BlankFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);

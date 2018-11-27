@@ -1,3 +1,4 @@
+//Ignore for now, will be used when Inventory screen is set properly
 package com.team6.krafty;
 
 

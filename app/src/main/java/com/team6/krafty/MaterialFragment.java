@@ -1,3 +1,5 @@
+//Ignore this for now, will be used later for the material page
+
 package com.team6.krafty;
 
 
@@ -34,10 +36,7 @@ public class MaterialFragment extends Fragment {
                 onButtonClick();
             }
         });
-        Material[] allMaterials = MaterialController.getMaterials(this.getContext());
-        ListView lv = getView().findViewById(R.id.materialsList);
-        ArrayAdapter<Material> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, allMaterials);
-        lv.setAdapter(adapter);
+
     }
 
     public void onButtonClick(){

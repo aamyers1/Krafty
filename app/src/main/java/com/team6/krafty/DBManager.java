@@ -9,7 +9,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 class DBManager {
-    //TODO: Decide if this should be a singleton class or maybe just static?
+    //TODO: need to check the network connectivity before we try to connect to the api!
+    //My idea: force dbmanager as singleton, when getInstance is called, do a check. force context pass
+    //I.e. public DBManager getInstance(Context context){ try to get the network connection, if not show message}
     DBManager() {
 
     }
@@ -56,75 +58,21 @@ class DBManager {
         HttpURLConnection connection = generatePostConnection("/api/user/username/");
         String APIcall ="username="+username;
         byte[] post = APIcall.getBytes();
-        try{
-            connection.connect();
-            try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
-                wr.write(post);
-            }
-            catch(Exception e){
-                return false;
-            }
-            StringBuilder response;
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                String line;
-                response = new StringBuilder();
-                while ((line = in.readLine()) != null) {
-                    response.append(line);
-                }
-            }
-            catch(Exception e){
-                return false;
-            }
-
-            if(response.toString().contains("Username Available")){
-                return true;
-            }
-            else{
-                return false;
-            }
+        String response = getResponse(connection, post);
+        if(response.contains("Username Available")) {
+            return true;
         }
-        catch(Exception e){
-            return false;
-        }
-
+        return false;
     }
 
-    //TODO: refactor
     //creates a new User in the database.
     public String createUser(User user){
         String APIPath =  "/api/user/create/";
         String request = user.createJson();
-       byte[] post = request.getBytes();
-       HttpURLConnection connection = generatePostConnection(APIPath);
-       try{
-           connection.connect();
-           try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
-               wr.write(post);
-           }
-           catch(Exception e){
-               return  "Database Error" + e.getMessage();
-           }
-           StringBuilder response = new StringBuilder();
-           try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-               String line;
-               while ((line = in.readLine()) != null) {
-                   response.append(line);
-               }
-           }
-           catch(Exception e){
-               return "Database Error" + e.getMessage();
-           }
-           String finalResponse = response.toString();
-           if(finalResponse.contains("Registered Successfully")){
-               return "Registration successful!";
-           }
-           else{
-               return "Database Error";
-           }
-       }
-       catch(Exception f){
-           return "Database Error" + f.getMessage();
-       }
+        byte[] post = request.getBytes();
+        HttpURLConnection connection = generatePostConnection(APIPath);
+        String response = getResponse(connection, post);
+        return response;
     }
 
     //sets up the basic url connection for ANY post database transaction
@@ -174,6 +122,7 @@ class DBManager {
             try {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
+                //extra header for authorization
                 connection.setRequestProperty ("Authorization", "token " + token);
                 StringBuilder response;
                 try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
@@ -189,20 +138,18 @@ class DBManager {
                 }
             }
             catch(java.io.IOException e){
-                return"bad connection";
+                return"No connection";
             }
-
         }
         catch(MalformedURLException e){
-            return "bad url";
+            return "Malformed URL";
         }
-
     }
 
 
     public boolean createMaterial(Material material, String token){
         HttpURLConnection connection = generatePostConnection("/api/material/create/");
-        //extra header for authentification
+        //extra header for authorization
         connection.setRequestProperty ("Authorization", "token " + token);
         String materialString = material.createJson();
         byte[] request = materialString.getBytes();
@@ -213,7 +160,6 @@ class DBManager {
         else{
             return false;
         }
-
     }
 
 }

@@ -17,12 +17,15 @@ public class MaterialController {
 
     //adds a material to database
     public boolean addMaterial(final String name,final String image,final  String quantity, final String price,final  String location, final Context context){
-        //first get the user token so the db knows who the material will belong to
+        //first get the user token so the db knows who the material will belong to (assume exists)
         SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
         token = sp.getString("token", "0");
+        //parse out numeric values
+        //TODO:Verify these values are numeric
         int quant = Integer.parseInt(quantity);
         double dPrice = Double.parseDouble(price);
         final Material material = new Material(name, image, location, quant, dPrice);
+        //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to add material to database
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -32,7 +35,9 @@ public class MaterialController {
         });
         t.start();
         try {
+            //wait for thread to finish
             t.join();
+            //show user Message
             if(isCreated){
                 Toast.makeText(context, "Creation Success!", Toast.LENGTH_SHORT).show();
                 return true;
@@ -47,10 +52,11 @@ public class MaterialController {
         }
     }
 
-    //gets all materials for a given user based on token recieved on login
-    public static Material[] getMaterials(Context context){
-        Material.allMats.clear();
+    //gets all materials for a given user based on token received on login
+    public static boolean getMaterials(Context context){
+        //get user token from sessionManager
         token = SessionManager.getToken(context);
+        //ask DB for response
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -60,35 +66,40 @@ public class MaterialController {
         });
         t.start();
         try{
+            //wait for thread
             t.join();
-            Material[] allMats = parseForMats(response);
-            if(allMats != null){
-                return allMats;
-            }else return null;
+            //send to parseMats method to get each material from response
+           parseForMats(response);
+           //return true only if some material has been returned
+            if(Inventory.getCount() > 0){
+                return true;
+            }else return false;
         }
+        //show user exception message
         catch(Exception e){
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-            return null;
+            return false;
         }
     }
 
 
-    private static Material[] parseForMats(String jsonObject){
-        Material[] allMaterials;
+    private static void parseForMats(String jsonObject){
         try {
+            //first attempt to get the JSONObject
             JSONObject primaryObject = new JSONObject(jsonObject);
+            //then get the array of objects within the primaryObject
             JSONArray jsonArray = primaryObject.getJSONArray("result");
-            allMaterials = new Material[jsonArray.length()];
+            //iterate through each array value
             for(int i = 0; i < jsonArray.length(); i++){
+                //get the object, create a new material with it, and add to inventory
                 JSONObject singleMat = jsonArray.getJSONObject(i);
                 Material newMat = new Material();
                 newMat.parseJson(singleMat);
-                allMaterials[i] = newMat;
+                Inventory.addMaterial(newMat);
             }
-            return allMaterials;
         }
+        //TODO: handle this Exception
         catch(Exception e){
-            return null;
         }
     }
 }

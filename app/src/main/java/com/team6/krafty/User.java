@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class User {
+
      private int userType;
      private String username, email, password;
      private String first, last, city, state;
@@ -15,7 +16,6 @@ public class User {
 
     //sets up an empty User -> to be used when a json object is being parsed for user data
     User(){
-
     }
 
     User(int userType, String username, String email, String password,
@@ -68,7 +68,7 @@ public class User {
             this.businessName = json.getString("businessName");
         }
         catch (Exception e){
-            e.printStackTrace();
+
         }
     }
 

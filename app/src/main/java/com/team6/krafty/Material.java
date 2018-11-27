@@ -6,17 +6,17 @@ import java.util.ArrayList;
 
 public class Material {
 
+    //private data fields for material
+    //TODO: need the id of the material for modification/deletion purposes
     private String name, image, purchased;
     private  int quantity;
     private  double price;
-    //keeps all user materials in static arrayList
-    //TODO:Decide the best place to store this? Seems uncool to put it here but at least it's static
-    static ArrayList<Material> allMats = new ArrayList<>();
 
+    //Blank constructor used when information needs to be parsed from json object only
     Material(){
-
     }
 
+    //regular constructor to construct a material from user input
     Material(String name, String image, String purchased, int quantity,double price){
         this.name = name;
         this.image = image;
@@ -25,13 +25,14 @@ public class Material {
         this.purchased = purchased;
     }
 
+    //creates a simple json string. The default json generator does not work properly with our API.
     public String createJson() {
         return "name=" + name + "&image=" + image + "&purchased=" + purchased +
                 "&qty=" + quantity + "&price=" + price;
     }
 
-
-
+    //parses data from JSON object.
+    //TODO: Add some defaults in case of error?
     public void parseJson(JSONObject json){
         try{
             this.name = json.getString("name");
@@ -45,16 +46,26 @@ public class Material {
         }
     }
 
+    //Getters
     public String getName(){
         return this.name;
     }
 
-    public String getPurchased(){
-        return purchased;
+    public String getImage(){
+        return image;
     }
 
+    public int getQuantity(){ return quantity;}
+
+    public double getPrice(){return price;}
+
+    public String getLocation(){return purchased;}
+
+    //Override to string for the adapters
     @Override
     public String toString(){
         return name;
     }
+
 }
+

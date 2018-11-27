@@ -28,6 +28,8 @@
         <activity android:name=".SplashActivity" />
         <activity android:name=".CreateMaterialActivity"
             android:label="Create a Material"/>
+        <activity android:name=".ModifyMaterialActivity"
+            android:label="Modify a Material"/>
     </application>
 
 </manifest>
