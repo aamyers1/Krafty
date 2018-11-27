@@ -10,12 +10,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+//this class sets interface for kraftee or krafter registration
+//depending upon the what the user selects
 public class RegisterActivity extends AppCompatActivity {
     public static Context contextOfApplication;
     public static Context getContextOfApplication(){
         return contextOfApplication;
     }
-
+    //shows the toolbar which lets user select user type option: krafter or kraftee
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
         public PageAdapter(FragmentManager fm){
             super(fm);
         }
-
+        //contains all available Fragments to be selected from the toolbar
         @Override
         public Fragment getItem(int position){
             switch(position){
@@ -52,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
         public int getCount(){
             return 2;
         }
-
+        //contains titles for fragments to display on toolbar
         @Override
         public CharSequence getPageTitle(int pos){
             switch(pos){
