@@ -1,13 +1,18 @@
 package com.team6.krafty;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.IOException;
 
 public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
 
@@ -46,20 +51,25 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
     }
 
     //when viewholder is bound
-    //TODO: Images not currently working! I cannot get them to decode and I'm unsure of what the problem is! Code I was trying is included
     @Override
     public void onBindViewHolder(ViewHolder holder , final int position){
         CardView cardView = holder.cardView;
         ImageView iv = (ImageView)cardView.findViewById(R.id.imgCaption);
-        //if(images[position] != "null" && images[position] != "no image"){
-        //    byte[] decoder = Base64.decode(images[position], Base64.DEFAULT);
-        //    Bitmap decodedByte = BitmapFactory.decodeByteArray(decoder, 0, decoder.length);
-         //   iv.setImageBitmap(decodedByte);
-        //}
-        //else{
-        //    Log.d("ERROR", "CANT DECODE IMAGE");
+
+
+        if(images[position] != "null" && images[position] != "no image") {
+            try {
+                byte[] encodeByte = Base64.decode(images[position].replace("<", "+"), Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+
+                iv.setImageBitmap(bitmap);
+            } catch (Exception e) { //for file not found
+                iv.setBackgroundColor(Color.rgb(188, 225,232));
+                e.printStackTrace();
+            }
+        }else{
             iv.setBackgroundColor(Color.rgb(188, 225,232));
-        //}
+        }
         iv.setContentDescription(captions[position]);
         TextView tv = cardView.findViewById(R.id.txtCaption);
         tv.setText(captions[position]);

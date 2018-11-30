@@ -165,7 +165,7 @@ public class KrafteeRegisterFragment extends Fragment {
             ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();
-            encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT);
+            encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT).replace("+","<");
             }
         }
 

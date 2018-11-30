@@ -162,4 +162,34 @@ class DBManager {
         }
     }
 
+    public boolean modifyMaterial(Material material, String token){
+        HttpURLConnection connection = generatePostConnection("/api/material/update/");
+        //extra header for authorization
+        connection.setRequestProperty ("Authorization", "token " + token);
+        String materialString = material.getModifyJson();
+        byte[] request = materialString.getBytes();
+        String response = getResponse(connection,request);
+        if(response.contains("Material Updated")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean deleteMaterial(Material material, String token){
+        HttpURLConnection connection = generatePostConnection("/api/material/delete/");
+        //extra header for authorization
+        connection.setRequestProperty ("Authorization", "token " + token);
+        String materialString = material.getDeleteJson();
+        byte[] request = materialString.getBytes();
+        String response = getResponse(connection,request);
+        if(response.contains("Material Deleted")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 }

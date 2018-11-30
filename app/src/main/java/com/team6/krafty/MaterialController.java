@@ -12,6 +12,8 @@ import org.json.JSONObject;
 public class MaterialController {
 
     private boolean isCreated;
+    private boolean isUpdated;
+    private boolean isDeleted;
     private static String token;
     private static String response = "";
 
@@ -51,6 +53,76 @@ public class MaterialController {
             return false;
         }
     }
+
+    //adds a material to database
+    public boolean modifyMaterial(final int id, final String name,final String image,final  String quantity, final String price,final  String location, final Context context){
+        //first get the user token so the db knows who the material will belong to (assume exists)
+        SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
+        token = sp.getString("token", "0");
+        //parse out numeric values
+        //TODO:Verify these values are numeric
+        int quant = Integer.parseInt(quantity);
+        double dPrice = Double.parseDouble(price);
+        final Material material = new Material(id, name, image, location, quant, dPrice);
+        //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to add material to database
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBManager dbManager = new DBManager();
+                isUpdated = dbManager.modifyMaterial(material, token);
+            }
+        });
+        t.start();
+        try {
+            //wait for thread to finish
+            t.join();
+            //show user Message
+            if(isUpdated){
+                Toast.makeText(context, "Update Success!", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            else{
+                Toast.makeText(context, "Update Failure!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        catch(Exception e){
+            return false;
+        }
+    }
+    //adds a material to database
+    public boolean deleteMaterial(final int id, final Context context){
+        //first get the user token so the db knows who the material will belong to (assume exists)
+        SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
+        token = sp.getString("token", "0");
+        final Material material = new Material(id);
+        //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to add material to database
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBManager dbManager = new DBManager();
+                isDeleted = dbManager.deleteMaterial(material, token);
+            }
+        });
+        t.start();
+        try {
+            //wait for thread to finish
+            t.join();
+            //show user Message
+            if(isDeleted){
+                Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            else{
+                Toast.makeText(context, "Delete Failure!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        catch(Exception e){
+            return false;
+        }
+    }
+
 
     //gets all materials for a given user based on token received on login
     public static boolean getMaterials(Context context){
