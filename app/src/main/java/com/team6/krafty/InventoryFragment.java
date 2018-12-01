@@ -27,7 +27,6 @@ public class InventoryFragment extends Fragment {
     private static cardAdapter ca;
     //TODO: All this should actually be in a materials fragment, this should be for the tab switching only
     @Override
-    //TODO:Automatically refreshing
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -44,13 +43,6 @@ public class InventoryFragment extends Fragment {
                 onButtonClick();
             }
         });
-        //create arrays for images and captions of inventory materials
-       // Bitmap[] images = new Bitmap[Inventory.getCount()];
-       // String[] caps = new String[Inventory.getCount()];
-       // for(int i = 0; i < Inventory.getCount(); i ++){
-       //     caps[i] = Inventory.getMaterial(i).getName();
-       //     images[i] = Inventory.getMaterial(i).getBmp();
-       // }
         RecyclerView rv = getView().findViewById(R.id.matRecycler);
         //create card adapter
         ca = new cardAdapter();

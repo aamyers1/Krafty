@@ -1,10 +1,7 @@
 package com.team6.krafty;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.se.omapi.Session;
-import android.util.JsonReader;
-import android.view.ViewGroup;
+import android.util.Log;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -88,6 +85,7 @@ public class MaterialController {
         }
     }
     //deletes a material
+    //TODO:VERIFY USER WANTS TO DELETE BEFORE DOING IT LOL ITS EASY TO ACCIDENTALLY PRESS THE BUTTON : USE A DIALOG
     public boolean deleteMaterial(final int id, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
         token = SessionManager.getToken(context);
@@ -166,8 +164,8 @@ public class MaterialController {
                 Inventory.addMaterial(newMat);
             }
         }
-        //TODO: handle this Exception
         catch(Exception e){
+            Log.d("PARSE MATERIAL ERROR", e.getMessage());
         }
     }
 }

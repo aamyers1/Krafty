@@ -3,13 +3,14 @@ package com.team6.krafty;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class Material {
-
+    //TODO:After imageString is parsed we may want to clear it just to dump the data and save space
     //private data fields for material
     private int id;
     private String name, image, purchased;
@@ -30,19 +31,6 @@ public class Material {
         this.quantity = quantity;
         this.price = price;
         this.purchased = purchased;
-    }
-    Material(int id, String name, String image, String purchased, int quantity,double price){
-        this.id = id;
-        this.name = name;
-        this.image = image;
-        parseBitmap();
-        this.quantity = quantity;
-        this.price = price;
-        this.purchased = purchased;
-    }
-
-    public Material(int id) {
-        this.id = id;
     }
 
     //creates a simple json string. The default json generator does not work properly with our API.
@@ -73,7 +61,7 @@ public class Material {
             parseBitmap();
         }
         catch (Exception e){
-
+            Log.d("ERROR PARSING MATERIAL", e.getMessage());
         }
     }
 
@@ -96,10 +84,9 @@ public class Material {
 
     public String getPurchased(){return purchased;}
 
-    public Bitmap getBmp() {
-        return bmp;
-    }
+    public Bitmap getBmp(){return bmp;}
 
+    //Setters
     public void setName(String name){
         this.name = name;
     }
@@ -120,12 +107,15 @@ public class Material {
     public void setPrice(double price){
         this.price = price;
     }
+
     //Override to string for the adapters
     @Override
     public String toString(){
         return name;
     }
 
+    //parse the bitmap in this class
+    //TODO:Make an async task to keep the main thread open for gui stuff
     private void parseBitmap(){
         if(!this.image.equals("null") && !this.image.equals("no image")) {
             byte[] encodeByte = Base64.decode(image.replace("<", "+"), Base64.DEFAULT);
