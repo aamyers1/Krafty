@@ -1,6 +1,8 @@
 package com.team6.krafty;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +10,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,18 +21,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class InventoryFragment extends Fragment {
+import java.io.InputStream;
 
+public class InventoryFragment extends Fragment {
+    private static cardAdapter ca;
     //TODO: All this should actually be in a materials fragment, this should be for the tab switching only
     @Override
+    //TODO:Automatically refreshing
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_inventory, container, false);
+
     }
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
         //Create a floating action button to add materials, set listener for click
         FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.addInventory);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -39,15 +45,15 @@ public class InventoryFragment extends Fragment {
             }
         });
         //create arrays for images and captions of inventory materials
-        String[] imgs = new String[Inventory.getCount()];
-        String[] caps = new String[Inventory.getCount()];
-        for(int i = 0; i < Inventory.getCount(); i ++){
-            imgs[i] = Inventory.getMaterial(i).getImage();
-            caps[i] = Inventory.getMaterial(i).getName();
-        }
+       // Bitmap[] images = new Bitmap[Inventory.getCount()];
+       // String[] caps = new String[Inventory.getCount()];
+       // for(int i = 0; i < Inventory.getCount(); i ++){
+       //     caps[i] = Inventory.getMaterial(i).getName();
+       //     images[i] = Inventory.getMaterial(i).getBmp();
+       // }
         RecyclerView rv = getView().findViewById(R.id.matRecycler);
         //create card adapter
-        cardAdapter ca = new cardAdapter(caps, imgs);
+        ca = new cardAdapter();
         //set recycler view to use the cardAdapter in a Grid Layout
         rv.setAdapter(ca);
         rv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
@@ -69,6 +75,12 @@ public class InventoryFragment extends Fragment {
         Intent intent = new Intent(getActivity(), CreateMaterialActivity.class);
         startActivity(intent);
     }
+
+    public static void nullifyAdapter(){
+        ca.notifyDataSetChanged();
+    }
+
+
 
 
 }

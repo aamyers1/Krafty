@@ -21,15 +21,16 @@ public class ModifyMaterialActivity extends AppCompatActivity {
 
     //Variable for passing the material array position
     private static final String EXTRA_ID = "matid";
-    private String encodedImage;
     private int matId;
+    private int id;
+    private String encodedImage = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_material);
         //get the position id
-        int id = getIntent().getIntExtra("EXTRA_ID", 1);
+        id = getIntent().getIntExtra("EXTRA_ID", 1);
         //get the specified material using the id
         Material thisMat = Inventory.getMaterial(id);
         matId = thisMat.getId();
@@ -42,19 +43,11 @@ public class ModifyMaterialActivity extends AppCompatActivity {
         quantity.setText(thisMat.getQuantity() + "");
 
         ImageView materialImage = findViewById(R.id.imgMat);
-        encodedImage = thisMat.getImage();
-        if(encodedImage != "null" && encodedImage != "no image") {
-            try {
-                byte[] encodeByte = Base64.decode(encodedImage.replace("<", "+"), Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-
-                materialImage.setImageBitmap(bitmap);
-            } catch (Exception e) { //for file not found
-                materialImage.setBackgroundColor(Color.rgb(188, 225,232));
-                e.printStackTrace();
-            }
-        }else{
-            materialImage.setBackgroundColor(Color.rgb(188, 225,232));
+        if(thisMat.getBmp()!= null){
+            materialImage.setImageBitmap(thisMat.getBmp());
+        }
+        else{
+            materialImage.setBackgroundColor(Color.rgb(188,225,232));
         }
 
         materialImage.setOnClickListener(new View.OnClickListener() {
@@ -103,18 +96,44 @@ public class ModifyMaterialActivity extends AppCompatActivity {
         @Override
         public void onClick(View view){
             //essentially just gathers strings from various editTexts
+            Material mt = Inventory.getMaterial(id);
+            Boolean updated = false;
             String matName, matPrice, matQuantity, matLocation = "";
             EditText et = findViewById(R.id.etTitle);
             matName = et.getText().toString();
+            if(mt.getName() != matName){
+                updated = true;
+                mt.setName(matName);
+            }
             et = findViewById(R.id.etPrice);
             matPrice = et.getText().toString();
+            if(Double.parseDouble(matPrice)!=mt.getPrice()){
+                updated = true;
+                mt.setPrice(Double.parseDouble(matPrice));
+            }
             et = findViewById(R.id.etQuantity);
             matQuantity = et.getText().toString();
+            if(Integer.parseInt(matQuantity)!= mt.getQuantity()){
+                mt.setQuantity(Integer.parseInt(matQuantity));
+                updated = true;
+            }
             et = findViewById(R.id.etLocation);
             matLocation = et.getText().toString();
+            if(!(matLocation.equals(mt.getPurchased()))){
+                mt.setPurchased(matLocation);
+                updated = true;
+            }
+            if(!(encodedImage.equals("")) & !encodedImage.equals(mt.getImage())){
+                updated = true;
+                mt.setImage(encodedImage);
+            }
             MaterialController mc = new MaterialController();
-            if(mc.modifyMaterial(matId, matName, encodedImage, matQuantity, matPrice, matLocation,getApplicationContext())){
-                finish();
+            if (updated) {
+                if (mc.modifyMaterial(mt, getApplicationContext())) {
+                    cardAdapter.resetData();
+                    InventoryFragment.nullifyAdapter();
+                    finish();
+                }
             }
         }
     }
@@ -124,6 +143,8 @@ public class ModifyMaterialActivity extends AppCompatActivity {
         public void onClick(View view){
             MaterialController mc = new MaterialController();
             if(mc.deleteMaterial(matId,getApplicationContext())){
+                cardAdapter.resetData();
+                InventoryFragment.nullifyAdapter();
                 finish();
             }
         }

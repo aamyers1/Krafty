@@ -146,7 +146,7 @@ class DBManager {
         }
     }
 
-
+    //TODO: when we create the material, we need to return the id so i can use it to modify and delete without reloading all materials
     public boolean createMaterial(Material material, String token){
         HttpURLConnection connection = generatePostConnection("/api/material/create/");
         //extra header for authorization
@@ -154,7 +154,7 @@ class DBManager {
         String materialString = material.createJson();
         byte[] request = materialString.getBytes();
         String response = getResponse(connection,request);
-        if(response.contains("created successfully")){
+        if(response.toLowerCase().contains("material created")){
             return true;
         }
         else{
@@ -177,11 +177,11 @@ class DBManager {
         }
     }
 
-    public boolean deleteMaterial(Material material, String token){
+    public boolean deleteMaterial(int id, String token){
         HttpURLConnection connection = generatePostConnection("/api/material/delete/");
         //extra header for authorization
         connection.setRequestProperty ("Authorization", "token " + token);
-        String materialString = material.getDeleteJson();
+        String materialString = "id="+id;
         byte[] request = materialString.getBytes();
         String response = getResponse(connection,request);
         if(response.contains("Material Deleted")){

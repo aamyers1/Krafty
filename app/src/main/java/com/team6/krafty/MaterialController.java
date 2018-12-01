@@ -2,6 +2,7 @@ package com.team6.krafty;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.se.omapi.Session;
 import android.util.JsonReader;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -20,8 +21,7 @@ public class MaterialController {
     //adds a material to database
     public boolean addMaterial(final String name,final String image,final  String quantity, final String price,final  String location, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
-        SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
-        token = sp.getString("token", "0");
+        token = SessionManager.getToken(context);
         //parse out numeric values
         //TODO:Verify these values are numeric
         int quant = Integer.parseInt(quantity);
@@ -42,6 +42,7 @@ public class MaterialController {
             //show user Message
             if(isCreated){
                 Toast.makeText(context, "Creation Success!", Toast.LENGTH_SHORT).show();
+                Inventory.addMaterial(material);
                 return true;
             }
             else{
@@ -55,15 +56,11 @@ public class MaterialController {
     }
 
     //adds a material to database
-    public boolean modifyMaterial(final int id, final String name,final String image,final  String quantity, final String price,final  String location, final Context context){
+    public boolean modifyMaterial(final Material material, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
-        SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
-        token = sp.getString("token", "0");
+        token = SessionManager.getToken(context);
         //parse out numeric values
         //TODO:Verify these values are numeric
-        int quant = Integer.parseInt(quantity);
-        double dPrice = Double.parseDouble(price);
-        final Material material = new Material(id, name, image, location, quant, dPrice);
         //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to add material to database
         Thread t = new Thread(new Runnable() {
             @Override
@@ -90,18 +87,16 @@ public class MaterialController {
             return false;
         }
     }
-    //adds a material to database
+    //deletes a material
     public boolean deleteMaterial(final int id, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
-        SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
-        token = sp.getString("token", "0");
-        final Material material = new Material(id);
-        //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to add material to database
+        token = SessionManager.getToken(context);
+        //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to delete material
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 DBManager dbManager = new DBManager();
-                isDeleted = dbManager.deleteMaterial(material, token);
+                isDeleted = dbManager.deleteMaterial(id, token);
             }
         });
         t.start();
@@ -111,6 +106,7 @@ public class MaterialController {
             //show user Message
             if(isDeleted){
                 Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
+                Inventory.removeMaterial(id);
                 return true;
             }
             else{

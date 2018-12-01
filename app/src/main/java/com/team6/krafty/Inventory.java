@@ -41,6 +41,14 @@ public class Inventory {
         return personalMaterials.get(position);
     }
 
+    public static void removeMaterial(int id){
+        for(Material i: personalMaterials){
+            if(i.getId() == id){
+                personalMaterials.remove(i);
+            }
+        }
+    }
+
     //clears all inventory items
     //TODO:Add clear Products when products are implemented
     public static void clearAll(){

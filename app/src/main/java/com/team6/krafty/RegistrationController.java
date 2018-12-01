@@ -47,8 +47,8 @@ public class RegistrationController {
         try{
             t.join();
             //if the registration is successful, return true and toast the message
-            if(returnString.equals("Registration successful!")){
-                Toast.makeText(context, returnString, Toast.LENGTH_LONG).show();
+            if(returnString.contains("Registered Successfully")){
+                Toast.makeText(context, "Registration Successful!", Toast.LENGTH_LONG).show();
                 return true;
 
             }

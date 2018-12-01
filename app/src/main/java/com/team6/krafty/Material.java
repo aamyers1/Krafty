@@ -1,5 +1,9 @@
 package com.team6.krafty;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -11,6 +15,7 @@ public class Material {
     private String name, image, purchased;
     private  int quantity;
     private  double price;
+    Bitmap bmp;
 
     //Blank constructor used when information needs to be parsed from json object only
     Material(){
@@ -21,6 +26,7 @@ public class Material {
         this.id = -1;
         this.name = name;
         this.image = image;
+        parseBitmap();
         this.quantity = quantity;
         this.price = price;
         this.purchased = purchased;
@@ -29,6 +35,7 @@ public class Material {
         this.id = id;
         this.name = name;
         this.image = image;
+        parseBitmap();
         this.quantity = quantity;
         this.price = price;
         this.purchased = purchased;
@@ -63,6 +70,7 @@ public class Material {
             this.quantity = json.getInt("qty");
             this.price = json.getDouble("price");
             this.purchased = json.getString("purchased");
+            parseBitmap();
         }
         catch (Exception e){
 
@@ -86,11 +94,48 @@ public class Material {
 
     public String getLocation(){return purchased;}
 
+    public String getPurchased(){return purchased;}
+
+    public Bitmap getBmp() {
+        return bmp;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setImage(String image){
+        this.image = image;
+        parseBitmap();
+    }
+
+    public void setPurchased(String purchased){
+        this.purchased = purchased;
+    }
+
+    public void setQuantity(int quantity){
+        this.quantity = quantity;
+    }
+
+    public void setPrice(double price){
+        this.price = price;
+    }
     //Override to string for the adapters
     @Override
     public String toString(){
         return name;
     }
+
+    private void parseBitmap(){
+        if(!this.image.equals("null") && !this.image.equals("no image")) {
+            byte[] encodeByte = Base64.decode(image.replace("<", "+"), Base64.DEFAULT);
+            bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        }
+        else{
+            bmp = null;
+        }
+    }
+
 
 }
 

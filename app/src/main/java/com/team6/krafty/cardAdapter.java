@@ -16,8 +16,8 @@ import java.io.IOException;
 
 public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
 
-    private String[] captions;
-    private String[] images;
+    private static String[] captions;
+    private static Bitmap[] images;
     private Listener listener;
 
     //create a generic listener interface for the adapter
@@ -31,10 +31,13 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
     }
 
     //constructor
-    //Params: String array for captions for each card and String array of Base64 encoded images
-    public cardAdapter(String[] captions, String[] imgs){
-        this.captions = captions;
-        this.images = imgs;
+    public cardAdapter(){
+        images = new Bitmap[Inventory.getCount()];
+        captions = new String[Inventory.getCount()];
+        for(int i = 0; i < Inventory.getCount(); i ++){
+            captions[i] = Inventory.getMaterial(i).getName();
+            images[i] = Inventory.getMaterial(i).getBmp();
+        }
     }
 
     //gets the number of items to be created
@@ -55,20 +58,11 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
     public void onBindViewHolder(ViewHolder holder , final int position){
         CardView cardView = holder.cardView;
         ImageView iv = (ImageView)cardView.findViewById(R.id.imgCaption);
-
-
-        if(images[position] != "null" && images[position] != "no image") {
-            try {
-                byte[] encodeByte = Base64.decode(images[position].replace("<", "+"), Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-
-                iv.setImageBitmap(bitmap);
-            } catch (Exception e) { //for file not found
-                iv.setBackgroundColor(Color.rgb(188, 225,232));
-                e.printStackTrace();
-            }
-        }else{
-            iv.setBackgroundColor(Color.rgb(188, 225,232));
+        if(images[position] != null){
+            iv.setImageBitmap(images[position]);
+        }
+        else{
+            iv.setBackgroundColor(Color.rgb(188,225,232));
         }
         iv.setContentDescription(captions[position]);
         TextView tv = cardView.findViewById(R.id.txtCaption);
@@ -95,5 +89,14 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
             cardView = v;
         }
 
+    }
+
+    public static void resetData(){
+        images = new Bitmap[Inventory.getCount()];
+        captions = new String[Inventory.getCount()];
+        for(int i = 0; i < Inventory.getCount(); i ++){
+            captions[i] = Inventory.getMaterial(i).getName();
+            images[i] = Inventory.getMaterial(i).getBmp();
+        }
     }
 }
