@@ -2,12 +2,11 @@ package com.team6.krafty;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class Material {
     //TODO:After imageString is parsed we may want to clear it just to dump the data and save space
@@ -27,7 +26,13 @@ public class Material {
         this.id = -1;
         this.name = name;
         this.image = image;
-        parseBitmap();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                parseBitmap();
+            }
+        });
+        t.start();
         this.quantity = quantity;
         this.price = price;
         this.purchased = purchased;
@@ -58,7 +63,13 @@ public class Material {
             this.quantity = json.getInt("qty");
             this.price = json.getDouble("price");
             this.purchased = json.getString("purchased");
-            parseBitmap();
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    parseBitmap();
+                }
+            });
+            t.start();
         }
         catch (Exception e){
             Log.d("ERROR PARSING MATERIAL", e.getMessage());
@@ -93,7 +104,13 @@ public class Material {
 
     public void setImage(String image){
         this.image = image;
-        parseBitmap();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                parseBitmap();
+            }
+        });
+        t.start();
     }
 
     public void setPurchased(String purchased){
@@ -129,6 +146,7 @@ public class Material {
             bmp = null;
         }
     }
+
 
 
 }
