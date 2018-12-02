@@ -1,6 +1,8 @@
 package com.team6.krafty;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,13 +12,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class SplashActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static  int MENU_INVENTORY = 500;
-
+    private User profile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,25 +35,21 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        //fill the frame with a lame blank fragment for now
-        //TODO:THIS WILL BE THE PROFILE PAGE WHEN COMPLETE
-        Fragment fragment = new BlankFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, fragment);
-        ft.commit();
+
 
         //get the navView
         NavigationView navView =  (NavigationView)findViewById(R.id.nav_view);
-        //TODO: GET USERTYPE FROM DB ON LOGIN?
-        //If a krafter, add inventory option to the menu
-        //TODO: FIGURE OUT HOW TO ADD IT TO THE RIGHT PLACE IN THE LIST
-        int userType = 1;
-        if(userType == 1) {
-            Menu menu = navView.getMenu();
-            menu.add(menu.NONE, MENU_INVENTORY, 0, "Inventory");
-        }
+
+        setUpNavMenu(navView);
         //set the listener
         navView.setNavigationItemSelectedListener(this);
+
+        //TODO:THIS WILL BE THE PROFILE PAGE WHEN COMPLETE
+
+        Fragment fragment = getProfileFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
     }
 
     //navigation drawer menu listener
@@ -62,7 +61,7 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
         //TODO: Other pages: Schedule, Events, Profile(Which will likely just be home)
         switch(id) {
             case R.id.home:
-                fragment = new BlankFragment();
+                fragment = getProfileFragment();
                 break;
             case R.id.logout:
                 SessionManager.logout(this);
@@ -92,5 +91,48 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
 
         }
         return true;
+    }
+
+    public void setUpNavMenu(NavigationView navView){
+        final DBManager dbManager = new DBManager();
+        final String token = SessionManager.getToken(this);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                profile = new User();
+                profile.parseJson(dbManager.getUser(token, ""));
+            }
+        });
+        t.start();
+        try{
+            t.join();
+            //If a krafter, add inventory option to the menu
+            //TODO: FIGURE OUT HOW TO ADD IT TO THE RIGHT PLACE IN THE LIST
+            SharedPreferences sp = getSharedPreferences("session", Context.MODE_PRIVATE);
+            SharedPreferences.Editor edit = sp.edit();
+            edit.putInt("userType", profile.getUserType());
+            edit.apply();
+
+            if(profile.getUserType() == 1 || profile.getUserType() == 0) {
+                Menu menu = navView.getMenu();
+                MenuItem mi = menu.add(menu.NONE, MENU_INVENTORY, 0, "Inventory");
+                mi.setIcon(R.drawable.ic_archive_black_24dp);
+            }
+            else{
+
+            }
+        }
+        catch (Exception e){
+            Log.d("ERROR", e.getMessage());
+        }
+    }
+
+    public Fragment getProfileFragment(){
+        if(profile.getUserType() == 0 || profile.getUserType() == 1){
+            return new KrafterProfileFragment();
+        }
+        else{
+            return new BlankFragment();
+        }
     }
 }

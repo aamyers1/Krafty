@@ -116,13 +116,13 @@ public class RegisterKrafterFragment extends Fragment {
         city = et.getText().toString();
         et = getView().findViewById(R.id.txtState);
         state = et.getText().toString();
-        et = getView().findViewById(R.id.txtWebsite);
+        et = getView().findViewById(R.id.etWebsite);
         website = et.getText().toString();
-        et = getView().findViewById(R.id.txtEtsy);
+        et = getView().findViewById(R.id.etEtsy);
         etsy = et.getText().toString();
-        et = getView().findViewById(R.id.txtFacebook);
+        et = getView().findViewById(R.id.etFacebook);
         facebook = et.getText().toString();
-        et = getView().findViewById(R.id.txtInstagram);
+        et = getView().findViewById(R.id.etInstagram);
         instagram = et.getText().toString();
         et = getView().findViewById(R.id.business);
         businessName = et.getText().toString();

@@ -14,6 +14,11 @@ public class SessionManager {
         return sp.getString("token", "0");
     }
 
+    public static int getUserType(Context context){
+        SharedPreferences sp = context.getSharedPreferences("session", context.MODE_PRIVATE);
+        return sp.getInt("userType", 2);
+    }
+
     //checks if a user is logged in;
     public static boolean isLoggedIn(Context context){
         if(!getToken(context).equals("0")){

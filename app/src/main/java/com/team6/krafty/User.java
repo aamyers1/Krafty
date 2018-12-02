@@ -1,5 +1,10 @@
 package com.team6.krafty;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
+
 import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +18,7 @@ public class User {
      private String bio, businessName;
      private String website, etsy, facebook, instagram;
      private String dateJoined;
+     Bitmap bmp;
 
     //sets up an empty User -> to be used when a json object is being parsed for user data
     User(){
@@ -37,6 +43,7 @@ public class User {
         this.facebook = facebook;
         this.instagram = instagram;
         this.businessName = businessName;
+        parseBitmap();
     }
 
     //creates a simple json object that can be handled by the api
@@ -48,8 +55,9 @@ public class User {
     }
 
     //gets the fields from a json object for a user and stores them in the user object
-    public void parseJson(JSONObject json){
+    public void parseJson(JSONObject jsonReturn){
         try {
+            JSONObject json = jsonReturn.getJSONObject("result");
             this.userType = json.getInt("usertype");
             this.username = json.getString("username");
             this.email = json.getString("email");
@@ -59,6 +67,7 @@ public class User {
             this.city = json.getString("city");
             this.state = json.getString("state");
             this.imageString = json.getString("imageString");
+            parseBitmap();
             this.bio = json.getString("bio");
             this.website = json.getString("website");
             this.etsy = json.getString("etsy");
@@ -68,7 +77,7 @@ public class User {
             this.businessName = json.getString("businessName");
         }
         catch (Exception e){
-
+            Log.d("ERROR PARSING USER", e.getMessage());
         }
     }
 
@@ -78,5 +87,45 @@ public class User {
 
     public String getEmail(){
         return email;
+    }
+
+    public int getUserType(){return userType;}
+
+    public String getFirst(){return first;}
+
+    public String getLast(){return last;}
+
+    public String getCity(){return city;}
+
+    public String getState(){return state;}
+
+    public String getBio(){return bio;}
+
+    public String getWebsite(){return  website;}
+
+    public String getBusinessName(){return businessName;}
+
+    public String getEtsy(){return etsy;}
+
+    public String getFacebook(){return facebook;}
+
+    public String getInstagram(){return instagram;}
+
+    public Bitmap getBmp() {
+        return bmp;
+    }
+
+    public String getDateJoined(){
+        return dateJoined;
+    }
+
+    private void parseBitmap(){
+        if(!this.imageString.equals("null") && !this.imageString.equals("no image")) {
+            byte[] encodeByte = Base64.decode(imageString.replace("<", "+"), Base64.DEFAULT);
+            bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        }
+        else{
+            bmp = null;
+        }
     }
 }

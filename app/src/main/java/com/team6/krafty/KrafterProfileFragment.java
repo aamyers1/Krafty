@@ -1,6 +1,3 @@
-//TODO:This whole class and its XML
-//Should display all user details: be sure to check user type.
-
 package com.team6.krafty;
 
 
@@ -11,10 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class ProfileFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class KrafterProfileFragment extends Fragment {
 
+    private User user;
 
-    public ProfileFragment() {
+    public KrafterProfileFragment() {
         // Required empty public constructor
     }
 
@@ -23,7 +24,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_krafter_profile, container, false);
     }
 
 }

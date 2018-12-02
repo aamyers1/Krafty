@@ -2,10 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
-        android:title="@string/home"/>
+        android:title="@string/home"
+        android:icon="@drawable/ic_account_box_black_24dp"/>
 
     <item
         android:id="@+id/logout"
-        android:title="@string/logout"/>
+        android:title="@string/logout"
+        android:icon="@drawable/ic_exit_to_app_black_24dp"/>
 
 </menu>

@@ -103,8 +103,8 @@ public class MaterialController {
             t.join();
             //show user Message
             if(isDeleted){
-                Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
                 Inventory.removeMaterial(id);
+                Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
                 return true;
             }
             else{
@@ -113,6 +113,7 @@ public class MaterialController {
             }
         }
         catch(Exception e){
+            Log.d("DELETE MAT ERROR", e.getMessage());
             return false;
         }
     }

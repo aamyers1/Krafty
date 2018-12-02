@@ -1,5 +1,10 @@
 package com.team6.krafty;
 
+import android.util.JsonReader;
+import android.util.Log;
+
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -7,6 +12,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+
+import javax.net.ssl.HttpsURLConnection;
 
 class DBManager {
     //TODO: need to check the network connectivity before we try to connect to the api!
@@ -84,6 +91,7 @@ class DBManager {
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
+            connection.setDoInput(true);
             connection.setRequestProperty("User-Agent","Android Client");
             return connection;
         }
@@ -189,6 +197,28 @@ class DBManager {
         }
         else{
             return false;
+        }
+    }
+
+    public JSONObject getUser(String token, String username){
+        HttpURLConnection connection = generatePostConnection("/api/user/view/");
+        connection.setRequestProperty("Authorization", "token " + token);
+        String request;
+        if (username.equals("")) {
+            request = "";
+        }
+        else{
+            request ="username=" + username;
+        }
+        byte[] query = request.getBytes();
+        String response = getResponse(connection, query);
+        try {
+            JSONObject json = new JSONObject(response);
+            return json;
+        }
+        catch(Exception e){
+            Log.d("ERROR GETTING USER", e.getMessage());
+            return null;
         }
     }
 
