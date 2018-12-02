@@ -108,6 +108,10 @@ public class Material {
         this.price = price;
     }
 
+    public void setID(int id){
+        this.id = id;
+    }
+
     //Override to string for the adapters
     @Override
     public String toString(){

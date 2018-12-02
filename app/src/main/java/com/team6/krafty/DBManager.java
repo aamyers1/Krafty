@@ -162,6 +162,14 @@ class DBManager {
         String materialString = material.createJson();
         byte[] request = materialString.getBytes();
         String response = getResponse(connection,request);
+        try {
+            JSONObject json = new JSONObject(response);
+            material.setID(json.getInt("result"));
+        }
+        catch(Exception e){
+            Log.d("MATERIAL ID ERROR", e.getMessage());
+            Log.d("MESSAGE MATERIAL", response);
+        }
         if(response.toLowerCase().contains("material created")){
             return true;
         }

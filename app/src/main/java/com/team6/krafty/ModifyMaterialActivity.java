@@ -91,6 +91,7 @@ public class ModifyMaterialActivity extends AppCompatActivity {
             }
         }
     }
+
     private class onModifyClick implements View.OnClickListener {
 
         @Override
@@ -137,6 +138,7 @@ public class ModifyMaterialActivity extends AppCompatActivity {
             }
         }
     }
+
     private class onDeleteClick implements View.OnClickListener {
 
         @Override
