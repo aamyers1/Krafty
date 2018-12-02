@@ -73,7 +73,11 @@ public class KrafterProfileFragment extends Fragment {
         //Define the image view and set listener
         //  getView() because is a fragment, then find imageView by id
         TextView txtUsername = getView().findViewById(R.id.txtUsername);
-        txtUsername.setText(profile.getUsername());
+        if(profile.getUsername() != null){
+            txtUsername.setText(profile.getUsername());
+        } else {
+            txtUsername.setText("");
+        }
 
         ImageView imgProfile = getView().findViewById(R.id.imgProfile);
         if(profile.getBmp()!= null){
@@ -84,36 +88,80 @@ public class KrafterProfileFragment extends Fragment {
         }
 
         TextView tvDateJoined = getView().findViewById(R.id.txtDateJoined);
-        tvDateJoined.setText("Since" + profile.getDateJoined());
+        if(profile.getDateJoined() != null){
+            tvDateJoined.setText("Since " + profile.getDateJoined());
+        } else {
+            tvDateJoined.setText("");
+        }
 
         EditText etBusiness = getView().findViewById(R.id.etBusinessName);
-        etBusiness.setText(profile.getBusinessName());
+        if(profile.getBusinessName() != null){
+            etBusiness.setText(profile.getBusinessName());
+        } else {
+            etBusiness.setText("");
+        }
 
         EditText etFirst = getView().findViewById(R.id.etFirst);
-        etFirst.setText(profile.getFirst());
+        if(profile.getFirst() != null){
+            etFirst.setText(profile.getFirst());
+        } else {
+            etFirst.setText("");
+        }
 
         EditText etLast = getView().findViewById(R.id.etLast);
-        etLast.setText(profile.getLast());
+        if(profile.getLast() != null){
+            etLast.setText(profile.getLast());
+        } else {
+            etLast.setText(profile.getLast());
+        }
 
         EditText etCity = getView().findViewById(R.id.etCity);
-        etCity.setText(profile.getCity());
+        if(profile.getCity() != null){
+            etCity.setText(profile.getCity());
+        } else {
+            etCity.setText("");
+        }
 
         EditText etState = getView().findViewById(R.id.etState);
-        etState.setText(profile.getState());
+        if(profile.getState() != null){
+            etState.setText(profile.getState());
+        } else {
+            etState.setText("");
+        }
 
         EditText etBio = getView().findViewById(R.id.etBio);
-        etBio.setText(profile.getBio());
+        if(profile.getBio() != null) {
+            etBio.setText(profile.getBio());
+        } else {
+            etBio.setText("");
+        }
 
         EditText etWebsite = getView().findViewById(R.id.etWebsite);
-        etWebsite.setText(profile.getWebsite());
+        if(profile.getWebsite() != null) {
+            etWebsite.setText(profile.getWebsite());
+        } else {
+            etWebsite.setText("");
+        }
 
         EditText etFacebook = getView().findViewById(R.id.etFacebook);
-        etFacebook.setText(profile.getFacebook());
+        if(profile.getFacebook() != null){
+            etFacebook.setText(profile.getFacebook());
+        } else {
+            etFacebook.setText("");
+        }
 
         EditText etEtsy = getView().findViewById(R.id.etEtsy);
-        etEtsy.setText(profile.getEtsy());
+        if(profile.getEtsy() != null){
+            etEtsy.setText(profile.getEtsy());
+        } else {
+            etEtsy.setText("");
+        }
 
         EditText etInstagram = getView().findViewById(R.id.etInstagram);
-        etInstagram.setText(profile.getInstagram());
+        if(profile.getInstagram() != null) {
+            etInstagram.setText(profile.getInstagram());
+        } else {
+            etInstagram.setText("");
+        }
     }
 }
