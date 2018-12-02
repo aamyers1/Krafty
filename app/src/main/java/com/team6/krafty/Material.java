@@ -136,9 +136,8 @@ public class Material {
     }
 
     //parse the bitmap in this class
-    //TODO:Make an async task to keep the main thread open for gui stuff
     private void parseBitmap(){
-        if(!this.image.equals("null") && !this.image.equals("no image")) {
+        if(!this.image.equals("null") && !this.image.equals("no image") && !this.image.equals("") ) {
             byte[] encodeByte = Base64.decode(image.replace("<", "+"), Base64.DEFAULT);
             bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         }

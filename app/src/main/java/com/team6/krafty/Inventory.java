@@ -1,17 +1,18 @@
 package com.team6.krafty;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Inventory {
 
     //holds the inventory instance
     private static Inventory inventory = new Inventory();
     //holds a specific user's inventory of materials
-    private static ArrayList<Material> personalMaterials;
+    private static Vector<Material> personalMaterials;
 
     //constructor is PRIVATE
     private Inventory(){
-        personalMaterials = new ArrayList<>();
+        personalMaterials = new Vector<>();
     }
 
     //use as constructor: singleton class.
@@ -32,7 +33,7 @@ public class Inventory {
 
     //returns the entire arraylist
     //TODO: Check that this will return a copy and not a reference because we don't actually want modification through this path.
-    public static ArrayList<Material> getPersonalMaterials() {
+    public static Vector<Material> getPersonalMaterials() {
         return personalMaterials;
     }
 
@@ -42,16 +43,16 @@ public class Inventory {
     }
 
     public static void removeMaterial(int id){
-        for(Material i: personalMaterials){
-            if(i.getId() == id){
-                personalMaterials.remove(i);
-            }
+            for(int i = 0; i < getCount(); i ++){
+                if(personalMaterials.elementAt(i).getId() == id){
+                    personalMaterials.removeElementAt(i);
+                }
         }
     }
 
     //clears all inventory items
     //TODO:Add clear Products when products are implemented
     public static void clearAll(){
-        personalMaterials = new ArrayList<>();
+        personalMaterials = new Vector<>();
     }
 }

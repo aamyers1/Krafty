@@ -132,7 +132,7 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
             return new KrafterProfileFragment();
         }
         else{
-            return new BlankFragment();
+            return new KrafteeProfileFragment();
         }
     }
 }

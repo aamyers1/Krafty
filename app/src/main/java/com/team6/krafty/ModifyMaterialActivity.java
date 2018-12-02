@@ -97,7 +97,7 @@ public class ModifyMaterialActivity extends AppCompatActivity {
         @Override
         public void onClick(View view){
             //essentially just gathers strings from various editTexts
-            Material mt = Inventory.getMaterial(id);
+            Material mt = Inventory.getMaterial(matId);
             Boolean updated = false;
             String matName, matPrice, matQuantity, matLocation = "";
             EditText et = findViewById(R.id.etTitle);
@@ -145,6 +145,7 @@ public class ModifyMaterialActivity extends AppCompatActivity {
         public void onClick(View view){
             MaterialController mc = new MaterialController();
             if(mc.deleteMaterial(matId,getApplicationContext())){
+                Inventory.removeMaterial(matId);
                 cardAdapter.resetData();
                 InventoryFragment.nullifyAdapter();
                 finish();

@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class CreateMaterialActivity extends AppCompatActivity {
-    private String encodedImage;
+    private String encodedImage = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

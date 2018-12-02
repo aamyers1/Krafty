@@ -101,9 +101,9 @@ public class MaterialController {
         try {
             //wait for thread to finish
             t.join();
+            Log.d("DELETE MAT ERROR", "mat error" +  id);
             //show user Message
             if(isDeleted){
-                Inventory.removeMaterial(id);
                 Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -113,7 +113,7 @@ public class MaterialController {
             }
         }
         catch(Exception e){
-            Log.d("DELETE MAT ERROR", e.getMessage());
+            Log.d("DELETE MAT ERROR", "mat error" +  e.getMessage());
             return false;
         }
     }
