@@ -172,11 +172,7 @@ public class RegisterKrafterFragment extends Fragment {
             ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();
-            encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT);
-            //CODE TO DECODE THE IMAGE:
-            //byte[] decode = Base64.decode(encodedImage, Base64.DEFAULT);
-            //Bitmap decodedByte = BitmapFactory.decodeByteArray(decode, 0, decode.length);
-            //imgProfile.setImageBitmap(decodedByte);
+            encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT).replace("+","<");
         }
     }
 
