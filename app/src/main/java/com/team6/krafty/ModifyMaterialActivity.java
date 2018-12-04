@@ -1,5 +1,7 @@
 package com.team6.krafty;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -142,16 +145,31 @@ public class ModifyMaterialActivity extends AppCompatActivity {
     private class onDeleteClick implements View.OnClickListener {
 
         @Override
-        public void onClick(View view){
-            MaterialController mc = new MaterialController();
-            if(mc.deleteMaterial(matId,getApplicationContext())){
-                Inventory.removeMaterial(matId);
-                cardAdapter.resetData();
-                InventoryFragment.nullifyAdapter();
-                finish();
-            }
+        public void onClick(View view) {
+            new AlertDialog.Builder(ModifyMaterialActivity.this)
+                    .setTitle("Delete Confirmation")
+                    .setMessage("Do you really want to delete this material?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            MaterialController mc = new MaterialController();
+                            if (mc.deleteMaterial(matId, getApplicationContext())) {
+                                Inventory.removeMaterial(matId);
+                                cardAdapter.resetData();
+                                InventoryFragment.nullifyAdapter();
+                                finish();
+                            }
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            Toast.makeText(getApplicationContext(), "Material not deleted.", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .show();
         }
     }
+
     //For results of requests
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
