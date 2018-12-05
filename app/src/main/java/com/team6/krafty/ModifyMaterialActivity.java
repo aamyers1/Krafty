@@ -100,7 +100,7 @@ public class ModifyMaterialActivity extends AppCompatActivity {
         @Override
         public void onClick(View view){
             //essentially just gathers strings from various editTexts
-            Material mt = Inventory.getMaterial(matId);
+            Material mt = Inventory.getMaterial(id); //position id not matId
             Boolean updated = false;
             String matName, matPrice, matQuantity, matLocation = "";
             EditText et = findViewById(R.id.etTitle);
