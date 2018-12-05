@@ -64,10 +64,7 @@ public class KrafterProfileFragment extends Fragment {
         t.start();
         try{
             t.join();
-        }
-        catch (Exception e){
-            Log.d("ERROR", e.getMessage());
-        }
+
 
 
         //Define the image view and set listener
@@ -162,6 +159,10 @@ public class KrafterProfileFragment extends Fragment {
             etInstagram.setText(profile.getInstagram());
         } else {
             etInstagram.setText("");
+        }
+        }
+        catch (Exception e){
+            Log.d("ERROR", e.getMessage());
         }
     }
 }

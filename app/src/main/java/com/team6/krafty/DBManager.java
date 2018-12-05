@@ -166,6 +166,7 @@ class DBManager {
             material.setID(json.getInt("result"));
         }
         catch(Exception e){
+            Log.d("MATERIAL RESPONSE", response);
             Log.d("MATERIAL ID ERROR", e.getMessage());
             Log.d("MESSAGE MATERIAL", response);
         }

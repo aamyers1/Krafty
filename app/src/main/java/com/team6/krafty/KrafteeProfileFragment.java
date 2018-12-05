@@ -50,10 +50,6 @@ public class KrafteeProfileFragment extends Fragment {
         t.start();
         try {
             t.join();
-        } catch (Exception e) {
-            Log.d("ERROR", e.getMessage());
-        }
-
 
         //Define the image view and set listener
         //  getView() because is a fragment, then find imageView by id
@@ -108,6 +104,9 @@ public class KrafteeProfileFragment extends Fragment {
             etBio.setText(profile.getBio());
         } else {
             etBio.setText("");
+        }
+        } catch (Exception e) {
+            Log.d("ERROR", e.getMessage());
         }
     }
 }
