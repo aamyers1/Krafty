@@ -29,6 +29,8 @@ public class Event implements Schedulable {
             zipcode = json.getString("zipcode");
             String temp = json.getString("start");
             startTime = temp.substring(0, temp.indexOf(" "));
+            String temp2 = json.getString("end");
+            endTime = temp2.substring(0,temp2.indexOf(" "));
             startDate = temp.substring(temp.indexOf(" ") + 1);
         }
         catch(Exception e){
@@ -69,4 +71,16 @@ public class Event implements Schedulable {
     public int getID() {
         return id;
     }
+
+    public String getEndTime() { return  endTime;}
+
+    public boolean getFood(){ return  food;}
+
+    public boolean getOutDoors(){return outdoors;}
+
+    public Boolean getPower() { return power; }
+
+    public Boolean getTables() { return tables; }
+
+    public Boolean getWifi() { return wifi; }
 }
