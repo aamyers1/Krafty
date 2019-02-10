@@ -139,7 +139,6 @@ class DBManager {
                     while ((line = in.readLine()) != null) {
                         response.append(line);
                     }
-                    Log.d("MATERIAL RESPONSE", response.toString());
                     return response.toString();
                 }
                 catch(Exception i){
@@ -247,7 +246,7 @@ class DBManager {
                     while ((line = in.readLine()) != null) {
                         response.append(line);
                     }
-
+                    Log.d("RESPONSE!!!!", response.toString());
                     JSONObject jsonObject = new JSONObject(response.toString());
                     return jsonObject;
                 }

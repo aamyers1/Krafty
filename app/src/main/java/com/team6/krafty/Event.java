@@ -13,6 +13,10 @@ public class Event implements Schedulable {
 
     public void parseJson(JSONObject json){
         try {
+            longitude = json.getDouble("longitude");
+            latitude = json.getDouble("latitude");
+            id = json.getInt("id");
+            name = json.getString("name");
             wifi = json.getBoolean("wifi");
             power = json.getBoolean("power");
             outdoors = json.getBoolean("outdoors");
@@ -23,12 +27,9 @@ public class Event implements Schedulable {
             street = json.getString("street");
             state = json.getString("state");
             zipcode = json.getString("zipcode");
-            name = json.getString("name");
             String temp = json.getString("start");
             startTime = temp.substring(0, temp.indexOf(" "));
             startDate = temp.substring(temp.indexOf(" ") + 1);
-            longitude = json.getDouble("longitude");
-            latitude = json.getDouble("latitude");
         }
         catch(Exception e){
             Log.d("Error event parse", "Event could not be parsed from json");
