@@ -1,6 +1,7 @@
 package com.team6.krafty;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,10 +17,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         //if login credentials exist already
         if(SessionManager.isLoggedIn(this)){
-            //clear current inventory in case still exists
-            Inventory.clearAll();
-            //Get all materials from DB and add to material list in inventory
-            MaterialController.getMaterials(this);
+            String token = SessionManager.getToken(this);
+            MaterialGetter mg = new MaterialGetter();
+            mg.execute(token);
             //launch the Splash Activity class
             Intent intent = new Intent(this, SplashActivity.class);
             startActivity(intent);
@@ -47,10 +47,9 @@ public class LoginActivity extends AppCompatActivity {
         String password = tv.getText().toString();
         //attempt to login via SessionManager
         if(SessionManager.login(this, username, password)) {
-            //clear any previous inventory
-            Inventory.clearAll();
-            //get all materials for inventory
-            MaterialController.getMaterials(this);
+            String token = SessionManager.getToken(this);
+            MaterialGetter mg = new MaterialGetter();
+            mg.execute(token);
             //launch the SplashActivity
             Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
             startActivity(intent);
@@ -69,5 +68,16 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private class MaterialGetter extends AsyncTask<String, Void, Void>{
+
+        @Override
+        public Void doInBackground(String...args){
+            //clear any previous inventory
+            Inventory.clearAll();
+            //get all materials for inventory
+            MaterialController.getMaterials(args[0]);
+            return null;
+        }
+    }
 
 }

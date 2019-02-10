@@ -85,7 +85,6 @@ public class MaterialController {
         }
     }
     //deletes a material
-    //TODO:VERIFY USER WANTS TO DELETE BEFORE DOING IT LOL ITS EASY TO ACCIDENTALLY PRESS THE BUTTON : USE A DIALOG
     public boolean deleteMaterial(final int id, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
         token = SessionManager.getToken(context);
@@ -101,7 +100,6 @@ public class MaterialController {
         try {
             //wait for thread to finish
             t.join();
-            Log.d("DELETE MAT ERROR", "mat error" +  id);
             //show user Message
             if(isDeleted){
                 Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
@@ -109,6 +107,7 @@ public class MaterialController {
             }
             else{
                 Toast.makeText(context, "Delete Failure!", Toast.LENGTH_SHORT).show();
+                Log.d("DELETE MAT ERROR", "mat error" +  id);
                 return false;
             }
         }
@@ -120,9 +119,8 @@ public class MaterialController {
 
 
     //gets all materials for a given user based on token received on login
-    public static boolean getMaterials(Context context){
+    public static boolean getMaterials(final String token){
         //get user token from sessionManager
-        token = SessionManager.getToken(context);
         //ask DB for response
         Thread t = new Thread(new Runnable() {
             @Override
@@ -142,9 +140,9 @@ public class MaterialController {
                 return true;
             }else return false;
         }
-        //show user exception message
+
         catch(Exception e){
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.d("ERROR GET MATS", e.getMessage());
             return false;
         }
     }

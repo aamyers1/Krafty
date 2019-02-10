@@ -139,6 +139,7 @@ class DBManager {
                     while ((line = in.readLine()) != null) {
                         response.append(line);
                     }
+                    Log.d("MATERIAL RESPONSE", response.toString());
                     return response.toString();
                 }
                 catch(Exception i){
@@ -200,11 +201,11 @@ class DBManager {
         String materialString = "id="+id;
         byte[] request = materialString.getBytes();
         String response = getResponse(connection,request);
-        Log.d("DELETE STRING", response);
         if(response.contains("Material Deleted")){
             return true;
         }
         else{
+            Log.d("DELETE ERROR", response);
             return false;
         }
     }
@@ -222,10 +223,10 @@ class DBManager {
         byte[] query = request.getBytes();
         String response = getResponse(connection, query);
         try {
-            JSONObject json = new JSONObject(response);
-            return json;
+            return new JSONObject(response);
         }
         catch(Exception e){
+            Log.d("RESPONSE", "response: " + response);
             Log.d("ERROR GETTING USER", e.getMessage());
             return null;
         }
