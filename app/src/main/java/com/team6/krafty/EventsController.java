@@ -75,4 +75,18 @@ public class EventsController {
             Log.d("ECNTR JSONARRAY", e.getMessage());
         }
     }
+
+    public Event getSpecificEvent(int id, Context context){
+        DBManager dbManager = new DBManager();
+        JSONObject json = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
+        try{
+            Event event = new Event();
+            event.parseJson(json);
+            return event;
+        }
+        catch(Exception e){
+            Log.d("ECNTR JSONARRAY", e.getMessage());
+            return null;
+        }
+    }
 }
