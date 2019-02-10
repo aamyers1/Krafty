@@ -1,5 +1,6 @@
 package com.team6.krafty;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -64,6 +65,9 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
             case R.id.home:
                 fragment = getProfileFragment();
                 break;
+//            case R.id.events:
+//                intent = new Intent(this, CreateEventActivity.class);
+//                break;
             case R.id.logout:
                 SessionManager.logout(this);
                 intent = new Intent(this, LoginActivity.class);

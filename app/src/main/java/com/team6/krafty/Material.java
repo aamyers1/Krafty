@@ -138,8 +138,14 @@ public class Material {
     //parse the bitmap in this class
     private void parseBitmap(){
         if(!this.image.equals("null") && !this.image.equals("no image") && !this.image.equals("") ) {
-            byte[] encodeByte = Base64.decode(image.replace("<", "+"), Base64.DEFAULT);
-            bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            try{
+                byte[] encodeByte = Base64.decode(image.replace("<", "+"), Base64.DEFAULT);
+                bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            } catch (IllegalArgumentException e){
+
+                Log.d("MATERIAL IMAGE ERROR", "bad image base-64" +  id);
+                bmp = null;
+            }
         }
         else{
             bmp = null;

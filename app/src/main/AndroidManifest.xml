@@ -32,6 +32,8 @@
             android:label="Create a Material"/>
         <activity android:name=".ModifyMaterialActivity"
             android:label="Modify a Material"/>
+        <activity android:name=".CreateEventActivity"
+            android:label="Create an Event"/>
     </application>
 
 </manifest>

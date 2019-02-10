@@ -1,6 +1,5 @@
 package com.team6.krafty;
 
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -8,14 +7,19 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.content.Intent;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -68,34 +72,16 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
 
         }
 
+        FloatingActionButton fab = (FloatingActionButton)v.findViewById(R.id.addEvent);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAddEventClick();
+            }
+        });
+
         return v;
     }
-
-
-    public LatLng getLocationFromAddress(Context context, String strAddress) {
-
-        Geocoder coder = new Geocoder(context);
-        List<Address> address;
-        LatLng p1 = null;
-
-        try {
-            // May throw an IOException
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return null;
-            }
-
-            Address location = address.get(0);
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
-
-        } catch (IOException ex) {
-
-            ex.printStackTrace();
-        }
-
-        return p1;
-    }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -112,7 +98,10 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
-
+    public void onAddEventClick(){
+        Intent  intent = new Intent(getActivity(), CreateEventActivity.class);
+        startActivity(intent);
+    }
 
 
 
