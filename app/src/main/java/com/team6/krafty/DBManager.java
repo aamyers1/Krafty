@@ -232,4 +232,37 @@ class DBManager {
         }
     }
 
+    public JSONObject getAllEvents(String token){
+        try {
+            URL url = new URL("http://75.128.150.130:2283/api/event/view/");
+            try {
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                //extra header for authorization
+                connection.setRequestProperty ("Authorization", "token " + token);
+                StringBuilder response;
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    String line;
+                    response = new StringBuilder();
+                    while ((line = in.readLine()) != null) {
+                        response.append(line);
+                    }
+
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    return jsonObject;
+                }
+                catch(Exception i){
+                    return null;
+                }
+            }
+            catch(java.io.IOException e){
+                Log.d("CONNECTION ERROR", e.getMessage());
+            }
+        }
+        catch(MalformedURLException e){
+            Log.d("MALFORMED URL", "bad url");
+        }
+        return null;
+    }
+
 }
