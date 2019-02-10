@@ -48,6 +48,21 @@
     <string name="delete">Delete</string>
     <string name="modify">Modify</string>
     <string name="update">Update</string>
+    <string name="eventName">Event Name</string>
+    <string name="eventDesc">Description</string>
+    <string name="eventAddress">Event Address</string>
+    <string name="eventDate">Event Date</string>
+    <string name="eventTimeStart">start</string>
+    <string name="eventTimeEnd">end</string>
+    <string name="eventTo">to</string>
+    <string name="eventVendorSpots">Max vendors allowed: </string>
+    <string name="eventVendorSignedUp">Vendors signed up: </string>
+    <string name="eventVendorNumber">vendor num</string>
+    <string name="eventOutdoors">Outdoors: </string>
+    <string name="eventPower">Power: </string>
+    <string name="eventFood">Food: </string>
+    <string name="eventWifi">WiFi: </string>
+    <string name="eventTables">Tables: </string>
     <string name="events">Events</string>
 
 
