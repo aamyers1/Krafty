@@ -18,6 +18,8 @@ public class Event implements Schedulable {
             id = json.getInt("id");
             name = json.getString("name");
             wifi = json.getBoolean("wifi");
+            vendorSpots = json.getInt("vendorspots");
+            takenSpots = json.getInt("takenspots");
             power = json.getBoolean("power");
             outdoors = json.getBoolean("outdoors");
             tables = json.getBoolean("tables");
@@ -32,6 +34,12 @@ public class Event implements Schedulable {
             String temp2 = json.getString("end");
             endTime = temp2.substring(0,temp2.indexOf(" "));
             startDate = temp.substring(temp.indexOf(" ") + 1);
+            temp = json.getString("end");
+            endTime = temp.substring(0, temp.indexOf(" "));
+            endDate = temp.substring(temp.indexOf(" "));
+            description = json.getString("description");
+            imgString = json.getString("image");
+
         }
         catch(Exception e){
             Log.d("Error event parse", "Event could not be parsed from json");
