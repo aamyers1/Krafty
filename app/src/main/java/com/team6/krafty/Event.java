@@ -80,6 +80,8 @@ public class Event implements Schedulable {
         return id;
     }
 
+    public String getDescription(){return description;}
+
     public String getEndTime() { return  endTime;}
 
     public boolean getFood(){ return  food;}

@@ -3,11 +3,13 @@ package com.team6.krafty;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -45,6 +47,15 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
         ft.add(R.id.mapFrame, f);
         ft.commit();
         f.getMapAsync(this);
+        FloatingActionButton createEvent = v.findViewById(R.id.addEvent);
+        createEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity(), CreateEventActivity.class);
+                startActivity(intent);
+            }
+        });
         return v;
     }
 
@@ -58,41 +69,38 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
             // Show rationale and request permission.
         }
         flpc = LocationServices.getFusedLocationProviderClient(getActivity());
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            flpc.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    if (location != null) {
-                        LatLng lg = new LatLng(location.getLatitude(), location.getLongitude());
-                        Marker mk = mMap.addMarker(new MarkerOptions().position(lg).title("current"));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(lg));
-                    }
+        flpc.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    LatLng lg = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(lg));
                 }
-            });
-
-        }
+            }
+        });
         EventsController ec = new EventsController();
         ec.fetchEvents(getContext());
         LatLng[] allLtLg = ec.getltlng();
         String[] names = ec.getNames();
+        String[] descriptions= ec.getDescriptions();
         int[] identities = ec.getIdentities();
         for(int j = 0; j < allLtLg.length; j++){
-            Marker mk = mMap.addMarker(new MarkerOptions().position(allLtLg[j]).title(names[j]));
+            Marker mk = mMap.addMarker(new MarkerOptions().position(allLtLg[j]).title(names[j]).snippet(descriptions[j]));
             mk.setTag(identities[j]);
         }
-        mMap.setOnMarkerClickListener(new MarkerListener());
+        mMap.setOnInfoWindowClickListener(new WindowListener());
     }
 
 
-    private class MarkerListener implements GoogleMap.OnMarkerClickListener{
+    private class WindowListener implements GoogleMap.OnInfoWindowClickListener {
 
         @Override
-        public boolean onMarkerClick(Marker marker){
-            //on click take to the page of the event details!
-            String a = marker.getTag() + "";
-            return true;
+        public void onInfoWindowClick(Marker marker) {
+            int a = (Integer) marker.getTag();
+            Log.d("THE ID", a + "");
         }
     }
+
 
 
 }

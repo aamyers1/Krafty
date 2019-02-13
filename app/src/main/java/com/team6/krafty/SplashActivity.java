@@ -1,12 +1,10 @@
 package com.team6.krafty;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -40,7 +38,7 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
 
 
         //get the navView
-        NavigationView navView =  (NavigationView)findViewById(R.id.nav_view);
+        NavigationView navView = (NavigationView)findViewById(R.id.nav_view);
 
         setUpNavMenu(navView);
         //set the listener
@@ -48,7 +46,7 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
 
         //TODO:THIS WILL BE THE PROFILE PAGE WHEN COMPLETE
 
-        Fragment fragment = getProfileFragment();
+        Fragment fragment = new UpdateProfileFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
@@ -63,11 +61,8 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
         //TODO: Other pages: Schedule, Events, Profile(Which will likely just be home)
         switch(id) {
             case R.id.home:
-                fragment = getProfileFragment();
+                fragment = new UpdateProfileFragment();
                 break;
-//            case R.id.events:
-//                intent = new Intent(this, CreateEventActivity.class);
-//                break;
             case R.id.logout:
                 SessionManager.logout(this);
                 intent = new Intent(this, LoginActivity.class);
@@ -135,12 +130,4 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
-    public Fragment getProfileFragment(){
-        if(profile.getUserType() == 0 || profile.getUserType() == 1){
-            return new KrafterProfileFragment();
-        }
-        else{
-            return new KrafteeProfileFragment();
-        }
-    }
 }

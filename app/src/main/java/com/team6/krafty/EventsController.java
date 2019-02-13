@@ -18,7 +18,13 @@ public class EventsController {
 
     }
 
-
+    public String[] getDescriptions(){
+        String[] descriptions = new String[eventsList.size()];
+        for(int i = 0; i < eventsList.size(); i++){
+            descriptions[i] = eventsList.get(i).getDescription();
+        }
+        return descriptions;
+    }
     public int[] getIdentities(){
         int[] identities = new int[eventsList.size()];
         for(int i = 0; i < eventsList.size(); i++){
