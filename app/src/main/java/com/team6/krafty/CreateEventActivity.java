@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -51,23 +52,38 @@ public class CreateEventActivity  extends AppCompatActivity {
 //            }
 //        });
 
+
+
         Button btnGetStart = findViewById(R.id.btnGetStartDate);
         btnGetStart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                onBtnGetStartClick();
-            }
-        });
-        Button btnGetEnd = findViewById(R.id.btnGetEndDate);
-        btnGetEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBtnGetEndClick();
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR);
+                int mMonth = c.get(Calendar.MONTH);
+                int mDay = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dateDialog= new DatePickerDialog(v.getContext(), startDatePickerListener, mYear, mMonth, mDay);
+                dateDialog.show();
+
             }
         });
 
-//        Button btnCreate = findViewById(R.id.submit);
-//        btnCreate.setOnClickListener(new View.OnClickListener() {
+        Button btnGetEnd = findViewById(R.id.btnGetEndDate);
+        btnGetEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR);
+                int mMonth = c.get(Calendar.MONTH);
+                int mDay = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dateDialog= new DatePickerDialog(v.getContext(), endDatePickerListener, mYear, mMonth, mDay);
+                dateDialog.show();
+
+            }
+        });
+
+//        Button btnSubmit = findViewById(R.id.submit);
+//        btnSubmit.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                onSubmitClick();
@@ -75,20 +91,8 @@ public class CreateEventActivity  extends AppCompatActivity {
 //        });
     }
 
-    public void onBtnGetStartClick(){
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this);
-        datePickerDialog.show();
-//        TimePickerDialog timePickerDialog = new TimePickerDialog();
-//        timePickerDialog.show();
-    }
 
-    public void onBtnGetEndClick(){
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this);
-        datePickerDialog.show();
 
-//        TimePickerDialog timePickerDialog = new TimePickerDialog();
-//        timePickerDialog.show();
-    }
 
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
         int day = datePicker.getDayOfMonth();
@@ -143,4 +147,22 @@ public class CreateEventActivity  extends AppCompatActivity {
 
         return p1;
     }
+
+    private DatePickerDialog.OnDateSetListener startDatePickerListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            String dateYouChoosed = (monthOfYear + 1) + "/" + dayOfMonth  + "/" + year;
+            TextView tvStartDate = findViewById(R.id.tvStartDate);
+            tvStartDate.setText(dateYouChoosed );
+        }
+    };
+
+    private DatePickerDialog.OnDateSetListener endDatePickerListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            String dateYouChoosed =  (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
+            TextView tvEndDate = findViewById(R.id.tvEndDate);
+            tvEndDate.setText(dateYouChoosed );
+        }
+    };
 }
