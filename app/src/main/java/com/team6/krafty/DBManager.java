@@ -10,6 +10,7 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -139,7 +140,6 @@ class DBManager {
                     while ((line = in.readLine()) != null) {
                         response.append(line);
                     }
-                    Log.d("MATERIAL RESPONSE", response.toString());
                     return response.toString();
                 }
                 catch(Exception i){
@@ -247,7 +247,7 @@ class DBManager {
                     while ((line = in.readLine()) != null) {
                         response.append(line);
                     }
-
+                    Log.d("RESPONSE!!!!", response.toString());
                     JSONObject jsonObject = new JSONObject(response.toString());
                     return jsonObject;
                 }
@@ -263,6 +263,21 @@ class DBManager {
             Log.d("MALFORMED URL", "bad url");
         }
         return null;
+    }
+
+    public JSONObject getSpecificEvent(int id, String token){
+        HttpURLConnection connection = generatePostConnection("/api/event/viewspecific/");
+        connection.setRequestProperty ("Authorization", "token " + token);
+        String materialString = "id="+id;
+        byte[] request = materialString.getBytes();
+        String response = getResponse(connection,request);
+       try{
+           return new JSONObject(response);
+       }
+       catch(Exception e) {
+           Log.d("RESPONSE", "response: " + response);
+           return null;
+        }
     }
 
 }
