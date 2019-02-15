@@ -97,6 +97,9 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
         @Override
         public void onInfoWindowClick(Marker marker) {
             int a = (Integer) marker.getTag();
+            Intent intent = new Intent(getActivity(), ViewSpecificEvent.class);
+            intent.putExtra("ID",a);
+            startActivity(intent);
             Log.d("THE ID", a + "");
         }
     }

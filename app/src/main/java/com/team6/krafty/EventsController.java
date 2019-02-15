@@ -2,6 +2,7 @@ package com.team6.krafty;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 public class EventsController {
 
     ArrayList<Event> eventsList;
+    private static String token;
+    private boolean isDeleted;
 
     public EventsController(){
 
@@ -83,6 +86,7 @@ public class EventsController {
     }
 
     public Event getSpecificEvent(int id, Context context){
+
         DBManager dbManager = new DBManager();
         JSONObject json = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
         try{
@@ -93,6 +97,38 @@ public class EventsController {
         catch(Exception e){
             Log.d("ECNTR JSONARRAY", e.getMessage());
             return null;
+        }
+    }
+
+    public boolean deleteEvent(final int id, final Context context){
+        //first get the user token so the db knows who the material will belong to (assume exists)
+        token = SessionManager.getToken(context);
+        //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to delete material
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBManager dbManager = new DBManager();
+                isDeleted = dbManager.deleteMaterial(id, token);
+            }
+        });
+        t.start();
+        try {
+            //wait for thread to finish
+            t.join();
+            //show user Message
+            if(isDeleted){
+                Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            else{
+                Toast.makeText(context, "Delete Failure!", Toast.LENGTH_SHORT).show();
+                Log.d("DELETE MAT ERROR", "mat error" +  id);
+                return false;
+            }
+        }
+        catch(Exception e){
+            Log.d("DELETE MAT ERROR", "mat error" +  e.getMessage());
+            return false;
         }
     }
 }

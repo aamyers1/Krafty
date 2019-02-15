@@ -71,7 +71,9 @@
     <string name="zip">Zip</string>
     <string name="to">to</string>
     <string name="eventDescriptonPrompt">Let people know a little about the event!</string>
-
+    <string name="eventSchedule">Schedule</string>
+    <string name="eventUpdate">Update</string>
+    <string name="eventDelete">Delete</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

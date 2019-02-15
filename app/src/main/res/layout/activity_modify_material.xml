@@ -98,13 +98,13 @@
         app:layout_constraintTop_toBottomOf="@+id/imgMat" />
 
     <Button
-        android:id="@+id/btnUpdate"
+        android:id="@+id/btnEventUpdate"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/modify"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,15 +115,15 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
         android:backgroundTint="@android:color/holo_red_light"
         android:text="@string/delete"
         android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnUpdate" />
+        app:layout_constraintTop_toBottomOf="@+id/btnEventUpdate" />
 </android.support.constraint.ConstraintLayout>
 
 </android.support.v4.widget.NestedScrollView>

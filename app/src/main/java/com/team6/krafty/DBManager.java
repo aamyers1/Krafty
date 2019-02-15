@@ -279,5 +279,20 @@ class DBManager {
            return null;
         }
     }
+    public boolean deleteEvent(int id, String token){
+        HttpURLConnection connection = generatePostConnection("/api/event/delete/");
+        //extra header for authorization
+        connection.setRequestProperty ("Authorization", "token " + token);
+        String eventString = "id="+id;
+        byte[] request = eventString.getBytes();
+        String response = getResponse(connection,request);
+        if(response.contains("Material Deleted")){
+            return true;
+        }
+        else{
+            Log.d("DELETE ERROR", response);
+            return false;
+        }
+    }
 
 }

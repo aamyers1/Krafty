@@ -108,7 +108,7 @@
             app:layout_constraintTop_toBottomOf="@+id/etCity" />
 
         <Button
-            android:id="@+id/btnUpdate"
+            android:id="@+id/btnEventUpdate"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

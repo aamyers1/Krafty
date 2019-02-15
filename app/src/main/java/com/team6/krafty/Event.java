@@ -1,5 +1,8 @@
 package com.team6.krafty;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -9,6 +12,7 @@ public class Event implements Schedulable {
     private String creator, city, street, state, zipcode,startTime, endTime, startDate, endDate, name, imgString, description;
     private int id, vendorSpots, takenSpots;
     private double longitude, latitude;
+    private Bitmap bmp;
 
 
     public void parseJson(JSONObject json){
@@ -82,6 +86,15 @@ public class Event implements Schedulable {
 
     public String getDescription(){return description;}
 
+    public String getAddress(){
+        String str = street + "\n" + city + ", " + state + ", " + zipcode;
+        return  str;
+    }
+
+    public int getVendorSpots() { return vendorSpots; }
+
+    public int getTakenSpots() { return takenSpots; }
+
     public String getEndTime() { return  endTime;}
 
     public boolean getFood(){ return  food;}
@@ -93,4 +106,25 @@ public class Event implements Schedulable {
     public Boolean getTables() { return tables; }
 
     public Boolean getWifi() { return wifi; }
+
+    public String getImgString() {return  imgString;}
+
+    public Bitmap getBmp(){return bmp;}
+
+    private void parseBitmap(){
+        if(!this.imgString.equals("null") && !this.imgString.equals("no image") && !this.imgString.equals("") ) {
+            try{
+                byte[] encodeByte = Base64.decode(imgString.replace("<", "+"), Base64.DEFAULT);
+                bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            } catch (IllegalArgumentException e){
+
+                Log.d("MATERIAL IMAGE ERROR", "bad image base-64" +  id);
+                bmp = null;
+            }
+        }
+        else{
+            bmp = null;
+        }
+    }
+
 }

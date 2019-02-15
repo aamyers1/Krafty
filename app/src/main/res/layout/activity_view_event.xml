@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <EditText
+            <TextView
                 android:id="@+id/eventTimeStart"
                 android:layout_width="116dp"
                 android:layout_height="40dp"
@@ -37,7 +37,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventDate" />
 
-            <EditText
+            <TextView
                 android:id="@+id/eventVendors"
                 android:layout_width="52dp"
                 android:layout_height="34dp"
@@ -53,7 +53,7 @@
                 app:layout_constraintStart_toStartOf="@+id/eventVendorSpots"
                 app:layout_constraintTop_toBottomOf="@+id/eventTimeEnd" />
 
-            <EditText
+            <TextView
                 android:id="@+id/eventAddress"
                 android:layout_width="304dp"
                 android:layout_height="70dp"
@@ -69,7 +69,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventDesc" />
 
-            <EditText
+            <TextView
                 android:id="@+id/eventName"
                 android:layout_width="309dp"
                 android:layout_height="51dp"
@@ -97,7 +97,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@color/colorAccent" />
 
-            <EditText
+            <TextView
                 android:id="@+id/eventDesc"
                 android:layout_width="322dp"
                 android:layout_height="182dp"
@@ -113,7 +113,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventName" />
 
-            <EditText
+            <TextView
                 android:id="@+id/eventDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                 app:layout_constraintStart_toEndOf="@+id/eventTimeStart"
                 app:layout_constraintTop_toBottomOf="@+id/eventDate" />
 
-            <EditText
+            <TextView
                 android:id="@+id/eventTimeEnd"
                 android:layout_width="119dp"
                 android:layout_height="38dp"
@@ -171,12 +171,12 @@
 
             <Switch
                 android:id="@+id/eventOutdoors"
-                android:focusable="false"
                 android:layout_width="134dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="8dp"
+                android:focusable="false"
                 android:text="@string/eventOutdoors"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.034"
@@ -212,20 +212,17 @@
 
             <Switch
                 android:id="@+id/eventTables"
-                android:focusable="false"
                 android:layout_width="136dp"
                 android:layout_height="21dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="18dp"
+                android:focusable="false"
                 android:text="@string/eventTables"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.038"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventWiFi"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/eventWiFi" />
 
             <TextView
                 android:id="@+id/eventVendorsSignedUp"
@@ -241,8 +238,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventVendorSpots" />
 
-            <EditText
-                android:id="@+id/editText8"
+            <TextView
+                android:id="@+id/numVendorsSigned"
                 android:layout_width="53dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="160dp"
@@ -269,6 +266,62 @@
                 app:layout_constraintHorizontal_bias="0.038"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventFood" />
+
+            <Button
+                android:id="@+id/btnEventSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/eventSchedule"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.032"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventTables"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/btnEventUpdate"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:clickable="false"
+                android:text="@string/eventUpdate"
+                android:textColor="@android:color/background_light"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.201"
+                app:layout_constraintStart_toEndOf="@+id/btnEventSchedule"
+                app:layout_constraintTop_toBottomOf="@+id/eventTables"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <Button
+                android:id="@+id/btnEventDelete"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:clickable="false"
+                android:text="@string/eventDelete"
+                android:textColor="@android:color/background_light"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.826"
+                app:layout_constraintStart_toEndOf="@+id/btnEventUpdate"
+                app:layout_constraintTop_toBottomOf="@+id/eventTables"
+                app:layout_constraintVertical_bias="1.0" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

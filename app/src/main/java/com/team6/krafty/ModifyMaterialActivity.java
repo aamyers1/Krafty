@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -40,7 +39,7 @@ public class ModifyMaterialActivity extends AppCompatActivity {
         //Find the needed views, set values based on the material
         Button addQty = findViewById(R.id.Plus);
         Button minusQty = findViewById(R.id.Minus);
-        Button modify = findViewById(R.id.btnUpdate);
+        Button modify = findViewById(R.id.btnEventUpdate);
         Button delete = findViewById(R.id.btnDelete);
         EditText quantity = findViewById(R.id.etQuantity);
         quantity.setText(thisMat.getQuantity() + "");
