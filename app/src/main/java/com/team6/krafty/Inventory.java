@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 public class Inventory {
-
     //holds the inventory instance
     private static Inventory inventory = new Inventory();
     //holds a specific user's inventory of materials
