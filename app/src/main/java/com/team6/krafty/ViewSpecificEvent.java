@@ -33,7 +33,6 @@ public class ViewSpecificEvent extends AppCompatActivity{
         id = intent.getIntExtra("ID", 0);
         EventsController controller = new EventsController();
         event = controller.getSpecificEvent(id,context);
-
         //set values of Event to controls
         TextView eventName = (TextView)findViewById(R.id.eventName);
         eventName.setText(event.getTitle());
@@ -54,11 +53,10 @@ public class ViewSpecificEvent extends AppCompatActivity{
         eventTimeEnd.setText(event.getEndTime());
 
         TextView numOfVendors = (TextView)findViewById(R.id.eventVendors);
-        numOfVendors.setText(event.getVendorSpots());
+        numOfVendors.setText(String.valueOf(event.getVendorSpots()));
 
         TextView numSignedUp = (TextView)findViewById(R.id.numVendorsSigned);
-        numSignedUp.setText(event.getTakenSpots());
-
+        numSignedUp.setText(String.valueOf(event.getTakenSpots()));
         Switch eventOutdoors = (Switch)findViewById(R.id.eventOutdoors);
         if (event.getFood()) eventOutdoors.setChecked(true);
 
