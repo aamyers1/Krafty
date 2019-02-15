@@ -46,24 +46,34 @@
                             android:inputType="text"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
+                            app:layout_constraintTop_toBottomOf="@+id/imgEvent" />
 
                         <TextView
                             android:id="@+id/tvStartDate"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="32dp"
-                            android:layout_marginTop="24dp"
                             android:text="@string/noDate"
                             android:textAlignment="center"
-                            app:layout_constraintEnd_toStartOf="@+id/tvTo"
+                            app:layout_constraintEnd_toStartOf="@+id/tvDateTo"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/btnGetStartDate" />
 
                         <TextView
-                            android:id="@+id/tvTo"
-                            android:layout_width="42dp"
-                            android:layout_height="19dp"
+                            android:id="@+id/tvStartTime"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="32dp"
+                            android:text="@string/eventNoStartTime"
+                            android:textAlignment="center"
+                            app:layout_constraintEnd_toStartOf="@+id/tvEndTime"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/btnGetStartTime" />
+
+                        <TextView
+                            android:id="@+id/tvDateTo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/to"
                             android:textAlignment="center"
                             app:layout_constraintTop_toTopOf="@+id/tvStartDate"
@@ -71,30 +81,56 @@
                             app:layout_constraintStart_toStartOf="parent" />
 
                         <TextView
+                            android:id="@+id/tvEndTime"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="32dp"
+                            android:text="@string/eventNoEndTime"
+                            android:textAlignment="center"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tvStartTime"
+                            app:layout_constraintTop_toBottomOf="@+id/btnGetEndTime" />
+
+                        <TextView
                             android:id="@+id/tvEndDate"
                             android:layout_width="0dp"
-                            android:layout_height="24dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginEnd="32dp"
                             android:text="@string/noDate"
                             android:textAlignment="center"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/tvTo"
+                            app:layout_constraintStart_toEndOf="@+id/tvDateTo"
                             app:layout_constraintTop_toBottomOf="@+id/btnGetEndDate" />
+
+                        <EditText
+                            android:id="@+id/txtVendorNum"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:ems="10"
+                            android:hint="@string/eventVendorNum"
+                            android:inputType="number"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvStartTime" />
 
                         <EditText
                             android:id="@+id/txtStreet"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
                             android:layout_marginEnd="8dp"
                             android:ems="10"
-                            android:hint="Address"
+                            android:hint="@string/eventAddress"
                             android:inputType="textPostalAddress"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvStartDate" />
+                            app:layout_constraintTop_toBottomOf="@+id/txtVendorNum" />
 
 
                         <EditText
@@ -160,28 +196,47 @@
                             style="@style/Widget.AppCompat.Button.Colored"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="28dp"
-                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="24dp"
                             android:text="@string/startDate"
                             app:layout_constraintEnd_toEndOf="@+id/tvStartDate"
                             app:layout_constraintStart_toStartOf="@+id/tvStartDate"
                             app:layout_constraintTop_toBottomOf="@+id/eventName" />
 
                         <Button
+                            android:id="@+id/btnGetStartTime"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="@string/eventOpenTime"
+                            app:layout_constraintEnd_toEndOf="@+id/tvStartTime"
+                            app:layout_constraintStart_toStartOf="@+id/tvStartTime"
+                            app:layout_constraintTop_toBottomOf="@+id/tvStartDate" />
+
+                        <Button
                             android:id="@+id/btnGetEndDate"
                             style="@style/Widget.AppCompat.Button.Colored"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:text="@string/endDate"
                             app:layout_constraintEnd_toEndOf="@+id/tvEndDate"
                             app:layout_constraintStart_toStartOf="@+id/tvEndDate"
                             app:layout_constraintTop_toTopOf="@+id/btnGetStartDate" />
-                        tools:layout_editor_absoluteY="232dp" />
+
+                        <Button
+                            android:id="@+id/btnGetEndTime"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/eventCloseTime"
+                            app:layout_constraintEnd_toEndOf="@+id/tvEndTime"
+                            app:layout_constraintStart_toStartOf="@+id/tvEndTime"
+                            app:layout_constraintTop_toTopOf="@+id/btnGetStartTime" />
 
                         <ImageView
-                            android:id="@+id/imgProfile"
+                            android:id="@+id/imgEvent"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             android:layout_marginStart="8dp"
@@ -209,66 +264,120 @@
 
                         <Switch
                             android:id="@+id/swOutdoors"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="80dp"
+                            android:layout_height="0dp"
                             android:layout_marginTop="32dp"
                             android:scaleX="2"
                             android:scaleY="2"
-                            android:text="Is Outdoors?"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/txtDescription" />
 
 
+                        <TextView
+                            android:id="@+id/txtOutdoors"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:text="@string/eventSwitchOutdoors"
+                            android:textAlignment="center"
+                            app:layout_constraintBottom_toBottomOf="@id/swOutdoors"
+                            app:layout_constraintEnd_toStartOf="@id/swOutdoors" />
+
+
                         <Switch
                             android:id="@+id/swPower"
-                            android:layout_width="200dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="32dp"
                             android:scaleX="2"
                             android:scaleY="2"
-                            android:text="Power Available?"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/swOutdoors" />
 
+
+                        <TextView
+                            android:id="@+id/txtPower"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:text="@string/eventSwitchPower"
+                            android:textAlignment="center"
+                            app:layout_constraintBottom_toBottomOf="@id/swPower"
+                            app:layout_constraintEnd_toStartOf="@id/swPower" />
+
                         <Switch
                             android:id="@+id/swFood"
-                            android:layout_width="200dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="32dp"
                             android:scaleX="2"
                             android:scaleY="2"
-                            android:text="Food Available?"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/swPower" />
 
 
+                        <TextView
+                            android:id="@+id/txtFood"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:text="@string/eventSwitchFood"
+                            android:textAlignment="center"
+                            app:layout_constraintEnd_toStartOf="@id/swFood"
+                            app:layout_constraintTop_toTopOf="@id/swFood"
+                            app:layout_constraintBottom_toBottomOf="@id/swFood" />
+
+
                         <Switch
                             android:id="@+id/swWifi"
-                            android:layout_width="200dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="32dp"
                             android:scaleX="2"
                             android:scaleY="2"
-                            android:text="Wifi Available?"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/swFood" />
 
+
+                        <TextView
+                            android:id="@+id/txtWifi"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:text="@string/eventSwitchWifi"
+                            android:textAlignment="center"
+                            app:layout_constraintEnd_toStartOf="@id/swWifi"
+                            app:layout_constraintTop_toTopOf="@id/swWifi"
+                            app:layout_constraintBottom_toBottomOf="@id/swWifi" />
+
                         <Switch
                             android:id="@+id/swTables"
-                            android:layout_width="200dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="32dp"
                             android:layout_marginBottom="64dp"
                             android:scaleX="2"
                             android:scaleY="2"
-                            android:text="Tables Provided?"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/swWifi" />
+
+
+                        <TextView
+                            android:id="@+id/txtTables"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:text="@string/eventSwitchTables"
+                            android:textAlignment="center"
+                            app:layout_constraintBottom_toBottomOf="@id/swTables"
+                            app:layout_constraintEnd_toStartOf="@+id/swTables"
+                            app:layout_constraintTop_toTopOf="@+id/swTables"
+                            app:layout_constraintVertical_bias="1.0" />
 
                 </android.support.constraint.ConstraintLayout>
         </LinearLayout>
