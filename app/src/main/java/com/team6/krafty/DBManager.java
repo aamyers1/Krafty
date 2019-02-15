@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -266,19 +267,34 @@ class DBManager {
     }
 
     public JSONObject getSpecificEvent(int id, String token){
-        HttpURLConnection connection = generatePostConnection("/api/event/viewspecific/");
-        connection.setRequestProperty ("Authorization", "token " + token);
-        String materialString = "id="+id;
-        byte[] request = materialString.getBytes();
-        String response = getResponse(connection,request);
-       try{
-           return new JSONObject(response);
-       }
-       catch(Exception e) {
-           Log.d("RESPONSE", "response: " + response);
-           return null;
+        try{
+            URL url = new URL("http://75.128.150.130:2283/api/event/viewspecific/");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+        //HttpURLConnection connection = generatePostConnection("/api/event/viewspecific/");
+            connection.setRequestProperty ("Authorization", "token " + token);
+            String string = "id="+id;
+            byte[] request = string.getBytes();
+            Log.d("REQUEST", connection + string + "");
+            String response = getResponse(connection,request);
+            try{
+                Log.d("RESPONSE", "response: " + response);
+                return new JSONObject(response);
+            }
+            catch(Exception e) {
+                Log.d("RESPONSE", "response: " + response);
+                return null;
+                }
         }
+        catch (MalformedURLException e){
+            Log.d("MALFORMED URL", "bad url");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return  null;
     }
+
     public boolean deleteEvent(int id, String token){
         HttpURLConnection connection = generatePostConnection("/api/event/delete/");
         //extra header for authorization
