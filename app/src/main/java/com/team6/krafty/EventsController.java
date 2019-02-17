@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -85,13 +86,29 @@ public class EventsController {
         }
     }
 
-    public Event getSpecificEvent(int id, Context context){
-
-        DBManager dbManager = new DBManager();
-        JSONObject json = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
+    public Event getSpecificEvent(final int id, final Context context){
+        final Event event = new Event();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBManager dbManager = new DBManager();
+                JSONObject json = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
+                try {
+                    JSONArray jsonArray = json.getJSONArray("result");
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    event.parseJson(jsonObject);
+                    //JSONObject getJson = json.get("result");
+                    //event.parseJson(getJson);
+                } catch (Exception e) {
+                    Log.d("json error", json.toString());
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
         try{
-            Event event = new Event();
-            event.parseJson(json);
+            t.join();
+
             return event;
         }
         catch(Exception e){

@@ -3,6 +3,7 @@ package com.team6.krafty;
 import android.util.JsonReader;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -277,12 +278,17 @@ class DBManager {
             byte[] request = string.getBytes();
             Log.d("REQUEST", connection + string + "");
             String response = getResponse(connection,request);
-            try{
-                Log.d("RESPONSE", "response: " + response);
-                return new JSONObject(response);
+            try(BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))){
+                //String line;
+                //response = new StringBuilder();
+                //while ((line = in.readLine()) != null) {
+                  //  response.append(line);
+                //}
+                //Log.d("RESPONSE", "response: " + response);
+                return new JSONObject(response.toString());
             }
             catch(Exception e) {
-                Log.d("RESPONSE", "response: " + response);
+                Log.d("RESPONSE", "response: ");
                 return null;
                 }
         }

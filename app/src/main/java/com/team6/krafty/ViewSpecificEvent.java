@@ -57,21 +57,22 @@ public class ViewSpecificEvent extends AppCompatActivity{
 
         TextView numSignedUp = (TextView)findViewById(R.id.numVendorsSigned);
         numSignedUp.setText(String.valueOf(event.getTakenSpots()));
+       /*
         Switch eventOutdoors = (Switch)findViewById(R.id.eventOutdoors);
-        if (event.getFood()) eventOutdoors.setChecked(true);
+        if (event.getOutDoors()) eventOutdoors.setChecked(true);
 
         Switch eventPower = (Switch)findViewById(R.id.eventPower);
         if (event.getPower()) eventPower.setChecked(true);
 
-        Switch eventFood = (Switch)findViewById(R.id.eventFood);
-        if (event.getFood()) eventFood.setChecked(true);
+        //Switch eventFood = (Switch)findViewById(R.id.eventFood);
+        //if (event.getFood()) eventFood.setChecked(true);
 
         Switch eventWiFi = (Switch)findViewById(R.id.eventWiFi);
         if (event.getWifi()) eventWiFi.setChecked(true);
 
         Switch eventTables = (Switch)findViewById(R.id.eventTables);
         if (event.getTables()) eventTables.setChecked(true);
-
+        */
         ImageView materialImage = findViewById(R.id.imageView);
         if(event.getBmp()!= null){
             materialImage.setImageBitmap(event.getBmp());
@@ -96,13 +97,13 @@ public class ViewSpecificEvent extends AppCompatActivity{
         t.start();
         try{
             t.join();
-            //If a krafter, show and activate Update and delete buttons.
+            //If the event creator, show and activate Update and delete buttons.
             SharedPreferences sp = getSharedPreferences("session", Context.MODE_PRIVATE);
             SharedPreferences.Editor edit = sp.edit();
-            edit.putInt("userType", profile.getUserType());
+            edit.putString("userType", profile.getUsername());
             edit.apply();
 
-            if(profile.getUserType() == 1 || profile.getUserType() == 0) {
+            if(profile.getUsername().equals(event.getCreator())) {
                 Button btnEventUpdate = (Button)findViewById(R.id.btnEventUpdate);
                 btnEventUpdate.setVisibility(Button.VISIBLE);
                 btnEventUpdate.setClickable(true);

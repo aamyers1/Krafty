@@ -13,10 +13,11 @@ public class Event implements Schedulable {
     private int id, vendorSpots, takenSpots;
     private double longitude, latitude;
     private Bitmap bmp;
-
+//todo : reactivate the boolean getters and their switches for specific events.
 
     public void parseJson(JSONObject json){
         try {
+            Log.d("json", json.toString());
             longitude = json.getDouble("longitude");
             latitude = json.getDouble("latitude");
             id = json.getInt("id");
@@ -47,6 +48,7 @@ public class Event implements Schedulable {
         }
         catch(Exception e){
             Log.d("Error event parse", "Event could not be parsed from json");
+            e.printStackTrace();
         }
     }
 
@@ -97,15 +99,17 @@ public class Event implements Schedulable {
 
     public String getEndTime() { return  endTime;}
 
-    public boolean getFood(){ return  food;}
+    public String getCreator(){ return  getCreator();}
 
-    public boolean getOutDoors(){return outdoors;}
+    //public boolean getFood(){ return  food;}
 
-    public Boolean getPower() { return power; }
+   // public boolean getOutDoors(){return outdoors;}
 
-    public Boolean getTables() { return tables; }
+   // public Boolean getPower() { return power; }
 
-    public Boolean getWifi() { return wifi; }
+   // public Boolean getTables() { return tables; }
+
+   // public Boolean getWifi() { return wifi; }
 
     public String getImgString() {return  imgString;}
 
