@@ -12,10 +12,10 @@
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -23,8 +23,8 @@
 
             <TextView
                 android:id="@+id/eventTimeStart"
-                android:layout_width="116dp"
-                android:layout_height="40dp"
+                android:layout_width="63dp"
+                android:layout_height="19dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
@@ -39,17 +39,17 @@
 
             <TextView
                 android:id="@+id/eventVendors"
-                android:layout_width="52dp"
-                android:layout_height="34dp"
+                android:layout_width="43dp"
+                android:layout_height="24dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:hint="@string/eventVendorNumber"
                 android:inputType="number"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.455"
+                app:layout_constraintHorizontal_bias="0.435"
                 app:layout_constraintStart_toStartOf="@+id/eventVendorSpots"
                 app:layout_constraintTop_toBottomOf="@+id/eventTimeEnd" />
 
@@ -102,14 +102,13 @@
                 android:layout_width="322dp"
                 android:layout_height="182dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:hint="@string/eventDesc"
                 android:inputType="textMultiLine"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.173"
+                app:layout_constraintHorizontal_bias="0.13"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventName" />
 
@@ -128,38 +127,38 @@
 
             <TextView
                 android:id="@+id/eventTo"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="16dp"
+                android:layout_height="19dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/eventTo"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toStartOf="@+id/eventTimeEnd"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.444"
                 app:layout_constraintStart_toEndOf="@+id/eventTimeStart"
                 app:layout_constraintTop_toBottomOf="@+id/eventDate" />
 
             <TextView
                 android:id="@+id/eventTimeEnd"
-                android:layout_width="119dp"
-                android:layout_height="38dp"
+                android:layout_width="67dp"
+                android:layout_height="19dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="48dp"
                 android:ems="10"
                 android:hint="@string/eventTimeEnd"
                 android:inputType="time"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.813"
+                app:layout_constraintHorizontal_bias="0.318"
                 app:layout_constraintStart_toStartOf="@+id/eventTimeStart"
                 app:layout_constraintTop_toBottomOf="@+id/eventDate" />
 
             <TextView
                 android:id="@+id/eventVendorSpots"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="142dp"
+                android:layout_height="22dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
@@ -185,12 +184,12 @@
 
             <Switch
                 android:id="@+id/eventPower"
-                android:focusable="false"
                 android:layout_width="135dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
+                android:focusable="false"
                 android:text="@string/eventPower"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.038"
@@ -226,23 +225,24 @@
 
             <TextView
                 android:id="@+id/eventVendorsSignedUp"
-                android:focusable="false"
-                android:layout_width="135dp"
-                android:layout_height="20dp"
+                android:layout_width="144dp"
+                android:layout_height="19dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
+                android:focusable="false"
                 android:text="@string/eventVendorSignedUp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.034"
+                app:layout_constraintHorizontal_bias="0.026"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventVendorSpots" />
 
             <TextView
                 android:id="@+id/numVendorsSigned"
-                android:layout_width="53dp"
-                android:layout_height="35dp"
+                android:layout_width="43dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="160dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:hint="@string/eventVendorNumber"
@@ -255,12 +255,12 @@
 
             <Switch
                 android:id="@+id/eventWiFi"
-                android:focusable="false"
                 android:layout_width="135dp"
                 android:layout_height="17dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
+                android:focusable="false"
                 android:text="@string/eventWifi"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.038"

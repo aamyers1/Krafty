@@ -20,15 +20,9 @@ public class Event implements Schedulable {
             Log.d("json", json.toString());
             longitude = json.getDouble("longitude");
             latitude = json.getDouble("latitude");
-            id = json.getInt("id");
             name = json.getString("name");
-            wifi = json.getBoolean("wifi");
             vendorSpots = json.getInt("vendorspots");
             takenSpots = json.getInt("takenspots");
-            power = json.getBoolean("power");
-            outdoors = json.getBoolean("outdoors");
-            tables = json.getBoolean("tables");
-            food = json.getBoolean("food");
             creator = json.getString("creator");
             city = json.getString("city");
             street = json.getString("street");
@@ -43,8 +37,13 @@ public class Event implements Schedulable {
             endTime = temp.substring(0, temp.indexOf(" "));
             endDate = temp.substring(temp.indexOf(" "));
             description = json.getString("description");
-            imgString = json.getString("image");
-
+           // wifi = json.getBoolean("wifi");
+            //power = json.getBoolean("power");
+            outdoors = json.getBoolean("outdoors");
+            //tables = json.getBoolean("tables");
+            //food = json.getBoolean("food");
+            id = json.getInt("id");
+            //imgString = json.getString("image");
         }
         catch(Exception e){
             Log.d("Error event parse", "Event could not be parsed from json");
@@ -103,7 +102,7 @@ public class Event implements Schedulable {
 
     //public boolean getFood(){ return  food;}
 
-   // public boolean getOutDoors(){return outdoors;}
+    public boolean getOutDoors(){return outdoors;}
 
    // public Boolean getPower() { return power; }
 

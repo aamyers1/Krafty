@@ -44,7 +44,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
         eventAddress.setText(event.getAddress());
 
         TextView eventDate = (TextView)findViewById(R.id.eventDate);
-        eventAddress.setText(event.getDate());
+        eventDate.setText(event.getDate());
 
         TextView eventTimeStart = (TextView)findViewById(R.id.eventTimeStart);
         eventTimeStart.setText(event.getTime());
@@ -57,10 +57,10 @@ public class ViewSpecificEvent extends AppCompatActivity{
 
         TextView numSignedUp = (TextView)findViewById(R.id.numVendorsSigned);
         numSignedUp.setText(String.valueOf(event.getTakenSpots()));
-       /*
+
         Switch eventOutdoors = (Switch)findViewById(R.id.eventOutdoors);
         if (event.getOutDoors()) eventOutdoors.setChecked(true);
-
+        /*
         Switch eventPower = (Switch)findViewById(R.id.eventPower);
         if (event.getPower()) eventPower.setChecked(true);
 
@@ -103,7 +103,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
             edit.putString("userType", profile.getUsername());
             edit.apply();
 
-            if(profile.getUsername().equals(event.getCreator())) {
+           /* if(profile.getUsername().equals(event.getCreator())) {
                 Button btnEventUpdate = (Button)findViewById(R.id.btnEventUpdate);
                 btnEventUpdate.setVisibility(Button.VISIBLE);
                 btnEventUpdate.setClickable(true);
@@ -118,7 +118,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
             }
             else{
 
-            }
+            }*/
         }
         catch (Exception e){
             Log.d("ERROR", e.getMessage());
