@@ -13,7 +13,7 @@ public class Event implements Schedulable {
     private int id, vendorSpots, takenSpots;
     private double longitude, latitude;
     private Bitmap bmp;
-//todo : reactivate the boolean getters and their switches for specific events.
+
 
     public void parseJson(JSONObject json){
         try {
