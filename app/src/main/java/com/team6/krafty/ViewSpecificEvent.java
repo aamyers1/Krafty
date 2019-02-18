@@ -60,19 +60,19 @@ public class ViewSpecificEvent extends AppCompatActivity{
 
         Switch eventOutdoors = (Switch)findViewById(R.id.eventOutdoors);
         if (event.getOutDoors()) eventOutdoors.setChecked(true);
-        /*
+
         Switch eventPower = (Switch)findViewById(R.id.eventPower);
         if (event.getPower()) eventPower.setChecked(true);
 
-        //Switch eventFood = (Switch)findViewById(R.id.eventFood);
-        //if (event.getFood()) eventFood.setChecked(true);
+        Switch eventFood = (Switch)findViewById(R.id.eventFood);
+        if (event.getFood()) eventFood.setChecked(true);
 
         Switch eventWiFi = (Switch)findViewById(R.id.eventWiFi);
         if (event.getWifi()) eventWiFi.setChecked(true);
 
         Switch eventTables = (Switch)findViewById(R.id.eventTables);
         if (event.getTables()) eventTables.setChecked(true);
-        */
+
         ImageView materialImage = findViewById(R.id.imageView);
         if(event.getBmp()!= null){
             materialImage.setImageBitmap(event.getBmp());
@@ -103,7 +103,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
             edit.putString("userType", profile.getUsername());
             edit.apply();
 
-           /* if(profile.getUsername().equals(event.getCreator())) {
+           if(profile.getUsername().equals(event.getCreator())) {
                 Button btnEventUpdate = (Button)findViewById(R.id.btnEventUpdate);
                 btnEventUpdate.setVisibility(Button.VISIBLE);
                 btnEventUpdate.setClickable(true);
@@ -118,7 +118,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
             }
             else{
 
-            }*/
+            }
         }
         catch (Exception e){
             Log.d("ERROR", e.getMessage());

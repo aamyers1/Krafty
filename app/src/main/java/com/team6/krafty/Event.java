@@ -37,11 +37,11 @@ public class Event implements Schedulable {
             endTime = temp.substring(0, temp.indexOf(" "));
             endDate = temp.substring(temp.indexOf(" "));
             description = json.getString("description");
-           // wifi = json.getBoolean("wifi");
-            //power = json.getBoolean("power");
+            wifi = json.getBoolean("wifi");
+            power = json.getBoolean("power");
             outdoors = json.getBoolean("outdoors");
-            //tables = json.getBoolean("tables");
-            //food = json.getBoolean("food");
+            tables = json.getBoolean("tables");
+            food = json.getBoolean("food");
             id = json.getInt("id");
             //imgString = json.getString("image");
         }
@@ -98,17 +98,17 @@ public class Event implements Schedulable {
 
     public String getEndTime() { return  endTime;}
 
-    public String getCreator(){ return  getCreator();}
+    public String getCreator(){ return  creator;}
 
-    //public boolean getFood(){ return  food;}
+    public boolean getFood(){ return  food;}
 
     public boolean getOutDoors(){return outdoors;}
 
-   // public Boolean getPower() { return power; }
+    public Boolean getPower() { return power; }
 
-   // public Boolean getTables() { return tables; }
+    public Boolean getTables() { return tables; }
 
-   // public Boolean getWifi() { return wifi; }
+    public Boolean getWifi() { return wifi; }
 
     public String getImgString() {return  imgString;}
 
