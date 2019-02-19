@@ -16,11 +16,12 @@ public class Event implements Schedulable {
 
     Event(){}
 
-    Event(String name,String startDate,String endDate,String startTime,String endTime,
-        int vendorSpots, String street,String city,String zipcode,
+    Event(String imgString, String name,String startDate,String endDate,String startTime,String endTime,
+        int vendorSpots, String street,String city, String state, String zipcode, Double latitude, Double longitude,
         String description,Boolean outdoors,Boolean power, Boolean food,
         Boolean wifi,Boolean tables){
 
+        this.imgString = imgString;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -29,7 +30,10 @@ public class Event implements Schedulable {
         this.vendorSpots = vendorSpots;
         this.street = street;
         this.city = city;
+        this.state = state;
         this.zipcode = zipcode;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.description = description;
         this.outdoors = outdoors;
         this.power = power;

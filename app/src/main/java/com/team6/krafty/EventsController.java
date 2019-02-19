@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class EventsController {
 
@@ -103,18 +104,21 @@ public class EventsController {
                     //JSONObject getJson = json.get("result");
                     //event.parseJson(getJson);
                 } catch (Exception e) {
-                    Log.d("json error", json.toString());
+                    if (!Objects.isNull(json)){
+                        Log.d("json error", json.toString());
+                    } else {
+                        Log.d("json error", "json is null");
+                    }
                     e.printStackTrace();
                 }
             }
         });
         t.start();
-        try{
+        try {
             t.join();
 
             return event;
-        }
-        catch(Exception e){
+        } catch(Exception e) {
             Log.d("ECNTR JSONARRAY", e.getMessage());
             return null;
         }
@@ -123,12 +127,12 @@ public class EventsController {
     public boolean deleteEvent(final int id, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
         token = SessionManager.getToken(context);
-        //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to delete material
+        //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to delete event
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 DBManager dbManager = new DBManager();
-                isDeleted = dbManager.deleteMaterial(id, token);
+                isDeleted = dbManager.deleteEvent(id, token);
             }
         });
         t.start();
@@ -142,12 +146,12 @@ public class EventsController {
             }
             else{
                 Toast.makeText(context, "Delete Failure!", Toast.LENGTH_SHORT).show();
-                Log.d("DELETE MAT ERROR", "mat error" +  id);
+                Log.d("DELETE EVENT ERROR", "event delete error" +  id);
                 return false;
             }
         }
         catch(Exception e){
-            Log.d("DELETE MAT ERROR", "mat error" +  e.getMessage());
+            Log.d("DELETE EVENT ERROR", "event delete error" +  e.getMessage());
             return false;
         }
     }
