@@ -71,6 +71,12 @@ public class Event implements Schedulable {
             longitude = json.getDouble("longitude");
             latitude = json.getDouble("latitude");
             name = json.getString("name");
+            wifi = json.getBoolean("wifi");
+            power = json.getBoolean("power");
+            outdoors = json.getBoolean("outdoors");
+            tables = json.getBoolean("tables");
+            food = json.getBoolean("food");
+            id = json.getInt("id");
             vendorSpots = json.getInt("vendorspots");
             takenSpots = json.getInt("takenspots");
             creator = json.getString("creator");
@@ -87,13 +93,7 @@ public class Event implements Schedulable {
             endTime = temp.substring(0, temp.indexOf(" "));
             endDate = temp.substring(temp.indexOf(" "));
             description = json.getString("description");
-            wifi = json.getBoolean("wifi");
-            power = json.getBoolean("power");
-            outdoors = json.getBoolean("outdoors");
-            tables = json.getBoolean("tables");
-            food = json.getBoolean("food");
-            id = json.getInt("id");
-            //imgString = json.getString("image");
+            imgString = json.getString("image");
         }
         catch(Exception e){
             Log.d("Error event parse", "Event could not be parsed from json");
@@ -193,7 +193,7 @@ public class Event implements Schedulable {
                 bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             } catch (IllegalArgumentException e){
 
-                Log.d("MATERIAL IMAGE ERROR", "bad image base-64" +  id);
+                Log.d("EVENT IMAGE ERROR", "bad image base-64" +  id);
                 bmp = null;
             }
         }

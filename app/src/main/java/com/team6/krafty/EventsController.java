@@ -101,27 +101,19 @@ public class EventsController {
                     JSONArray jsonArray = json.getJSONArray("result");
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
                     event.parseJson(jsonObject);
-                    //JSONObject getJson = json.get("result");
-                    //event.parseJson(getJson);
                 } catch (Exception e) {
-                    if (!Objects.isNull(json)){
-                        Log.d("json error", json.toString());
-                    } else {
-                        Log.d("json error", "json is null");
-                    }
-                    e.printStackTrace();
+                    Log.d("JSONERROR", "SINGLE EVENT PARSE ERROR");
                 }
             }
         });
         t.start();
         try {
             t.join();
-
             return event;
         } catch(Exception e) {
             Log.d("ECNTR JSONARRAY", e.getMessage());
-            return null;
         }
+        return null;
     }
 
     public boolean deleteEvent(final int id, final Context context){

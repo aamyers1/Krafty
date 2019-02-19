@@ -10,11 +10,9 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -24,27 +22,15 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Clock;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 public class CreateEventActivity  extends AppCompatActivity {
     private String encodedImage = "";
@@ -238,15 +224,15 @@ public class CreateEventActivity  extends AppCompatActivity {
             return;
         }
         Switch sw = findViewById(R.id.swOutdoors);
-        outdoors = sw.getShowText();
+        outdoors = sw.isChecked();
         sw = findViewById(R.id.swPower);
-        power = sw.getShowText();
+        power = sw.isChecked();
         sw = findViewById(R.id.swFood);
-        food = sw.getShowText();
+        food = sw.isChecked();
         sw = findViewById(R.id.swWifi);
-        wifi = sw.getShowText();
+        wifi = sw.isChecked();
         sw = findViewById(R.id.swTables);
-        tables = sw.getShowText();
+        tables = sw.isChecked();
 
         try {
             theLatLng = getLocationFromAddress(getApplicationContext(), street + " " + city + " " + state + " " + zipcode);
@@ -315,7 +301,7 @@ public class CreateEventActivity  extends AppCompatActivity {
     private TimePickerDialog.OnTimeSetListener endTimePickerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hour, int minute) {
-            String timeYouChose =  (hour + 1) + ":" + minute;
+            String timeYouChose =  (hour) + ":" + minute;
             SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
             SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
             Date _24HourDt = null;
@@ -333,7 +319,7 @@ public class CreateEventActivity  extends AppCompatActivity {
     private TimePickerDialog.OnTimeSetListener startTimePickerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hour, int minute) {
-            String timeYouChose =  (hour + 1) + ":" + minute;
+            String timeYouChose =  (hour) + ":" + minute;
             SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
             SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
             Date _24HourDt = null;

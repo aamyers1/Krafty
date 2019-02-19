@@ -247,7 +247,6 @@ class DBManager {
                     while ((line = in.readLine()) != null) {
                         response.append(line);
                     }
-                    Log.d("RESPONSE!!!!", response.toString());
                     JSONObject jsonObject = new JSONObject(response.toString());
                     return jsonObject;
                 }
@@ -266,37 +265,17 @@ class DBManager {
     }
 
     public JSONObject getSpecificEvent(int id, String token){
-        try{
-            URL url = new URL("http://75.128.150.130:2283/api/event/viewspecific/");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-        //HttpURLConnection connection = generatePostConnection("/api/event/viewspecific/");
-            connection.setRequestProperty ("Authorization", "token " + token);
+            HttpURLConnection connection = generatePostConnection("/api/event/viewspecific/");
             String string = "id="+id;
             byte[] request = string.getBytes();
-            Log.d("REQUEST", connection + string + "");
-            String response = getResponse(connection,request);
-            try(BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))){
-                //String line;
-                //response = new StringBuilder();
-                //while ((line = in.readLine()) != null) {
-                  //  response.append(line);
-                //}
-                //Log.d("RESPONSE", "response: " + response);
-                return new JSONObject(response.toString());
+            String response = getResponse(connection, request);
+            try {
+                return new JSONObject(response);
             }
-            catch(Exception e) {
-                Log.d("RESPONSE", "response: ");
+            catch(Exception e){
+                Log.d("SPECEVENT", "Invalid response" + e.getMessage());
                 return null;
-                }
-        }
-        catch (MalformedURLException e){
-            Log.d("MALFORMED URL", "bad url");
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return  null;
+            }
     }
     public boolean createEvent(Event event, String token){
         HttpURLConnection connection = generatePostConnection("/api/event/create/");
@@ -312,7 +291,6 @@ class DBManager {
         catch(Exception e){
             Log.d("EVENT RESPONSE", response);
             Log.d("EVENT ID ERROR", e.getMessage());
-            Log.d("MESSAGE EVENT", response);
         }
         if(response.toLowerCase().contains("event created")){
             return true;
@@ -329,7 +307,7 @@ class DBManager {
         String eventString = "id="+id;
         byte[] request = eventString.getBytes();
         String response = getResponse(connection,request);
-        if(response.contains("Material Deleted")){
+        if(response.contains("Deleted")){
             return true;
         }
         else{

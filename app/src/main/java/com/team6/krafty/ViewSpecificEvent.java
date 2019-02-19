@@ -8,12 +8,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -24,7 +20,6 @@ public class ViewSpecificEvent extends AppCompatActivity{
     private int id;
     private Context context = this;
     private Event event;
-    private  User profile;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,7 +101,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
         public void onClick(View view) {
             new AlertDialog.Builder(ViewSpecificEvent.this)
                     .setTitle("Delete Confirmation")
-                    .setMessage("Do you really want to delete this material?")
+                    .setMessage("Do you really want to delete this event?")
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
