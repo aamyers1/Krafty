@@ -46,6 +46,7 @@ public class SessionManager {
             if(token != null && !token.equals("") && !token.contains("error")){
                 SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit = sp.edit();
+                edit.putString("username", username);
                 edit.putString("token", token);
                 edit.apply();
                 return true;

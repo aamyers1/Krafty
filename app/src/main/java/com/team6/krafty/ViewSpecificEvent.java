@@ -33,6 +33,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
         id = intent.getIntExtra("ID", 0);
         EventsController controller = new EventsController();
         event = controller.getSpecificEvent(id,context);
+
         //set values of Event to controls
         TextView eventName = (TextView)findViewById(R.id.eventName);
         eventName.setText(event.getTitle());
@@ -44,13 +45,10 @@ public class ViewSpecificEvent extends AppCompatActivity{
         eventAddress.setText(event.getAddress());
 
         TextView eventDate = (TextView)findViewById(R.id.eventDate);
-        eventDate.setText(event.getDate());
+        eventDate.setText(event.getDate() + " to " + event.getEndDate());
 
         TextView eventTimeStart = (TextView)findViewById(R.id.eventTimeStart);
-        eventTimeStart.setText(event.getTime());
-
-        TextView eventTimeEnd = (TextView)findViewById(R.id.eventTimeEnd);
-        eventTimeEnd.setText(event.getEndTime());
+        eventTimeStart.setText(event.getTime() + " to " + event.getEndTime());
 
         TextView numOfVendors = (TextView)findViewById(R.id.eventVendors);
         numOfVendors.setText(String.valueOf(event.getVendorSpots()));
@@ -84,26 +82,11 @@ public class ViewSpecificEvent extends AppCompatActivity{
     }
 
     private void setButtons(){
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("session", Context.MODE_PRIVATE);
+        String username = sp.getString("username", "test");
 
-        final DBManager dbManager = new DBManager();
-        final String token = SessionManager.getToken(this);
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                profile = new User();
-                profile.parseJson(dbManager.getUser(token, ""));
-            }
-        });
-        t.start();
-        try{
-            t.join();
-            //If the event creator, show and activate Update and delete buttons.
-            SharedPreferences sp = getSharedPreferences("session", Context.MODE_PRIVATE);
-            SharedPreferences.Editor edit = sp.edit();
-            edit.putString("userType", profile.getUsername());
-            edit.apply();
 
-           if(profile.getUsername().equals(event.getCreator())) {
+           if(username.equals(event.getCreator())) {
                 Button btnEventUpdate = (Button)findViewById(R.id.btnEventUpdate);
                 btnEventUpdate.setVisibility(Button.VISIBLE);
                 btnEventUpdate.setClickable(true);
@@ -114,15 +97,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
                 btnEventDelete.setOnClickListener(new onDeleteClick());
                 //Todo: Update button listener
                 //btnEventUpdate.setOnClickListener(new onUpdateClick);
-
             }
-            else{
-
-            }
-        }
-        catch (Exception e){
-            Log.d("ERROR", e.getMessage());
-        }
     }
 
     private class onDeleteClick implements View.OnClickListener {
@@ -137,16 +112,13 @@ public class ViewSpecificEvent extends AppCompatActivity{
                         public void onClick(DialogInterface dialog, int whichButton) {
                             EventsController ec = new EventsController();
                             if (ec.deleteEvent(id, getApplicationContext())) {
-                                //Inventory.removeMaterial(matId);
-                                //cardAdapter.resetData();
-                                //InventoryFragment.nullifyAdapter();
                                 finish();
                             }
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            Toast.makeText(getApplicationContext(), "Material not deleted.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Event not deleted.", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .show();

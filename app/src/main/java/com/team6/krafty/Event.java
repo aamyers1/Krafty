@@ -110,6 +110,8 @@ public class Event implements Schedulable {
 
     public Boolean getWifi() { return wifi; }
 
+    public String getEndDate(){return endDate;}
+
     public String getImgString() {return  imgString;}
 
     public Bitmap getBmp(){return bmp;}

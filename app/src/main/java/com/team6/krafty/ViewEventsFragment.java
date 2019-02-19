@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -60,13 +62,13 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-        } else {
-            // Show rationale and request permission.
         }
         flpc = LocationServices.getFusedLocationProviderClient(getActivity());
         flpc.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
@@ -74,20 +76,12 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
             public void onSuccess(Location location) {
                 if (location != null) {
                     LatLng lg = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(lg));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lg,10));
                 }
             }
         });
-        EventsController ec = new EventsController();
-        ec.fetchEvents(getContext());
-        LatLng[] allLtLg = ec.getltlng();
-        String[] names = ec.getNames();
-        String[] descriptions= ec.getDescriptions();
-        int[] identities = ec.getIdentities();
-        for(int j = 0; j < allLtLg.length; j++){
-            Marker mk = mMap.addMarker(new MarkerOptions().position(allLtLg[j]).title(names[j]).snippet(descriptions[j]));
-            mk.setTag(identities[j]);
-        }
+        AsyncEventGetter aeg = new AsyncEventGetter();
+        aeg.doInBackground();
         mMap.setOnInfoWindowClickListener(new WindowListener());
     }
 
@@ -100,10 +94,25 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
             Intent intent = new Intent(getActivity(), ViewSpecificEvent.class);
             intent.putExtra("ID",a);
             startActivity(intent);
-            Log.d("THE ID", a + "");
         }
     }
 
+    private class AsyncEventGetter extends AsyncTask<Void, Void, Void>{
 
+        @Override
+        public Void doInBackground(Void...args){
+            EventsController ec = new EventsController();
+            ec.fetchEvents(getContext());
+            LatLng[] allLtLg = ec.getltlng();
+            String[] names = ec.getNames();
+            String[] descriptions= ec.getDescriptions();
+            int[] identities = ec.getIdentities();
+            for(int j = 0; j < allLtLg.length; j++){
+                Marker mk = mMap.addMarker(new MarkerOptions().position(allLtLg[j]).title(names[j]).snippet(descriptions[j]));
+                mk.setTag(identities[j]);
+            }
+            return null;
+        }
+    }
 
 }
