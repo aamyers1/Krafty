@@ -8,12 +8,58 @@ import android.util.Log;
 import org.json.JSONObject;
 
 public class Event implements Schedulable {
-    private Boolean power, wifi, outdoors,tables,food;
-    private String creator, city, street, state, zipcode,startTime, endTime, startDate, endDate, name, imgString, description;
+    private Boolean power, wifi, outdoors, tables, food;
+    private String creator, city, street, state, zipcode, startTime, endTime, startDate, endDate, name, imgString, description;
     private int id, vendorSpots, takenSpots;
     private double longitude, latitude;
     private Bitmap bmp;
 
+    Event(){}
+
+    Event(String name,String startDate,String endDate,String startTime,String endTime,
+        int vendorSpots, String street,String city,String zipcode,
+        String description,Boolean outdoors,Boolean power, Boolean food,
+        Boolean wifi,Boolean tables){
+
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.vendorSpots = vendorSpots;
+        this.street = street;
+        this.city = city;
+        this.zipcode = zipcode;
+        this.description = description;
+        this.outdoors = outdoors;
+        this.power = power;
+        this.food = food;
+        this.wifi = wifi;
+        this.tables = tables;
+        this.takenSpots = 0;
+    }
+
+    //creates a simple json string. The default json generator does not work properly with our API.
+    public String createJson() {
+        String start = getStartTime() + " " + getStartDate();
+        String end = getEndTime()+ " " + getEndDate();
+
+        String outdoors = Boolean.toString(getOutDoors()).substring(0, 1).toUpperCase() + Boolean.toString(getOutDoors()).substring(1);
+        String power = Boolean.toString(getPower()).substring(0, 1).toUpperCase() + Boolean.toString(getPower()).substring(1);
+        String food = Boolean.toString(getFood()).substring(0, 1).toUpperCase() + Boolean.toString(getFood()).substring(1);
+        String wifi = Boolean.toString(getWifi()).substring(0, 1).toUpperCase() + Boolean.toString(getWifi()).substring(1);
+        String tables = Boolean.toString(getTables()).substring(0, 1).toUpperCase() + Boolean.toString(getTables()).substring(1);
+
+
+        return "id="+getID() + "&creator=" + getCreator()+ "&name=" + getName() + "&start=" + start + "&end=" + end +
+                "&street=" + getStreet() + "&city=" + getCity() + "&state=" + getState() + "&zipcode=" + getZipCode() +
+                "&description=" +getDescription() + "&vendorspots=" + getVendorSpots()+ "&outdoors=" + outdoors+
+                "&power=" + power+ "&food=" +food+ "&wifi=" + wifi + "&tables=" +tables +
+                "&image=" +getImgString()+ "&takenspots=" + getTakenSpots() + "&longitude=" +getLongitude()+
+                "&Takenspots="+getTakenSpots()+"&latitude=" +getLatitude()+  "&startTime=" +getStartTime()+
+                "&endTime=" + "&startDate=" +getStartDate()+ "&endDate=" + "&bmp=" +getBmp();
+    }
+//todo : reactivate the boolean getters and their switches for specific events.
 
     public void parseJson(JSONObject json){
         try {
@@ -52,6 +98,23 @@ public class Event implements Schedulable {
     }
 
 
+
+    public void setID(int toID) {
+        id = toID;
+    }
+
+    public String getCreator() { return creator; }
+
+    public String getName() { return name; }
+
+    public String getStreet() { return street; }
+
+    public String getState() { return state; }
+
+    public String getCity(){ return city; }
+
+    public String getZipCode() { return zipcode; }
+
     public double getLongitude(){
         return longitude;
     }
@@ -59,6 +122,18 @@ public class Event implements Schedulable {
     public double getLatitude(){
         return latitude;
     }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public String getStartTime() { return startTime; }
+
+    public String getEndTime() { return endTime; }
 
     @Override
     public String getDate() {
@@ -70,22 +145,19 @@ public class Event implements Schedulable {
         return startTime;
     }
 
-    @Override
     public String getTitle() {
         return name;
     }
 
-    @Override
     public int getType() {
         return 1;
     }
 
-    @Override
     public int getID() {
         return id;
     }
 
-    public String getDescription(){return description;}
+    public String getDescription(){ return description; }
 
     public String getAddress(){
         String str = street + "\n" + city + ", " + state + ", " + zipcode;
@@ -95,10 +167,6 @@ public class Event implements Schedulable {
     public int getVendorSpots() { return vendorSpots; }
 
     public int getTakenSpots() { return takenSpots; }
-
-    public String getEndTime() { return  endTime;}
-
-    public String getCreator(){ return  creator;}
 
     public boolean getFood(){ return  food;}
 
@@ -110,9 +178,9 @@ public class Event implements Schedulable {
 
     public Boolean getWifi() { return wifi; }
 
-    public String getImgString() {return  imgString;}
+    public String getImgString() { return imgString; }
 
-    public Bitmap getBmp(){return bmp;}
+    public Bitmap getBmp() { return bmp; }
 
     private void parseBitmap(){
         if(!this.imgString.equals("null") && !this.imgString.equals("no image") && !this.imgString.equals("") ) {
@@ -129,5 +197,4 @@ public class Event implements Schedulable {
             bmp = null;
         }
     }
-
 }

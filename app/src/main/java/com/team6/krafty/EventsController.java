@@ -17,6 +17,7 @@ public class EventsController {
     ArrayList<Event> eventsList;
     private static String token;
     private boolean isDeleted;
+    private boolean isCreated;
 
     public EventsController(){
 
@@ -29,6 +30,7 @@ public class EventsController {
         }
         return descriptions;
     }
+
     public int[] getIdentities(){
         int[] identities = new int[eventsList.size()];
         for(int i = 0; i < eventsList.size(); i++){
@@ -36,6 +38,7 @@ public class EventsController {
         }
         return identities;
     }
+
     public LatLng[] getltlng(){
         LatLng[] ltLng = new LatLng[eventsList.size()];
         for(int i = 0; i < eventsList.size(); i++){
@@ -145,6 +148,38 @@ public class EventsController {
         }
         catch(Exception e){
             Log.d("DELETE MAT ERROR", "mat error" +  e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean createEvent(final Event event, final Context context){
+        //first get the user token so the db knows who the material will belong to (assume exists)
+        token = SessionManager.getToken(context);
+        //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to delete material
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBManager dbManager = new DBManager();
+                isCreated = dbManager.createEvent(event, token);
+            }
+        });
+        t.start();
+        try {
+            //wait for thread to finish
+            t.join();
+            //show user Message
+            if(isCreated){
+                Toast.makeText(context, "Create Success!", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            else{
+                Toast.makeText(context, "Create Failure!", Toast.LENGTH_SHORT).show();
+                Log.d("CREATE EVENT ERROR", "event error" +  event.getID());
+                return false;
+            }
+        }
+        catch(Exception e){
+            Log.d("CREATE EVENT ERROR", "event error" +  e.getMessage());
             return false;
         }
     }

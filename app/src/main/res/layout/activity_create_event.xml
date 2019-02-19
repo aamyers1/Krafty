@@ -76,9 +76,9 @@
                             android:layout_height="wrap_content"
                             android:text="@string/to"
                             android:textAlignment="center"
-                            app:layout_constraintTop_toTopOf="@+id/tvStartDate"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/tvStartDate" />
 
                         <TextView
                             android:id="@+id/tvEndTime"
@@ -282,7 +282,8 @@
                             android:text="@string/eventSwitchOutdoors"
                             android:textAlignment="center"
                             app:layout_constraintBottom_toBottomOf="@id/swOutdoors"
-                            app:layout_constraintEnd_toStartOf="@id/swOutdoors" />
+                            app:layout_constraintEnd_toStartOf="@id/swOutdoors"
+                            app:layout_constraintTop_toTopOf="@+id/swOutdoors" />
 
 
                         <Switch
@@ -305,7 +306,8 @@
                             android:text="@string/eventSwitchPower"
                             android:textAlignment="center"
                             app:layout_constraintBottom_toBottomOf="@id/swPower"
-                            app:layout_constraintEnd_toStartOf="@id/swPower" />
+                            app:layout_constraintEnd_toStartOf="@id/swPower"
+                            app:layout_constraintTop_toTopOf="@+id/swPower" />
 
                         <Switch
                             android:id="@+id/swFood"
@@ -326,9 +328,9 @@
                             android:layout_marginEnd="24dp"
                             android:text="@string/eventSwitchFood"
                             android:textAlignment="center"
+                            app:layout_constraintBottom_toBottomOf="@id/swFood"
                             app:layout_constraintEnd_toStartOf="@id/swFood"
-                            app:layout_constraintTop_toTopOf="@id/swFood"
-                            app:layout_constraintBottom_toBottomOf="@id/swFood" />
+                            app:layout_constraintTop_toTopOf="@id/swFood" />
 
 
                         <Switch
@@ -350,9 +352,9 @@
                             android:layout_marginEnd="24dp"
                             android:text="@string/eventSwitchWifi"
                             android:textAlignment="center"
+                            app:layout_constraintBottom_toBottomOf="@id/swWifi"
                             app:layout_constraintEnd_toStartOf="@id/swWifi"
-                            app:layout_constraintTop_toTopOf="@id/swWifi"
-                            app:layout_constraintBottom_toBottomOf="@id/swWifi" />
+                            app:layout_constraintTop_toTopOf="@id/swWifi" />
 
                         <Switch
                             android:id="@+id/swTables"
