@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import javax.net.ssl.HttpsURLConnection;
 
 class DBManager {
+
     //TODO: need to check the network connectivity before we try to connect to the api!
     //My idea: force dbmanager as singleton, when getInstance is called, do a check. force context pass
     //I.e. public DBManager getInstance(Context context){ try to get the network connection, if not show message}
@@ -286,18 +287,15 @@ class DBManager {
         String response = getResponse(connection,request);
         try {
             JSONObject json = new JSONObject(response);
-            event.setID(json.getInt("result"));
+            event.setID(json.getJSONArray("result").getJSONObject(0).getInt("id"));
         }
         catch(Exception e){
             Log.d("EVENT RESPONSE", response);
-            Log.d("EVENT ID ERROR", e.getMessage());
         }
         if(response.toLowerCase().contains("event created")){
             return true;
         }
-        else{
-            return false;
-        }
+        return false;
     }
 
     public boolean deleteEvent(int id, String token){

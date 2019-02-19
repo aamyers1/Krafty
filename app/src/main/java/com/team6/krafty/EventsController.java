@@ -1,6 +1,9 @@
 package com.team6.krafty;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -82,7 +86,9 @@ public class EventsController {
             for(int i = 0; i < jsonArr.length(); i ++){
                 Event newEvent = new Event();
                 newEvent.parseJson(jsonArr.getJSONObject(i));
+                //TODO: FILTER OUT EVENTS WHICH HAVE PASSED
                 eventsList.add(newEvent);
+
             }
         }
         catch(Exception e){
@@ -178,5 +184,19 @@ public class EventsController {
             Log.d("CREATE EVENT ERROR", "event error" +  e.getMessage());
             return false;
         }
+    }
+
+    public Bitmap parseEventImage(String encodedImage){
+        Bitmap bmp = null;
+        if(!encodedImage.equals("null") && !encodedImage.equals("no image") && !encodedImage.equals("") ) {
+            try{
+                byte[] encodeByte = Base64.decode(encodedImage.replace("<", "+"), Base64.DEFAULT);
+                bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            } catch (IllegalArgumentException e){
+
+                Log.d("EVENT IMAGE ERROR", "bad image base-64");
+            }
+        }
+        return bmp;
     }
 }

@@ -1,18 +1,14 @@
 package com.team6.krafty;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONObject;
 
 public class Event implements Schedulable {
     private Boolean power, wifi, outdoors, tables, food;
-    private String creator, city, street, state, zipcode, startTime, endTime, startDate, endDate, name, imgString, description;
+    private String creator, city, street, state, zipcode, startTime, endTime, startDate, endDate, name, imgString = "", description;
     private int id, vendorSpots, takenSpots;
     private double longitude, latitude;
-    private Bitmap bmp;
 
     Event(){}
 
@@ -57,11 +53,10 @@ public class Event implements Schedulable {
 
         return "id="+getID() + "&creator=" + getCreator()+ "&name=" + getName() + "&start=" + start + "&end=" + end +
                 "&street=" + getStreet() + "&city=" + getCity() + "&state=" + getState() + "&zipcode=" + getZipCode() +
-                "&description=" +getDescription() + "&vendorspots=" + getVendorSpots()+ "&outdoors=" + outdoors+
+                "&description=" +getDescription() + "&vendorspots=" + getVendorSpots()+ "&outdoors=" + outdoors + "&takenspots=" + getTakenSpots() + "&longitude=" +getLongitude()+
+                "&Takenspots="+getTakenSpots()+"&latitude=" +getLatitude() +
                 "&power=" + power+ "&food=" +food+ "&wifi=" + wifi + "&tables=" +tables +
-                "&image=" +getImgString()+ "&takenspots=" + getTakenSpots() + "&longitude=" +getLongitude()+
-                "&Takenspots="+getTakenSpots()+"&latitude=" +getLatitude()+  "&startTime=" +getStartTime()+
-                "&endTime=" + "&startDate=" +getStartDate()+ "&endDate=" + "&bmp=" +getBmp();
+                "&image=" + imgString;
     }
 //todo : reactivate the boolean getters and their switches for specific events.
 
@@ -184,21 +179,4 @@ public class Event implements Schedulable {
 
     public String getImgString() { return imgString; }
 
-    public Bitmap getBmp() { return bmp; }
-
-    private void parseBitmap(){
-        if(!this.imgString.equals("null") && !this.imgString.equals("no image") && !this.imgString.equals("") ) {
-            try{
-                byte[] encodeByte = Base64.decode(imgString.replace("<", "+"), Base64.DEFAULT);
-                bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            } catch (IllegalArgumentException e){
-
-                Log.d("EVENT IMAGE ERROR", "bad image base-64" +  id);
-                bmp = null;
-            }
-        }
-        else{
-            bmp = null;
-        }
-    }
 }

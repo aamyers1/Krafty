@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class CreateEventActivity  extends AppCompatActivity {
     private String encodedImage = "";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +116,8 @@ public class CreateEventActivity  extends AppCompatActivity {
         });
     }
 
+
+    //TODO: PLEASE DEAR GOD BREAK UP SOME OF THIS
     //handles submit click
     public void onSubmitClick(){
         //essentially just gathers strings from various editTexts

@@ -39,7 +39,7 @@ public class ModifyMaterialActivity extends AppCompatActivity {
         //Find the needed views, set values based on the material
         Button addQty = findViewById(R.id.Plus);
         Button minusQty = findViewById(R.id.Minus);
-        Button modify = findViewById(R.id.btnEventUpdate);
+        Button modify = findViewById(R.id.btnSubmit);
         Button delete = findViewById(R.id.btnDelete);
         EditText quantity = findViewById(R.id.etQuantity);
         quantity.setText(thisMat.getQuantity() + "");
@@ -186,7 +186,8 @@ public class ModifyMaterialActivity extends AppCompatActivity {
             Bitmap imageAsBitmap = null;
             try {
                 imageAsBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-            } catch (IOException e) { //for file not found
+            }
+            catch (IOException e) { //for file not found
                 e.printStackTrace();
             }
             ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();

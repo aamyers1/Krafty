@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
         setContentView(R.layout.activity_view_event);
         Intent intent = getIntent();
         id = intent.getIntExtra("ID", 0);
-        EventsController controller = new EventsController();
+        final EventsController controller = new EventsController();
         event = controller.getSpecificEvent(id,context);
 
         //set values of Event to controls
@@ -66,13 +67,21 @@ public class ViewSpecificEvent extends AppCompatActivity{
         Switch eventTables = (Switch)findViewById(R.id.eventTables);
         if (event.getTables()) eventTables.setChecked(true);
 
-        ImageView materialImage = findViewById(R.id.imageView);
-        if(event.getBmp()!= null){
-            materialImage.setImageBitmap(event.getBmp());
-        }
-        else{
-            materialImage.setBackgroundColor(Color.rgb(188,225,232));
-        }
+        final ImageView materialImage = findViewById(R.id.imageView);
+        final Bitmap bmp;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap bmp = controller.parseEventImage(event.getImgString());
+                if(bmp!= null){
+                    materialImage.setImageBitmap(bmp);
+                }
+                else{
+                    materialImage.setBackgroundColor(Color.rgb(188,225,232));
+                }
+            }
+        });
+        t.start();
         setButtons();
     }
 
@@ -82,7 +91,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
 
 
            if(username.equals(event.getCreator())) {
-                Button btnEventUpdate = (Button)findViewById(R.id.btnEventUpdate);
+                Button btnEventUpdate = (Button)findViewById(R.id.btnSubmit);
                 btnEventUpdate.setVisibility(Button.VISIBLE);
                 btnEventUpdate.setClickable(true);
                 Button btnEventDelete = (Button)findViewById(R.id.btnEventDelete);
