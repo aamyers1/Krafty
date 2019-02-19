@@ -14,21 +14,26 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.security.InvalidParameterException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -96,8 +101,7 @@ public class CreateEventActivity  extends AppCompatActivity {
                 final Calendar c = Calendar.getInstance();
                 int mHour = c.get(Calendar.HOUR_OF_DAY);
                 int mMinute = c.get(Calendar.MINUTE);
-                boolean is24Hour = false;
-                TimePickerDialog timeEndDialog= new TimePickerDialog(v.getContext(), endTimePickerListener, mHour, mMinute, is24Hour);
+                TimePickerDialog timeEndDialog= new TimePickerDialog(v.getContext(), endTimePickerListener, mHour, mMinute, false);
                 timeEndDialog.show();
 
             }
@@ -110,43 +114,160 @@ public class CreateEventActivity  extends AppCompatActivity {
                 final Calendar c = Calendar.getInstance();
                 int mHour = c.get(Calendar.HOUR_OF_DAY);
                 int mMinute = c.get(Calendar.MINUTE);
-                boolean is24Hour = false;
-                TimePickerDialog timeStartDialog= new TimePickerDialog(v.getContext(), startTimePickerListener, mHour, mMinute, is24Hour);
+                TimePickerDialog timeStartDialog= new TimePickerDialog(v.getContext(), startTimePickerListener, mHour, mMinute, false);
                 timeStartDialog.show();
 
             }
         });
 
-//        Button btnSubmit = findViewById(R.id.submit);
-//        btnSubmit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onSubmitClick();
-//            }
-//        });
+        Button btnSubmit = findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSubmitClick();
+            }
+        });
     }
-
-
-
 
     //handles submit click
     public void onSubmitClick(){
-//        //essentially just gathers strings from various editTexts
-//        String matName, matPrice, matQuantity, matLocation;
-//        EditText et = findViewById(R.id.materialName);
-//        matName = et.getText().toString();
-//        et = findViewById(R.id.price);
-//        matPrice = et.getText().toString();
-//        et = findViewById(R.id.quantity);
-//        matQuantity = et.getText().toString();
-//        et = findViewById(R.id.location);
-//        matLocation = et.getText().toString();
-//        MaterialController mc = new MaterialController();
-//        if(mc.addMaterial(matName, encodedImage, matQuantity, matPrice, matLocation,this)){
-//            cardAdapter.resetData();
-//            InventoryFragment.nullifyAdapter();
-//            finish();
-//        }
+        //essentially just gathers strings from various editTexts
+
+        Boolean power = false, wifi= false, outdoors= false, tables= false, food= false;
+        String creator, city, street, state, zipcode, startTime, endTime, startDate,
+                endDate, name, description;
+        int vendorSpots = 0;
+        double longitude = 0, latitude = 0;
+        Bitmap bmp = null;
+        LatLng theLatLng = null;
+        EditText et = null;
+
+        et = findViewById(R.id.eventName);
+        name = et.getText().toString();
+        if (name.length() <= 0 ){
+            Toast.makeText(getApplicationContext(), "Event Name is required", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (name.length() > 256){
+            Toast.makeText(getApplicationContext(), "Event Name too long", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        TextView tv = findViewById(R.id.tvStartDate);
+        startDate = tv.getText().toString();
+        if (startDate.equals("No date selected") ){
+            Toast.makeText(getApplicationContext(), "Start date is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        tv = findViewById(R.id.tvEndDate);
+        endDate = tv.getText().toString();
+        if (endDate.equals("No date selected")){
+            //TODO check endDate is after startDate
+            Toast.makeText(getApplicationContext(), "End date is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        tv = findViewById(R.id.tvStartTime);
+        startTime = tv.getText().toString();
+        if (startTime.equals("No opening time" )){
+            Toast.makeText(getApplicationContext(), "Opening time is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        tv = findViewById(R.id.tvEndTime);
+        endTime = tv.getText().toString();
+        if (endTime.equals( "No closing time" )){
+            //TODO check endTime is after startTime
+            Toast.makeText(getApplicationContext(), "Closing time is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        et = findViewById(R.id.txtVendorNum);
+        try {
+            vendorSpots = Integer.parseInt(et.getText().toString());
+            if (vendorSpots <= 0) throw new InvalidParameterException();
+        } catch (InvalidParameterException e){
+            Toast.makeText(getApplicationContext(), "Capacity of Krafters too low", Toast.LENGTH_SHORT).show();
+            return;
+        } catch (NumberFormatException e) {
+            if (et.getText().toString().length() > 0) {
+                Toast.makeText(getApplicationContext(), "Capacity of Krafters too high", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Capacity of Krafters required", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        } catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Capacity of Krafters error", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        et = findViewById(R.id.txtStreet);
+        street = et.getText().toString();
+        if (street.length() > 64){
+            Toast.makeText(getApplicationContext(), "Street address too long", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (street.length() <= 0){
+            Toast.makeText(getApplicationContext(), "Street address required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        et = findViewById(R.id.txtCity);
+        city = et.getText().toString();
+        if (city.length() > 64){
+            Toast.makeText(getApplicationContext(), "City too long", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (city.length() <= 0) {
+            Toast.makeText(getApplicationContext(), "City required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        et = findViewById(R.id.txtState);
+        state = et.getText().toString();
+        if (state.length() > 2){
+            Toast.makeText(getApplicationContext(), "State too long", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (state.length() <= 0){
+            Toast.makeText(getApplicationContext(), "State required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        et = findViewById(R.id.txtZip);
+        zipcode = et.getText().toString();
+        if (zipcode.length() > 10){
+            Toast.makeText(getApplicationContext(), "Zip Code too long", Toast.LENGTH_SHORT).show();
+            return;
+        } else if(zipcode.length() <= 0){
+            Toast.makeText(getApplicationContext(), "Zip Code required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        et = findViewById(R.id.txtDescription);
+        description = et.getText().toString();
+        if (description.length() > 256){
+            Toast.makeText(getApplicationContext(), "Description too long", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Switch sw = findViewById(R.id.swOutdoors);
+        outdoors = sw.getShowText();
+        sw = findViewById(R.id.swPower);
+        power = sw.getShowText();
+        sw = findViewById(R.id.swFood);
+        food = sw.getShowText();
+        sw = findViewById(R.id.swWifi);
+        wifi = sw.getShowText();
+        sw = findViewById(R.id.swTables);
+        tables = sw.getShowText();
+
+        try {
+            theLatLng = getLocationFromAddress(getApplicationContext(), street + " " + city + " " + state + " " + zipcode);
+
+            if (theLatLng == null) {
+                throw new Exception();
+            } else {
+                longitude = theLatLng.longitude;
+                latitude = theLatLng.latitude;
+            }
+        } catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Unable to validate address", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Event event = new Event(encodedImage, name,startDate,endDate,startTime,endTime,vendorSpots,street,city,state,zipcode,latitude,longitude,description,outdoors,power,food,wifi,tables);
+        EventsController ec = new EventsController();
+        if(ec.createEvent(event,getApplicationContext())){
+            cardAdapter.resetData();
+            finish();
+        }
     }
 
     public LatLng getLocationFromAddress(Context context, String strAddress) {
@@ -176,7 +297,7 @@ public class CreateEventActivity  extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener startDatePickerListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            String dateYouChose = (monthOfYear + 1) + "/" + dayOfMonth  + "/" + year;
+            String dateYouChose = (monthOfYear + 1) + "-" + dayOfMonth  + "-" + year;
             TextView tvStartDate = findViewById(R.id.tvStartDate);
             tvStartDate.setText(dateYouChose );
         }
@@ -185,7 +306,7 @@ public class CreateEventActivity  extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener endDatePickerListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            String dateYouChose =  (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
+            String dateYouChose =  (monthOfYear + 1) + "-" + dayOfMonth + "-" + year;
             TextView tvEndDate = findViewById(R.id.tvEndDate);
             tvEndDate.setText(dateYouChose );
         }
@@ -194,18 +315,35 @@ public class CreateEventActivity  extends AppCompatActivity {
     private TimePickerDialog.OnTimeSetListener endTimePickerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hour, int minute) {
-            String dateYouChoosed =  (hour + 1) + ":" + minute;
-            TextView tvEndDate = findViewById(R.id.tvEndTime);
-            tvEndDate.setText(dateYouChoosed );
+            String timeYouChose =  (hour + 1) + ":" + minute;
+            SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+            Date _24HourDt = null;
+            try {
+                _24HourDt = _24HourSDF.parse(timeYouChose);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            TextView tvEndTime = findViewById(R.id.tvEndTime);
+            tvEndTime.setText(_12HourSDF.format(_24HourDt).replace(" ",""));
+
         }
     };
 
     private TimePickerDialog.OnTimeSetListener startTimePickerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hour, int minute) {
-            String dateYouChoosed =  (hour + 1) + ":" + minute;
-            TextView tvEndDate = findViewById(R.id.tvStartTime);
-            tvEndDate.setText(dateYouChoosed );
+            String timeYouChose =  (hour + 1) + ":" + minute;
+            SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+            Date _24HourDt = null;
+            try {
+                _24HourDt = _24HourSDF.parse(timeYouChose);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            TextView tvStartTime = findViewById(R.id.tvStartTime);
+            tvStartTime.setText(_12HourSDF.format(_24HourDt).replace(" ",""));
         }
     };
 

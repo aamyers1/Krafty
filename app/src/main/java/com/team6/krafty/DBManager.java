@@ -5,7 +5,6 @@ import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -15,7 +14,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-
 import javax.net.ssl.HttpsURLConnection;
 
 class DBManager {
@@ -64,6 +62,7 @@ class DBManager {
         }
 
     }
+
     public boolean checkUsername(String username){
         HttpURLConnection connection = generatePostConnection("/api/user/username/");
         String APIcall ="username="+username;
@@ -101,7 +100,6 @@ class DBManager {
         catch(Exception e){
             return null;
         }
-
     }
 
 
@@ -300,6 +298,29 @@ class DBManager {
         }
         return  null;
     }
+    public boolean createEvent(Event event, String token){
+        HttpURLConnection connection = generatePostConnection("/api/event/create/");
+        //extra header for authorization
+        connection.setRequestProperty ("Authorization", "token " + token);
+        String eventString = event.createJson();
+        byte[] request = eventString.getBytes();
+        String response = getResponse(connection,request);
+        try {
+            JSONObject json = new JSONObject(response);
+            event.setID(json.getInt("result"));
+        }
+        catch(Exception e){
+            Log.d("EVENT RESPONSE", response);
+            Log.d("EVENT ID ERROR", e.getMessage());
+            Log.d("MESSAGE EVENT", response);
+        }
+        if(response.toLowerCase().contains("event created")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     public boolean deleteEvent(int id, String token){
         HttpURLConnection connection = generatePostConnection("/api/event/delete/");
@@ -316,5 +337,4 @@ class DBManager {
             return false;
         }
     }
-
 }
