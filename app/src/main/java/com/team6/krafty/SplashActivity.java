@@ -111,6 +111,7 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
             //TODO: FIGURE OUT HOW TO ADD IT TO THE RIGHT PLACE IN THE LIST
             SharedPreferences sp = getSharedPreferences("session", Context.MODE_PRIVATE);
             SharedPreferences.Editor edit = sp.edit();
+            edit.putString("userName", profile.getUsername());
             edit.putInt("userType", profile.getUserType());
             edit.apply();
 
