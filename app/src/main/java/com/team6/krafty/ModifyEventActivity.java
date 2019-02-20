@@ -119,7 +119,7 @@ public class ModifyEventActivity extends AppCompatActivity {
 }
 
 
-    //TODO: PLEASE DEAR GOD BREAK UP SOME OF THIS
+    //TODO: PLEASE DEAR GOD BREAK UP SOME OF THIS (AND WE CAN REUSE IN THE OTHER SIMILAR FILE IF WE DO)
     //handles submit click
     public void onSubmitClick(){
         //essentially just gathers strings from various editTexts
