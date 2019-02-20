@@ -39,11 +39,17 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
 
  private GoogleMap mMap;
  FusedLocationProviderClient flpc;
-
+    private View v;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_view_events, container, false);
+        v = inflater.inflate(R.layout.fragment_view_events, container, false);
+        return v;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
         SupportMapFragment f = new SupportMapFragment();
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         ft.add(R.id.mapFrame, f);
@@ -53,12 +59,11 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
         createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(getActivity(), CreateEventActivity.class);
                 startActivity(intent);
             }
         });
-        return v;
+
     }
 
 
