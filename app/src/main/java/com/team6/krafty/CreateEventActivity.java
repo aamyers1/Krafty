@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -359,6 +360,7 @@ public class CreateEventActivity  extends AppCompatActivity {
             ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();
+            Log.d("EVENT2", encodedImage);
             encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT).replace("+", "<");
         }
     }

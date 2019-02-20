@@ -1,5 +1,8 @@
 package com.team6.krafty;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -9,6 +12,7 @@ public class Event implements Schedulable {
     private String creator, city, street, state, zipcode, startTime, endTime, startDate, endDate, name, imgString = "", description;
     private int id, vendorSpots, takenSpots;
     private double longitude, latitude;
+    private Bitmap bmp = null;
 
     Event(){}
 
@@ -18,6 +22,12 @@ public class Event implements Schedulable {
         Boolean wifi,Boolean tables){
 
         this.imgString = imgString;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                parseBitmap();
+            }
+        });
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -50,7 +60,6 @@ public class Event implements Schedulable {
         String wifi = Boolean.toString(getWifi()).substring(0, 1).toUpperCase() + Boolean.toString(getWifi()).substring(1);
         String tables = Boolean.toString(getTables()).substring(0, 1).toUpperCase() + Boolean.toString(getTables()).substring(1);
 
-
         return "id="+getID() + "&creator=" + getCreator()+ "&name=" + getName() + "&start=" + start + "&end=" + end +
                 "&street=" + getStreet() + "&city=" + getCity() + "&state=" + getState() + "&zipcode=" + getZipCode() +
                 "&description=" +getDescription() + "&vendorspots=" + getVendorSpots()+ "&outdoors=" + outdoors + "&takenspots=" + getTakenSpots() + "&longitude=" +getLongitude()+
@@ -58,9 +67,11 @@ public class Event implements Schedulable {
                 "&power=" + power+ "&food=" +food+ "&wifi=" + wifi + "&tables=" +tables +
                 "&image=" + imgString;
     }
+//todo : reactivate the boolean getters and their switches for specific events.
 
     public void parseJson(JSONObject json){
         try {
+            Log.d("json", json.toString());
             longitude = json.getDouble("longitude");
             latitude = json.getDouble("latitude");
             name = json.getString("name");
@@ -86,7 +97,7 @@ public class Event implements Schedulable {
             endTime = temp.substring(0, temp.indexOf(" "));
             endDate = temp.substring(temp.indexOf(" "));
             description = json.getString("description");
-            imgString = json.getString("image");
+            imgString = json.getString("image").replace("<", "+");
         }
         catch(Exception e){
             Log.d("Error event parse", "Event could not be parsed from json");
@@ -177,8 +188,24 @@ public class Event implements Schedulable {
 
     public String getImgString() { return imgString; }
 
-    public void setId(int id){
-        this.id = id;
-    }
+    public Bitmap setBmp(){ return this.bmp; }
 
+    private void setBmp(Bitmap bmp){ this.bmp = bmp; }
+
+    //parse the bitmap in this class
+    private void parseBitmap(){
+        if(!this.getImgString().equals("null") && !this.getImgString().equals("no image") && !this.getImgString().equals("") ) {
+            try{
+                byte[] encodeByte = Base64.decode(getImgString().replace("<", "+"), Base64.DEFAULT);
+                setBmp(BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length));
+            } catch (IllegalArgumentException e){
+
+                Log.d("EVENT IMAGE ERROR", "bad image base-64" +  id);
+                setBmp(null);
+            }
+        }
+        else{
+            setBmp(null);
+        }
+    }
 }

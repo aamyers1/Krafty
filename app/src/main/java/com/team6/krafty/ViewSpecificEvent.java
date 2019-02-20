@@ -73,17 +73,17 @@ public class ViewSpecificEvent extends AppCompatActivity{
         Switch eventTables = (Switch)findViewById(R.id.eventTables);
         if (event.getTables()) eventTables.setChecked(true);
 
-        final ImageView materialImage = findViewById(R.id.imageView);
+        final ImageView eventImage = findViewById(R.id.imageView);
         final Bitmap bmp;
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 Bitmap bmp = controller.parseEventImage(event.getImgString());
                 if(bmp!= null){
-                    materialImage.setImageBitmap(bmp);
+                    eventImage.setImageBitmap(bmp);
                 }
                 else{
-                    materialImage.setBackgroundColor(Color.rgb(188,225,232));
+                    eventImage.setBackgroundColor(Color.rgb(188,225,232));
                 }
             }
         });
