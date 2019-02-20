@@ -44,8 +44,6 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
         //set the listener
         navView.setNavigationItemSelectedListener(this);
 
-        //TODO:THIS WILL BE THE PROFILE PAGE WHEN COMPLETE
-
         Fragment fragment = new UpdateProfileFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);

@@ -44,6 +44,11 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_view_events, container, false);
+        int userType = SessionManager.getUserType(v.getContext());
+        if(userType == 2){
+            FloatingActionButton fab = v.findViewById(R.id.addEvent);
+            fab.hide();
+        }
         return v;
     }
 
@@ -103,7 +108,6 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private class AsyncEventGetter extends AsyncTask<Void, Void, Void>{
-
         @Override
         public Void doInBackground(Void...args){
             EventsController ec = new EventsController();

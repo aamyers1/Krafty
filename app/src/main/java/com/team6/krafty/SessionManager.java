@@ -15,7 +15,7 @@ public class SessionManager {
     }
 
     public static int getUserType(Context context){
-        SharedPreferences sp = context.getSharedPreferences("session", context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
         return sp.getInt("userType", 2);
     }
 
