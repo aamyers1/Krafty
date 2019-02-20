@@ -116,7 +116,6 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
             edit.putString("userName", profile.getUsername());
             edit.putInt("userType", profile.getUserType());
             edit.apply();
-            edit.commit();
 
             if(profile.getUserType() == 1 || profile.getUserType() == 0) {
                 Menu menu = navView.getMenu();
