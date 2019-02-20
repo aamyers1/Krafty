@@ -40,6 +40,9 @@ public class ViewSpecificEvent extends AppCompatActivity{
         TextView eventAddress = (TextView)findViewById(R.id.eventAddress);
         eventAddress.setText(event.getAddress());
 
+        TextView eventCreator = (TextView)findViewById(R.id.eventCreator);
+        eventCreator.setText("Oragnized by " + event.getCreator());
+
         TextView eventDate = (TextView)findViewById(R.id.eventDate);
         eventDate.setText(event.getDate() + " to " + event.getEndDate());
 

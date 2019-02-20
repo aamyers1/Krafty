@@ -7,15 +7,15 @@
     tools:layout_editor_absoluteY="25dp">
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
+        android:layout_width="407dp"
         android:layout_height="match_parent"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -25,22 +25,22 @@
                 android:id="@+id/eventTimeStart"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:hint="@string/eventTimeStart"
                 android:inputType="time"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventDate" />
+                app:layout_constraintTop_toBottomOf="@+id/eventCreator" />
 
             <TextView
                 android:id="@+id/eventVendors"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:ems="10"
                 android:hint="@string/eventVendorNumber"
                 android:inputType="number"
@@ -52,9 +52,9 @@
                 android:id="@+id/eventAddress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:hint="@string/eventAddress"
                 android:inputType="textMultiLine"
@@ -68,9 +68,9 @@
                 android:id="@+id/eventName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
                 android:ems="10"
                 android:hint="@string/eventName"
                 android:inputType="textMultiLine"
@@ -93,9 +93,9 @@
                 android:id="@+id/eventDesc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:hint="@string/eventDesc"
                 android:inputType="textMultiLine"
@@ -109,9 +109,9 @@
                 android:id="@+id/eventDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:hint="@string/eventDate"
                 android:inputType="date"
@@ -121,11 +121,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/eventAddress" />
 
             <TextView
+                android:id="@+id/eventCreator"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
+                android:hint="@string/eventCreator"
+                android:inputType="date"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventDate" />
+
+            <TextView
                 android:id="@+id/eventVendorSpots"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/eventVendorSpots"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventTimeStart" />
@@ -135,7 +151,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:text="@string/eventOutdoors"
@@ -147,7 +163,6 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:text="@string/eventPower"
@@ -159,7 +174,6 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
                 android:clickable="false"
                 android:text="@string/eventFood"
                 app:layout_constraintStart_toStartOf="parent"
@@ -170,7 +184,6 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:text="@string/eventTables"
@@ -181,8 +194,8 @@
                 android:id="@+id/eventVendorsSignedUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
                 android:focusable="false"
                 android:text="@string/eventVendorSignedUp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -192,7 +205,7 @@
                 android:id="@+id/numVendorsSigned"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="12dp"
                 android:ems="10"
                 android:hint="@string/eventVendorNumber"
                 android:inputType="number"
@@ -205,7 +218,6 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:text="@string/eventWifi"
@@ -216,8 +228,8 @@
                 android:id="@+id/btnEventSchedule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/eventSchedule"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventTables" />
@@ -237,10 +249,10 @@
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.201"
+                app:layout_constraintHorizontal_bias="0.221"
                 app:layout_constraintStart_toEndOf="@+id/btnEventSchedule"
                 app:layout_constraintTop_toBottomOf="@+id/eventTables"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/btnEventDelete"
@@ -257,10 +269,10 @@
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.826"
+                app:layout_constraintHorizontal_bias="0.854"
                 app:layout_constraintStart_toEndOf="@+id/btnSubmit"
                 app:layout_constraintTop_toBottomOf="@+id/eventTables"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="0.0" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
