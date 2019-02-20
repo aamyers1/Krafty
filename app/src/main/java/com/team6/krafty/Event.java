@@ -58,11 +58,9 @@ public class Event implements Schedulable {
                 "&power=" + power+ "&food=" +food+ "&wifi=" + wifi + "&tables=" +tables +
                 "&image=" + imgString;
     }
-//todo : reactivate the boolean getters and their switches for specific events.
 
     public void parseJson(JSONObject json){
         try {
-            Log.d("json", json.toString());
             longitude = json.getDouble("longitude");
             latitude = json.getDouble("latitude");
             name = json.getString("name");
@@ -88,7 +86,7 @@ public class Event implements Schedulable {
             endTime = temp.substring(0, temp.indexOf(" "));
             endDate = temp.substring(temp.indexOf(" "));
             description = json.getString("description");
-            //imgString = json.getString("image");
+            imgString = json.getString("image");
         }
         catch(Exception e){
             Log.d("Error event parse", "Event could not be parsed from json");
