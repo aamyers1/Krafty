@@ -3,6 +3,7 @@ package com.team6.krafty;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.se.omapi.Session;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ public class EventsController {
     private static String token;
     private boolean isDeleted;
     private boolean isCreated;
+    private boolean isUpdated;
 
     public EventsController(){
 
@@ -184,6 +186,29 @@ public class EventsController {
             Log.d("CREATE EVENT ERROR", "event error" +  e.getMessage());
             return false;
         }
+    }
+
+    public boolean updateEvent(Event event, int id,final Context context){
+        String json = event.createJson();
+        final String request = json + "&id=" + id;
+        final String token = SessionManager.getToken(context);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBManager dbManager = new DBManager();
+                isUpdated = dbManager.updateEvent(request, token);
+            }
+        });
+        t.start();
+        try{
+            t.join();
+            return isUpdated;
+        }
+        catch(Exception e){
+            Log.d("UPDATEEVENT", "could not update event");
+            Log.d("UPDATEEVENTM", e.getMessage());
+        }
+        return false;
     }
 
     public Bitmap parseEventImage(String encodedImage){

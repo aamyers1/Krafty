@@ -59,6 +59,7 @@ class DBManager {
             return response.toString();
         }
         catch(Exception e){
+            Log.d("RESPONSE ERR", e.getMessage());
             return e.getMessage();
         }
 
@@ -312,5 +313,16 @@ class DBManager {
             Log.d("DELETE ERROR", response);
             return false;
         }
+    }
+
+    public boolean updateEvent(String jsonString, String token){
+        HttpURLConnection connection = generatePostConnection("/api/event/modify/");
+        connection.setRequestProperty("Authorization", "token " + token);
+        byte[] request = jsonString.getBytes();
+        String response = getResponse(connection,request);
+        if(response.contains("Updated")){
+            return true;
+        }
+        return false;
     }
 }

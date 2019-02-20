@@ -25,6 +25,11 @@ public class ViewSpecificEvent extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_event);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
         Intent intent = getIntent();
         id = intent.getIntExtra("ID", 0);
         final EventsController controller = new EventsController();
@@ -83,8 +88,8 @@ public class ViewSpecificEvent extends AppCompatActivity{
         });
         t.start();
         setButtons();
-    }
 
+    }
     private void setButtons(){
         SharedPreferences sp = getApplicationContext().getSharedPreferences("session", Context.MODE_PRIVATE);
         String username = sp.getString("username", "test");
@@ -99,9 +104,18 @@ public class ViewSpecificEvent extends AppCompatActivity{
                 btnEventDelete.setClickable(false);
 
                 btnEventDelete.setOnClickListener(new onDeleteClick());
-                //Todo: Update button listener
-                //btnEventUpdate.setOnClickListener(new onUpdateClick);
+                btnEventUpdate.setOnClickListener(new onUpdateClick());
             }
+    }
+
+    private class onUpdateClick implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view){
+            Intent intent = new Intent(getApplicationContext(), ModifyEventActivity.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
+        }
     }
 
     private class onDeleteClick implements View.OnClickListener {

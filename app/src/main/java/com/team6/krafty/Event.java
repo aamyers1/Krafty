@@ -88,7 +88,7 @@ public class Event implements Schedulable {
             endTime = temp.substring(0, temp.indexOf(" "));
             endDate = temp.substring(temp.indexOf(" "));
             description = json.getString("description");
-            imgString = json.getString("image");
+            //imgString = json.getString("image");
         }
         catch(Exception e){
             Log.d("Error event parse", "Event could not be parsed from json");
@@ -178,5 +178,9 @@ public class Event implements Schedulable {
     public Boolean getWifi() { return wifi; }
 
     public String getImgString() { return imgString; }
+
+    public void setId(int id){
+        this.id = id;
+    }
 
 }
