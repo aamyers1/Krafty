@@ -10,6 +10,7 @@ public class Inventory {
     private static Inventory inventory = new Inventory();
     //holds a specific user's inventory of materials
     private static Vector<Material> personalMaterials;
+    private static Vector<Product> personalProducts;
 
     //constructor is PRIVATE
     private Inventory(){
@@ -65,6 +66,22 @@ public class Inventory {
             materialCaptions[i] = personalMaterials.get(i).getName();
         }
         return materialCaptions;
+    }
+
+    public static Bitmap[] getProductImages(){
+        Bitmap[] productImages = new Bitmap[personalProducts.size()];
+        for(int i = 0; i < personalProducts.size(); i ++){
+            productImages[i] = personalProducts.get(i).getBmp();
+        }
+        return productImages;
+    }
+
+    public static String[] getProductCaptions(){
+        String[] productCaptions = new String[personalProducts.size()];
+        for(int i = 0; i < personalProducts.size(); i ++){
+            productCaptions[i] = personalProducts.get(i).getName();
+        }
+        return productCaptions;
     }
 
     //clears all inventory items

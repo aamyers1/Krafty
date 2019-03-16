@@ -15,6 +15,15 @@ public class Product {
     int quantity, id;
     HashMap<Integer, Integer> Materials;
     float price;
+
+    public Bitmap getBmp() {
+        return bmp;
+    }
+
+    public void setBmp(Bitmap bmp) {
+        this.bmp = bmp;
+    }
+
     Bitmap bmp;
 
     public String getName() {
