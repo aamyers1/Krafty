@@ -55,7 +55,7 @@ public class CreateMaterialActivity extends AppCompatActivity {
         matLocation = et.getText().toString();
         MaterialController mc = new MaterialController();
         if(mc.addMaterial(matName, encodedImage, matQuantity, matPrice, matLocation,this)){
-            InventoryFragment.nullifyAdapter();
+            MaterialFragment.nullifyAdapter();
             finish();
         }
     }
