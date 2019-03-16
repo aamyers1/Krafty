@@ -1,23 +1,19 @@
 package com.team6.krafty;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
-
 public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
 
-    private static String[] captions;
-    private static Bitmap[] images;
+    private String[] captions;
+    private  Bitmap[] images;
     private Listener listener;
 
     //create a generic listener interface for the adapter
@@ -31,13 +27,9 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
     }
 
     //constructor
-    public cardAdapter(){
-        images = new Bitmap[Inventory.getCount()];
-        captions = new String[Inventory.getCount()];
-        for(int i = 0; i < Inventory.getCount(); i ++){
-            captions[i] = Inventory.getMaterial(i).getName();
-            images[i] = Inventory.getMaterial(i).getBmp();
-        }
+    public cardAdapter(Bitmap[] images, String[] captions){
+        this.captions = captions;
+        this.images = images;
     }
 
     //gets the number of items to be created
@@ -88,15 +80,11 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
             super(v);
             cardView = v;
         }
-
     }
 
-    public static void resetData(){
-        images = new Bitmap[Inventory.getCount()];
-        captions = new String[Inventory.getCount()];
-        for(int i = 0; i < Inventory.getCount(); i ++){
-            captions[i] = Inventory.getMaterial(i).getName();
-            images[i] = Inventory.getMaterial(i).getBmp();
-        }
+    public void updateData(Bitmap[] images, String[] captions){
+        this.captions = captions;
+        this.images = images;
     }
+
 }

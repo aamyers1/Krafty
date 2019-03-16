@@ -45,7 +45,8 @@ public class InventoryFragment extends Fragment {
         });
         RecyclerView rv = getView().findViewById(R.id.matRecycler);
         //create card adapter
-        ca = new cardAdapter();
+        Inventory inv = Inventory.getInstance();
+        ca = new cardAdapter(inv.getMaterialImages(), inv.getMaterialCaptions());
         //set recycler view to use the cardAdapter in a Grid Layout
         rv.setAdapter(ca);
         rv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
@@ -69,6 +70,8 @@ public class InventoryFragment extends Fragment {
     }
 
     public static void nullifyAdapter(){
+        Inventory inv = Inventory.getInstance();
+        ca.updateData(inv.getMaterialImages(), inv.getMaterialCaptions());
         ca.notifyDataSetChanged();
     }
 

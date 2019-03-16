@@ -1,5 +1,7 @@
 package com.team6.krafty;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -47,6 +49,22 @@ public class Inventory {
                     personalMaterials.removeElementAt(i);
                 }
         }
+    }
+
+    public static Bitmap[] getMaterialImages(){
+        Bitmap[] materialImages = new Bitmap[personalMaterials.size()];
+        for(int i = 0; i < personalMaterials.size(); i ++){
+            materialImages[i] = personalMaterials.get(i).getBmp();
+        }
+        return materialImages;
+    }
+
+    public static String[] getMaterialCaptions(){
+        String[] materialCaptions = new String[personalMaterials.size()];
+        for(int i = 0; i < personalMaterials.size(); i ++){
+            materialCaptions[i] = personalMaterials.get(i).getName();
+        }
+        return materialCaptions;
     }
 
     //clears all inventory items
