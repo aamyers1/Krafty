@@ -18,11 +18,17 @@ import javax.net.ssl.HttpsURLConnection;
 
 class DBManager {
 
+    DBAccessImpl impl = null;
+
     //TODO: need to check the network connectivity before we try to connect to the api!
     //My idea: force dbmanager as singleton, when getInstance is called, do a check. force context pass
     //I.e. public DBManager getInstance(Context context){ try to get the network connection, if not show message}
     DBManager() {
 
+    }
+
+    public DBAccessImpl getImpl() {
+        return impl;
     }
 
     public boolean checkEmail(String email){
@@ -325,4 +331,27 @@ class DBManager {
         }
         return false;
     }
+
+    //When DBAccessImpl concrete class is made, this will just call the Impl's methods
+    /*
+
+    public void checkEmail(String email){getImpl().checkEmail(email);}
+    public String getResponse(HttpURLConnection connection, byte[] request){getImpl().getResponse(connection,request);}
+    public void checkUsername(String username){getImpl().checkUsername(username);}
+    public String createUser(User user){getImpl().createUser(user);}
+    public HttpURLConnection generatePostConnection(String APIPath){getImpl().generatePostConnection(APIPath);}
+    public String login( String username, String password){getImpl().login(username,password);}
+    public Material getMaterial(String token){getImpl().getMaterial(token);}
+    public void createMaterial(Material material, String token){getImpl().createMaterial(material, token);}
+    public void modifyMaterial(Material material, String token){getImpl().modifyMaterial(material, token);}
+    public void deleteMaterial(int id, String token){getImpl().deleteMaterial(id,token);}
+    public User getUser(String token, String username){getImpl().getUser(token, username);}
+    public ArrayList<Event> getAllEvents(String token){getImpl().getAllEvents(String token);}
+    public Event getSpecificEvent(int id, String token){getImpl().getSpecificEvent(id, token);}
+    public void createEvent(Event event, String token){getImpl().createEvent(event, token);}
+    public void deleteEvent(int id, String token){getImpl().deleteEvent(id, token);}
+    public void updateEvent(Event event, String token){getImpl().updateEvent(event, token);}
+
+    */
+
 }
