@@ -15,4 +15,5 @@ public class KraftyException extends Exception {
             throw new KraftyException("Input must be numeric : " + data, e);
         }
     }
+
 */
