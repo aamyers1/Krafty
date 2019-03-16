@@ -88,7 +88,7 @@ class DBManager {
 
     //sets up the basic url connection for ANY post database transaction
     //the api path must be specified
-    public HttpURLConnection generatePostConnection(String APIPath){
+    public HttpURLConnection generatePostConnection(String APIPath)throws KraftyRuntimeException{
         HttpURLConnection connection;
         try {
             URL url = new URL("http://75.128.150.130:2283" + APIPath);
@@ -100,7 +100,7 @@ class DBManager {
             return connection;
         }
         catch(Exception e){
-            return null;
+            throw new KraftyRuntimeException("Bad Connection", null);
         }
     }
 
@@ -315,14 +315,13 @@ class DBManager {
         }
     }
 
-    public boolean updateEvent(String jsonString, String token){
+    public void updateEvent(String jsonString, String token)throws KraftyRuntimeException{
         HttpURLConnection connection = generatePostConnection("/api/event/modify/");
         connection.setRequestProperty("Authorization", "token " + token);
         byte[] request = jsonString.getBytes();
         String response = getResponse(connection,request);
-        if(response.contains("Updated")){
-            return true;
+        if(!response.contains("Updated")){
+            throw new KraftyRuntimeException("Update Failed!", null);
         }
-        return false;
     }
 }

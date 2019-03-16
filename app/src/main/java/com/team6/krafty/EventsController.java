@@ -196,16 +196,20 @@ public class EventsController {
             @Override
             public void run() {
                 DBManager dbManager = new DBManager();
-                isUpdated = dbManager.updateEvent(request, token);
+                try {
+                    dbManager.updateEvent(request, token);
+                }
+                catch(KraftyRuntimeException e){
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         t.start();
         try{
             t.join();
-            return isUpdated;
+            return true;
         }
-        catch(Exception e){
-            Log.d("UPDATEEVENT", "could not update event");
+        catch(Exception e){ ;
             Log.d("UPDATEEVENTM", e.getMessage());
         }
         return false;
