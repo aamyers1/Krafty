@@ -5,7 +5,7 @@ public class KraftyRuntimeException extends RuntimeException {
     public KraftyRuntimeException(String errorMessage, Throwable err){
         super(errorMessage,err);
     }
-}
+}//
 
 /* To use:
     try {
