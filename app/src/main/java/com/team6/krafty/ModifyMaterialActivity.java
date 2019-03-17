@@ -133,8 +133,7 @@ public class ModifyMaterialActivity extends AppCompatActivity {
             MaterialController mc = new MaterialController();
             if (updated) {
                 if (mc.modifyMaterial(mt, getApplicationContext())) {
-                    cardAdapter.resetData();
-                    InventoryFragment.nullifyAdapter();
+                    MaterialFragment.nullifyAdapter();
                     finish();
                 }
             }
@@ -154,8 +153,7 @@ public class ModifyMaterialActivity extends AppCompatActivity {
                             MaterialController mc = new MaterialController();
                             if (mc.deleteMaterial(matId, getApplicationContext())) {
                                 Inventory.removeMaterial(matId);
-                                cardAdapter.resetData();
-                                InventoryFragment.nullifyAdapter();
+                                MaterialFragment.nullifyAdapter();
                                 finish();
                             }
                         }

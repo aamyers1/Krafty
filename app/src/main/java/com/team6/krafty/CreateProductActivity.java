@@ -6,27 +6,24 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class CreateMaterialActivity extends AppCompatActivity {
-    private String encodedImage = "";
+public class CreateProductActivity extends AppCompatActivity {
+    String encodedImage;
 
+    private ArrayList<Material> materials;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_material);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ImageView iv = findViewById(R.id.matImage);
+        setContentView(R.layout.activity_create_product);
+        ImageView iv = findViewById(R.id.productImg);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,42 +31,20 @@ public class CreateMaterialActivity extends AppCompatActivity {
                 startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), 100);
             }
         });
-        Button btnCreate = findViewById(R.id.submit);
-        btnCreate.setOnClickListener(new View.OnClickListener() {
+        Button submitButton = findViewById(R.id.btnSubmit);
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSubmitClick();
+                //TODO
             }
         });
-    }
-
-    //handles submit click
-    public void onSubmitClick(){
-        //essentially just gathers strings from various editTexts
-        String matName, matPrice, matQuantity, matLocation;
-        EditText mName = findViewById(R.id.materialName);
-        EditText mPrice = findViewById(R.id.price);
-        EditText mLoc = findViewById(R.id.location);
-        EditText mQuant = findViewById(R.id.quantity);
-        try{
-            Validator.validateBasicEditText(mName, "name");
-            Validator.validateIntEt(mQuant, "quantity");
-            Validator.validateDoubleEt(mPrice, "price");
-            Validator.validateBasicEditText(mLoc, "location");
-        }
-        catch(KraftyRuntimeException e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        matName = mName.getText().toString();
-        matPrice = mPrice.getText().toString();
-        matQuantity = mQuant.getText().toString();
-        matLocation = mLoc.getText().toString();
-        MaterialController mc = new MaterialController();
-        if(mc.addMaterial(matName, encodedImage, matQuantity, matPrice, matLocation,this)){
-            MaterialFragment.nullifyAdapter();
-            finish();
-        }
+        Button addMaterialButton = findViewById(R.id.btnAddMat);
+        addMaterialButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                //TODO
+            }
+        });
     }
 
     //For results of requests

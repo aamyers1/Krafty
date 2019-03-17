@@ -32,8 +32,9 @@ public class UpdateProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        String token = SessionManager.getToken(getView().getContext());
         FillFields ff = new FillFields();
-        ff.execute();
+        ff.execute(token);
         Button b = view.findViewById(R.id.btnSubmit);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,13 +44,13 @@ public class UpdateProfileFragment extends Fragment {
         });
     }
 
-    private class FillFields extends AsyncTask<Void, Void, User> {
+    private class FillFields extends AsyncTask<String, Void, User> {
 
         @Override
-        public User doInBackground(Void...args){
+        public User doInBackground(String...args){
             User  profile = new User();
             DBManager dbManager = new DBManager();
-            String token = SessionManager.getToken(getView().getContext());
+            String token = args[0];
             profile.parseJson(dbManager.getUser(token, ""));
             return profile;
         }

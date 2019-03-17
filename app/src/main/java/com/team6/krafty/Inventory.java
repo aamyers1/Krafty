@@ -1,5 +1,7 @@
 package com.team6.krafty;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -8,6 +10,7 @@ public class Inventory {
     private static Inventory inventory = new Inventory();
     //holds a specific user's inventory of materials
     private static Vector<Material> personalMaterials;
+    private static Vector<Product> personalProducts;
 
     //constructor is PRIVATE
     private Inventory(){
@@ -47,6 +50,38 @@ public class Inventory {
                     personalMaterials.removeElementAt(i);
                 }
         }
+    }
+
+    public static Bitmap[] getMaterialImages(){
+        Bitmap[] materialImages = new Bitmap[personalMaterials.size()];
+        for(int i = 0; i < personalMaterials.size(); i ++){
+            materialImages[i] = personalMaterials.get(i).getBmp();
+        }
+        return materialImages;
+    }
+
+    public static String[] getMaterialCaptions(){
+        String[] materialCaptions = new String[personalMaterials.size()];
+        for(int i = 0; i < personalMaterials.size(); i ++){
+            materialCaptions[i] = personalMaterials.get(i).getName();
+        }
+        return materialCaptions;
+    }
+
+    public static Bitmap[] getProductImages(){
+        Bitmap[] productImages = new Bitmap[personalProducts.size()];
+        for(int i = 0; i < personalProducts.size(); i ++){
+            productImages[i] = personalProducts.get(i).getBmp();
+        }
+        return productImages;
+    }
+
+    public static String[] getProductCaptions(){
+        String[] productCaptions = new String[personalProducts.size()];
+        for(int i = 0; i < personalProducts.size(); i ++){
+            productCaptions[i] = personalProducts.get(i).getName();
+        }
+        return productCaptions;
     }
 
     //clears all inventory items

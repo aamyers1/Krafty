@@ -132,7 +132,7 @@ public class CreateEventActivity  extends AppCompatActivity {
         LatLng theLatLng = null;
         EditText et = null;
 
-        et = findViewById(R.id.eventName);
+        et = findViewById(R.id.materialName);
         name = et.getText().toString();
         if (name.length() <= 0 ){
             Toast.makeText(getApplicationContext(), "Event Name is required", Toast.LENGTH_SHORT).show();
@@ -255,7 +255,7 @@ public class CreateEventActivity  extends AppCompatActivity {
         Event event = new Event(encodedImage, name,startDate,endDate,startTime,endTime,vendorSpots,street,city,state,zipcode,latitude,longitude,description,outdoors,power,food,wifi,tables);
         EventsController ec = new EventsController();
         if(ec.createEvent(event,getApplicationContext())){
-            cardAdapter.resetData();
+            MaterialFragment.nullifyAdapter();
             finish();
         }
     }

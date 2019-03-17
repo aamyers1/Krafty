@@ -34,20 +34,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <EditText
-                            android:id="@+id/eventName"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:ems="10"
-                            android:hint="@string/eventName"
-                            android:inputType="text"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/imgEvent" />
-
                         <TextView
                             android:id="@+id/tvStartDate"
                             android:layout_width="0dp"
@@ -196,7 +182,7 @@
                             style="@style/Widget.AppCompat.Button.Colored"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="8dp"
                             android:text="@string/startDate"
                             app:layout_constraintEnd_toEndOf="@+id/tvStartDate"
                             app:layout_constraintStart_toStartOf="@+id/tvStartDate"
@@ -380,6 +366,19 @@
                             app:layout_constraintEnd_toStartOf="@+id/swTables"
                             app:layout_constraintTop_toTopOf="@+id/swTables"
                             app:layout_constraintVertical_bias="1.0" />
+
+                        <EditText
+                            android:id="@+id/eventName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:ems="10"
+                            android:hint="@string/name"
+                            android:inputType="textPersonName"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:layout_editor_absoluteY="209dp" />
 
                 </android.support.constraint.ConstraintLayout>
         </LinearLayout>
