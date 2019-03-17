@@ -34,7 +34,7 @@ public class UpdateProfileFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         String token = SessionManager.getToken(getView().getContext());
         FillFields ff = new FillFields();
-        ff.execute();
+        ff.execute(token);
         Button b = view.findViewById(R.id.btnSubmit);
         b.setOnClickListener(new View.OnClickListener() {
             @Override

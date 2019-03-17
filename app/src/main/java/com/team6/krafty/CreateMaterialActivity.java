@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -45,17 +47,27 @@ public class CreateMaterialActivity extends AppCompatActivity {
     public void onSubmitClick(){
         //essentially just gathers strings from various editTexts
         String matName, matPrice, matQuantity, matLocation;
-        EditText et = findViewById(R.id.eventName);
-        matName = et.getText().toString();
-        et = findViewById(R.id.price);
-        matPrice = et.getText().toString();
-        et = findViewById(R.id.quantity);
-        matQuantity = et.getText().toString();
-        et = findViewById(R.id.location);
-        matLocation = et.getText().toString();
+        EditText mName = findViewById(R.id.materialName);
+        EditText mPrice = findViewById(R.id.price);
+        EditText mLoc = findViewById(R.id.location);
+        EditText mQuant = findViewById(R.id.quantity);
+        try{
+            Validator.validateBasicEditText(mName, "name");
+            Validator.validateIntEt(mQuant, "quantity");
+            Validator.validateDoubleEt(mPrice, "price");
+            Validator.validateBasicEditText(mLoc, "location");
+        }
+        catch(KraftyRuntimeException e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        matName = mName.getText().toString();
+        matPrice = mPrice.getText().toString();
+        matQuantity = mQuant.getText().toString();
+        matLocation = mLoc.getText().toString();
         MaterialController mc = new MaterialController();
         if(mc.addMaterial(matName, encodedImage, matQuantity, matPrice, matLocation,this)){
-            InventoryFragment.nullifyAdapter();
+            MaterialFragment.nullifyAdapter();
             finish();
         }
     }

@@ -45,7 +45,7 @@ public class ModifyEventActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         AsyncFillFields asyncFillFields = new AsyncFillFields();
-        asyncFillFields.doInBackground();
+        asyncFillFields.execute();
         ImageView iv = findViewById(R.id.imgEvent);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -369,12 +369,17 @@ public class ModifyEventActivity extends AppCompatActivity {
     }
 
     public class AsyncFillFields extends AsyncTask<Void, Void, Void>{
-
+        Event e;
         @Override
         public Void doInBackground(Void...params){
             EventsController ec = new EventsController();
-            Event e = ec.getSpecificEvent(id, getApplicationContext());
-            EditText et = findViewById(R.id.eventName);
+            e = ec.getSpecificEvent(id, getApplicationContext());
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(Void v){
+            EditText et = findViewById(R.id.materialName);
             et.setText(e.getName());
             et = findViewById(R.id.txtVendorNum);
             et.setText(e.getVendorSpots() + "");
@@ -419,7 +424,7 @@ public class ModifyEventActivity extends AppCompatActivity {
             tb = findViewById(R.id.swWifi);
             tb.setChecked(e.getWifi());
 
-            return null;
+
         }
     }
 
