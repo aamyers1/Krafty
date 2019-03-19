@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class CreateProductActivity extends AppCompatActivity {
@@ -35,7 +38,7 @@ public class CreateProductActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                onSubmitClick();
             }
         });
         Button addMaterialButton = findViewById(R.id.btnAddMat);
@@ -45,6 +48,26 @@ public class CreateProductActivity extends AppCompatActivity {
                 //TODO
             }
         });
+    }
+
+    //handles submit click
+    private void onSubmitClick() {
+        String name , quantity, price;
+
+        EditText pName = findViewById(R.id.etName);
+        EditText pQuant = findViewById(R.id.etQuantity);
+        EditText pPrice = findViewById(R.id.etPrice);
+        try{
+            Validator.validateBasicEditText(pName, "Name");
+            Validator.validateIntEt(pQuant, "Quantity");
+            Validator.validateDoubleEt(pPrice, "Price");
+        }
+        catch(KraftyRuntimeException e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //TODO material list on submit
     }
 
     //For results of requests
