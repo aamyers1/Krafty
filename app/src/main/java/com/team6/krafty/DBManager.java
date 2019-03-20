@@ -20,7 +20,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 class DBManager {
 
-   DBAccessImpl impl = null;
+    private static DBAccessImpl impl = null;
 
     //TODO: need to check the network connectivity before we try to connect to the api!
     //My idea: force dbmanager as singleton, when getInstance is called, do a check. force context pass
@@ -28,16 +28,13 @@ class DBManager {
     DBManager(DBAccessImpl theImpl) {
         setImpl(theImpl);
     }
-
     public DBAccessImpl getImpl() {
         return impl;
     }
     public void setImpl(DBAccessImpl theImpl) {impl = theImpl;}
     public boolean checkEmail(String email){return getImpl().checkEmail(email);}
-    public String getResponse(HttpURLConnection connection, byte[] request){return getImpl().getResponse(connection,request);}
     public boolean checkUsername(String username){return getImpl().checkUsername(username);}
     public String createUser(User user){return getImpl().createUser(user);}
-//    public HttpURLConnection generatePostConnection(String APIPath){return getImpl().generatePostConnection(APIPath);}
     public String login( String username, String password){return getImpl().login(username,password);}
     public String getMaterial(String token){return getImpl().getMaterial(token);}
     public void createMaterial(Material material, String token){ getImpl().createMaterial(material, token);}

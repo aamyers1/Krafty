@@ -11,13 +11,24 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class DjangoAccess implements DBAccessImpl {
 
-  //sets up the basic url connection for ANY post database transaction
-  //the api path must be specified
+
+  private static DjangoAccess djangoAccess;
+
+  public static DjangoAccess getInstance(){
+      if(djangoAccess == null){
+          djangoAccess = new DjangoAccess();
+      }
+      return djangoAccess;
+  }
+
+    //sets up the basic url connection for ANY post database transaction
+    //the api path must be specified
   public HttpURLConnection generatePostConnection(String APIPath)throws KraftyRuntimeException{
     HttpURLConnection connection;
     try {
@@ -148,22 +159,21 @@ public boolean checkUsername(String username){
   }
 
   public void createMaterial(Material material, String token){
-    HttpURLConnection connection = generatePostConnection("/api/material/create/");
-    //extra header for authorization
-    connection.setRequestProperty ("Authorization", "token " + token);
-    String materialString = material.createJson();
-    byte[] request = materialString.getBytes();
-    String response = getResponse(connection,request);
-    try {
-      JSONObject json = new JSONObject(response);
-      material.setID(json.getInt("result"));
-    }
-    catch(Exception e){
-      Log.d("MATERIAL RESPONSE", response);
-      Log.d("MATERIAL ID ERROR", e.getMessage());
-      Log.d("MESSAGE MATERIAL", response);
-    }
-    if(! response.toLowerCase().contains("material created")){
+      HttpURLConnection connection = generatePostConnection("/api/material/create/");
+      connection.setRequestProperty ("Authorization", "token " + token);
+      String materialString = material.createJson();
+      byte[] request = materialString.getBytes();
+      String response = getResponse(connection,request);
+      try {
+        JSONObject json = new JSONObject(response);
+        material.setID(json.getInt("result"));
+      }
+      catch(Exception e){
+        Log.d("MATERIAL RESPONSE", response);
+        Log.d("MATERIAL ID ERROR", e.getMessage());
+        Log.d("MESSAGE MATERIAL", response);
+     }
+    if(!response.toLowerCase().contains("material created")){
       Log.d("CREATE ERROR", response);
       throw new KraftyRuntimeException("Create Failed!", null);
     }

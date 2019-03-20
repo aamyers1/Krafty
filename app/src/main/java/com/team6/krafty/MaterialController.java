@@ -18,9 +18,9 @@ public class MaterialController {
     //adds a material to database
     public boolean addMaterial(final String name,final String image,final  String quantity, final String price,final  String location, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
+        isCreated = true;
         token = SessionManager.getToken(context);
         //parse out numeric values
-        //TODO:Verify these values are numeric
         int quant = Integer.parseInt(quantity);
         double dPrice = Double.parseDouble(price);
         final Material material = new Material(name, image, location, quant, dPrice);
@@ -28,28 +28,27 @@ public class MaterialController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager(new DjangoAccess());
-                dbManager.createMaterial(material, token);
+                try {
+                    DBManager dbManager = new DBManager(new DjangoAccess());
+                    dbManager.createMaterial(material, token);
+                    Inventory.addMaterial(material);
+                }
+                catch(KraftyRuntimeException e){
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    isCreated = false;
+                }
+
             }
         });
         t.start();
         try {
-            //wait for thread to finish
             t.join();
-            //show user Message
-            if(isCreated){
-                Toast.makeText(context, "Creation Success!", Toast.LENGTH_SHORT).show();
-                Inventory.addMaterial(material);
-                return true;
-            }
-            else{
-                Toast.makeText(context, "Creation Failure!", Toast.LENGTH_SHORT).show();
-                return false;
-            }
         }
         catch(Exception e){
-            return false;
+           isCreated = false;
         }
+        Toast.makeText(context, "Creation Success!", Toast.LENGTH_SHORT).show();
+        return isCreated;
     }
 
     //adds a material to database
