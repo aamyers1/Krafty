@@ -29,7 +29,7 @@ public class SessionManager {
 
     //logs the user in using the username and password provided
     public static boolean login(final Context context, final String username, final String password){
-        final DBManager dbManager = new DBManager();
+        final DBManager dbManager = new DBManager(new DjangoAccess());
 
         //NETWORKING MUST BE RUN IN A SEPERATE THREAD
         Thread t = new Thread(new Runnable() {

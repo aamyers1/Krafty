@@ -47,6 +47,9 @@ public class EventsController {
     }
 
     public LatLng[] getltlng(){
+        if (eventsList == null){
+            eventsList = new ArrayList<Event>();
+        }
         LatLng[] ltLng = new LatLng[eventsList.size()];
         for(int i = 0; i < eventsList.size(); i++){
             ltLng[i] = new LatLng(eventsList.get(i).getLatitude(), eventsList.get(i).getLongitude());
@@ -81,43 +84,36 @@ public class EventsController {
 
     public void retrieve(Context context){
         eventsList = new ArrayList<>();
-        DBManager dbManager = new DBManager();
-        JSONObject json = dbManager.getAllEvents(SessionManager.getToken(context));
-        try {
-            JSONArray jsonArr = json.getJSONArray("result");
-            for(int i = 0; i < jsonArr.length(); i ++){
-                Event newEvent = new Event();
-                newEvent.parseJson(jsonArr.getJSONObject(i));
-                //TODO: FILTER OUT EVENTS WHICH HAVE PASSED
-                eventsList.add(newEvent);
-
-            }
-        }
-        catch(Exception e){
-            Log.d("ECNTR JSONARRAY", e.getMessage());
-        }
+        DBManager dbManager = new DBManager(new DjangoAccess());
+        eventsList = dbManager.getAllEvents(SessionManager.getToken(context));
+//        try {
+//            JSONArray jsonArr = json.getJSONArray("result");
+//            for(int i = 0; i < jsonArr.length(); i ++){
+//                Event newEvent = new Event();
+//                newEvent.parseJson(jsonArr.getJSONObject(i));
+//                //TODO: FILTER OUT EVENTS WHICH HAVE PASSED
+//                eventsList.add(newEvent);
+//
+//            }
+//        }
+//        catch(Exception e){
+//            Log.d("ECNTR JSONARRAY", e.getMessage());
+//        }
     }
 
     public Event getSpecificEvent(final int id, final Context context){
-        final Event event = new Event();
+        final Event[] event = {new Event()};
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager();
-                JSONObject json = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
-                try {
-                    JSONArray jsonArray = json.getJSONArray("result");
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    event.parseJson(jsonObject);
-                } catch (Exception e) {
-                    Log.d("JSONERROR", "SINGLE EVENT PARSE ERROR");
-                }
+                DBManager dbManager = new DBManager(new DjangoAccess());
+                event[0] = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
             }
         });
         t.start();
         try {
             t.join();
-            return event;
+            return event[0];
         } catch(Exception e) {
             Log.d("ECNTR JSONARRAY", e.getMessage());
         }
@@ -131,8 +127,8 @@ public class EventsController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager();
-                isDeleted = dbManager.deleteEvent(id, token);
+                DBManager dbManager = new DBManager(new DjangoAccess());
+                dbManager.deleteEvent(id, token);
             }
         });
         t.start();
@@ -163,8 +159,8 @@ public class EventsController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager();
-                isCreated = dbManager.createEvent(event, token);
+                DBManager dbManager = new DBManager(new DjangoAccess());
+                dbManager.createEvent(event, token);
             }
         });
         t.start();
@@ -195,7 +191,7 @@ public class EventsController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager();
+                DBManager dbManager = new DBManager(new DjangoAccess());
                 try {
                     dbManager.updateEvent(request, token);
                 }

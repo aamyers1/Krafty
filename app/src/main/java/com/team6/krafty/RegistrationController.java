@@ -23,7 +23,7 @@ public class RegistrationController {
                 first, last, city, state,imageString,
                 bio,website, etsy, facebook,
                 instagram, businessName);
-        dbManager = new DBManager();
+        dbManager = new DBManager(new DjangoAccess());
         //check that the username is unique
         if(!checkUsername(newUser)){
             Toast.makeText(context, "Username Taken", Toast.LENGTH_SHORT).show();

@@ -7,12 +7,12 @@ import java.util.ArrayList;
 
 public interface DBAccessImpl {
 
-    public abstract void checkEmail(String email);
-    //public abstract String getResponse(HttpURLConnection connection, byte[] request);
-    public abstract void checkUsername(String username);
+    public abstract boolean checkEmail(String email);
+    public abstract String getResponse(HttpURLConnection connection, byte[] request);
+    public abstract boolean checkUsername(String username);
     public abstract String createUser(User user);
     public abstract String login( String username, String password);
-    public abstract Material getMaterial(String token);
+    public abstract String getMaterial(String token);
     public abstract void createMaterial(Material material, String token);
     public abstract void modifyMaterial(Material material, String token);
     public abstract void deleteMaterial(int id, String token);

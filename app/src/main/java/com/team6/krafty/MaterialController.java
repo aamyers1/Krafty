@@ -28,8 +28,8 @@ public class MaterialController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager();
-                isCreated = dbManager.createMaterial(material, token);
+                DBManager dbManager = new DBManager(new DjangoAccess());
+                dbManager.createMaterial(material, token);
             }
         });
         t.start();
@@ -62,8 +62,8 @@ public class MaterialController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager();
-                isUpdated = dbManager.modifyMaterial(material, token);
+                DBManager dbManager = new DBManager(new DjangoAccess());
+                dbManager.modifyMaterial(material, token);
             }
         });
         t.start();
@@ -92,8 +92,8 @@ public class MaterialController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager();
-                isDeleted = dbManager.deleteMaterial(id, token);
+                DBManager dbManager = new DBManager(new DjangoAccess());
+                dbManager.deleteMaterial(id, token);
             }
         });
         t.start();
@@ -125,7 +125,7 @@ public class MaterialController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager();
+                DBManager dbManager = new DBManager(new DjangoAccess());
                 response  = dbManager.getMaterial(token);
             }
         });

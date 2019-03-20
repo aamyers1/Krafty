@@ -49,9 +49,9 @@ public class UpdateProfileFragment extends Fragment {
         @Override
         public User doInBackground(String...args){
             User  profile = new User();
-            DBManager dbManager = new DBManager();
+            DBManager dbManager = new DBManager(new DjangoAccess());
             String token = args[0];
-            profile.parseJson(dbManager.getUser(token, ""));
+            profile = dbManager.getUser(token, "");
             return profile;
         }
 
