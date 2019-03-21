@@ -25,6 +25,7 @@ public class EventsController {
     private boolean isDeleted;
     private boolean isCreated;
     private boolean isUpdated;
+    private DBManager dbManager = DBManager.getInstance();
 
     public EventsController(){
 
@@ -84,7 +85,6 @@ public class EventsController {
 
     public void retrieve(Context context){
         eventsList = new ArrayList<>();
-        DBManager dbManager = new DBManager(new DjangoAccess());
         eventsList = dbManager.getAllEvents(SessionManager.getToken(context));
 //        try {
 //            JSONArray jsonArr = json.getJSONArray("result");
@@ -106,7 +106,6 @@ public class EventsController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager(new DjangoAccess());
                 event[0] = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
             }
         });
@@ -127,8 +126,13 @@ public class EventsController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager(new DjangoAccess());
-                dbManager.deleteEvent(id, token);
+                try {
+                    isDeleted = true;
+                    dbManager.deleteEvent(id, token);
+                } catch (KraftyRuntimeException e){
+                    Log.d("DELETE EVENT ERROR", "event error" +  e.getMessage());
+                    isDeleted = false;
+                }
             }
         });
         t.start();
@@ -138,13 +142,12 @@ public class EventsController {
             //show user Message
             if(isDeleted){
                 Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            else{
+            } else{
                 Toast.makeText(context, "Delete Failure!", Toast.LENGTH_SHORT).show();
                 Log.d("DELETE EVENT ERROR", "event delete error" +  id);
-                return false;
             }
+
+            return isDeleted;
         }
         catch(Exception e){
             Log.d("DELETE EVENT ERROR", "event delete error" +  e.getMessage());
@@ -159,8 +162,13 @@ public class EventsController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager(new DjangoAccess());
-                dbManager.createEvent(event, token);
+                isCreated = true;
+                try {
+                    dbManager.createEvent(event, token);
+                }catch (KraftyRuntimeException e ){
+                    Log.d("CREATE EVENT ERROR", "error creating event" + e);
+                    isCreated = false;
+                }
             }
         });
         t.start();
@@ -168,18 +176,16 @@ public class EventsController {
             //wait for thread to finish
             t.join();
             //show user Message
-            if(isCreated){
-                Toast.makeText(context, "Create Success!", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            else{
-                Toast.makeText(context, "Create Failure!", Toast.LENGTH_SHORT).show();
-                Log.d("CREATE EVENT ERROR", "event error" +  event.getID());
-                return false;
-            }
-        }
-        catch(Exception e){
+                if (isCreated){
+                    Toast.makeText(context, "Create Success!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d("CREATE EVENT ERROR", "event error");
+                    Toast.makeText(context, "Create Failure!", Toast.LENGTH_SHORT).show();
+                }
+                return isCreated;
+        } catch(Exception e){
             Log.d("CREATE EVENT ERROR", "event error" +  e.getMessage());
+            Toast.makeText(context, "Create Failure!", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -188,22 +194,29 @@ public class EventsController {
         String json = event.createJson();
         final String request = json + "&id=" + id;
         final String token = SessionManager.getToken(context);
-        Thread t = new Thread(new Runnable() {
+        final Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager(new DjangoAccess());
+                isUpdated = true;
                 try {
                     dbManager.updateEvent(request, token);
                 }
                 catch(KraftyRuntimeException e){
-                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("UPDATE EVENT ERROR", "event error");
+                    isUpdated = false;
                 }
             }
         });
         t.start();
         try{
             t.join();
-            return true;
+            if (isUpdated){
+                Toast.makeText(context, "Update Success!", Toast.LENGTH_SHORT).show();
+            }else {
+                Log.d("UPDATE EVENT ERROR", "event error");
+                Toast.makeText(context, "Update Failure!", Toast.LENGTH_SHORT).show();
+            }
+            return isUpdated;
         }
         catch(Exception e){ ;
             Log.d("UPDATEEVENTM", e.getMessage());

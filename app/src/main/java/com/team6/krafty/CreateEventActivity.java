@@ -129,7 +129,6 @@ public class CreateEventActivity  extends AppCompatActivity {
         double longitude = 0, latitude = 0;
         Bitmap bmp = null;
         LatLng theLatLng = null;
-        EditText et = null;
 
         EditText eName = findViewById(R.id.eventName);
         TextView eStartDate = findViewById(R.id.tvStartDate);
@@ -161,10 +160,10 @@ public class CreateEventActivity  extends AppCompatActivity {
             return;
         }
 
-        name = et.getText().toString();
+        name = eName.getText().toString();
         startDate = eStartDate.getText().toString();
         endDate = eEndDate.getText().toString();
-        startTime = eStartDate.getText().toString();
+        startTime = eStartTime.getText().toString();
         endTime = eEndTime.getText().toString();
         vendorSpots = Integer.parseInt(eVendorNum.getText().toString());
         description = eDescription.getText().toString();

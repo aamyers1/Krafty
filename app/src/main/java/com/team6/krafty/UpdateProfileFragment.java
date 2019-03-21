@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,14 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class UpdateProfileFragment extends Fragment {
+    static DBManager dbManager = DBManager.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,9 +52,13 @@ public class UpdateProfileFragment extends Fragment {
         @Override
         public User doInBackground(String...args){
             User  profile = new User();
-            DBManager dbManager = new DBManager(new DjangoAccess());
             String token = args[0];
-            profile = dbManager.getUser(token, "");
+            try {
+                profile = dbManager.getUser(token, "");
+            }catch (KraftyRuntimeException e){
+                Log.d("GET USER ERROR", "Profile error " + e);
+                //TODO force logout?
+            }
             return profile;
         }
 

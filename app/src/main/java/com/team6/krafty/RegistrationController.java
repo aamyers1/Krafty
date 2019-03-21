@@ -1,14 +1,14 @@
 package com.team6.krafty;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 public class RegistrationController {
-
     private boolean isValidUsername = false;
     private boolean isValidEmail = false;
     private String returnString  = "";
-    private static DBManager dbManager;
+    private static DBManager dbManager = DBManager.getInstance();
 
     //sets up a new user of the Krafter type, attempts to create the krafter in the database.
     //A message is displayed in a toast on return of either error or success.
@@ -23,7 +23,6 @@ public class RegistrationController {
                 first, last, city, state,imageString,
                 bio,website, etsy, facebook,
                 instagram, businessName);
-        dbManager = new DBManager(new DjangoAccess());
         //check that the username is unique
         if(!checkUsername(newUser)){
             Toast.makeText(context, "Username Taken", Toast.LENGTH_SHORT).show();
@@ -40,7 +39,12 @@ public class RegistrationController {
             @Override
             public void run() {
                 //create the db manager and try to create the user
-                returnString = dbManager.createUser(newUser);
+                try {
+                    returnString = dbManager.createUser(newUser);
+                }catch(KraftyRuntimeException e){
+                    Log.d("CREATE USER ERROR", "user error " +  e);
+                    returnString = "";
+                }
             }
         });
         t.start();
@@ -71,7 +75,12 @@ public class RegistrationController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                isValidUsername = dbManager.checkUsername(user.getUsername());
+                try {
+                    isValidUsername = dbManager.checkUsername(user.getUsername());
+                } catch (KraftyRuntimeException e){
+                    Log.d("CHECK USER ERROR", "reg error " +  e);
+                    isValidUsername = false;
+                }
             }
         });
         t.start();
@@ -96,7 +105,12 @@ public class RegistrationController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-               isValidEmail = dbManager.checkEmail(user.getEmail());
+                try {
+                    isValidEmail = dbManager.checkEmail(user.getEmail());
+                } catch (KraftyRuntimeException e){
+                    Log.d("CHECK EMAIL ERROR", "reg error " +  e);
+                    isValidEmail = false;
+                }
             }
         });
         t.start();

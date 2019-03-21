@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 public class MaterialController {
 
+    private static DBManager dbManager = DBManager.getInstance();
     private boolean isCreated;
     private boolean isUpdated;
     private boolean isDeleted;
@@ -29,7 +30,6 @@ public class MaterialController {
             @Override
             public void run() {
                 try {
-                    DBManager dbManager = new DBManager(new DjangoAccess());
                     dbManager.createMaterial(material, token);
                     Inventory.addMaterial(material);
                 }
@@ -61,8 +61,13 @@ public class MaterialController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager(new DjangoAccess());
-                dbManager.modifyMaterial(material, token);
+                isUpdated = true;
+                try {
+                    dbManager.modifyMaterial(material, token);
+                }catch (KraftyRuntimeException e){
+                    Log.d("UPDATE MAT ERROR", "mat error " +  e);
+                    isUpdated = false;
+                }
             }
         });
         t.start();
@@ -72,14 +77,14 @@ public class MaterialController {
             //show user Message
             if(isUpdated){
                 Toast.makeText(context, "Update Success!", Toast.LENGTH_SHORT).show();
-                return true;
             }
             else{
                 Toast.makeText(context, "Update Failure!", Toast.LENGTH_SHORT).show();
-                return false;
             }
+            return isUpdated;
         }
         catch(Exception e){
+            Toast.makeText(context, "Update Failure!", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -91,8 +96,13 @@ public class MaterialController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager(new DjangoAccess());
-                dbManager.deleteMaterial(id, token);
+                isDeleted = true;
+                try {
+                    dbManager.deleteMaterial(id, token);
+                }catch (KraftyRuntimeException e){
+                    Log.d("DELETE MAT ERROR", "mat error " +  e);
+                    isDeleted = false;
+                }
             }
         });
         t.start();
@@ -102,13 +112,12 @@ public class MaterialController {
             //show user Message
             if(isDeleted){
                 Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
-                return true;
             }
             else{
                 Toast.makeText(context, "Delete Failure!", Toast.LENGTH_SHORT).show();
                 Log.d("DELETE MAT ERROR", "mat error" +  id);
-                return false;
             }
+            return isDeleted;
         }
         catch(Exception e){
             Log.d("DELETE MAT ERROR", "mat error" +  e.getMessage());
@@ -124,8 +133,11 @@ public class MaterialController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DBManager dbManager = new DBManager(new DjangoAccess());
-                response  = dbManager.getMaterial(token);
+                try {
+                    response = dbManager.getMaterial(token);
+                } catch (KraftyRuntimeException e){
+                    Log.d("GET MATs ERROR", "mat error " +  e);
+                }
             }
         });
         t.start();

@@ -20,6 +20,7 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
 
     private static  int MENU_INVENTORY = 500;
     private User profile;
+    static DBManager dbManager = DBManager.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,12 +96,15 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
     }
 
     public void setUpNavMenu(NavigationView navView){
-        final DBManager dbManager = new DBManager(new DjangoAccess());
         final String token = SessionManager.getToken(this);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                profile = dbManager.getUser(token, "");
+                try {
+                    profile = dbManager.getUser(token, "");
+                } catch (KraftyRuntimeException e){
+                    Log.d("GET USER ERROR", "user error " +  e);
+                }
             }
         });
         t.start();

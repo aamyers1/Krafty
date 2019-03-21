@@ -3,9 +3,11 @@ package com.team6.krafty;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 public class SessionManager {
+    private static DBManager dbManager = DBManager.getInstance();
     private static String token;
 
     //gets the current token
@@ -29,13 +31,16 @@ public class SessionManager {
 
     //logs the user in using the username and password provided
     public static boolean login(final Context context, final String username, final String password){
-        final DBManager dbManager = new DBManager(new DjangoAccess());
 
         //NETWORKING MUST BE RUN IN A SEPERATE THREAD
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                token = dbManager.login(username, password);
+                try {
+                    token = dbManager.login(username, password);
+                } catch (KraftyRuntimeException e){
+                    Log.d("LOGIN ERROR", "login error " +  e);
+                }
             }
         });
         t.start();

@@ -20,14 +20,25 @@ import javax.net.ssl.HttpsURLConnection;
 
 class DBManager {
 
+    private static volatile DBManager instance;
     private static DBAccessImpl impl = null;
 
     //TODO: need to check the network connectivity before we try to connect to the api!
     //My idea: force dbmanager as singleton, when getInstance is called, do a check. force context pass
     //I.e. public DBManager getInstance(Context context){ try to get the network connection, if not show message}
-    DBManager(DBAccessImpl theImpl) {
-        setImpl(theImpl);
+    private DBManager() {
+        impl = new DjangoAccess();
     }
+
+    public static DBManager getInstance() {
+        if (instance == null){
+            synchronized (DBAccessImpl.class){
+                if (instance == null) instance = new DBManager();
+            }
+        }
+        return instance;
+    }
+
     public DBAccessImpl getImpl() {
         return impl;
     }

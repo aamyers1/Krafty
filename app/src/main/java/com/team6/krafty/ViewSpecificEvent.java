@@ -36,7 +36,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
         event = controller.getSpecificEvent(id,context);
 
         //set values of Event to controls
-        TextView eventName = (TextView)findViewById(R.id.materialName);
+        TextView eventName = (TextView)findViewById(R.id.eventName);
         eventName.setText(event.getTitle());
 
         TextView eventDesc = (TextView)findViewById(R.id.eventDesc);
