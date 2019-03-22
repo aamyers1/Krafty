@@ -197,7 +197,6 @@ public class CreateEventActivity  extends AppCompatActivity {
         Event event = new Event(encodedImage, name,startDate,endDate,startTime,endTime,vendorSpots,street,city,state,zipcode,latitude,longitude,description,outdoors,power,food,wifi,tables);
         EventsController ec = new EventsController();
         if(ec.createEvent(event,getApplicationContext())){
-            MaterialFragment.nullifyAdapter();
             finish();
         }
     }
