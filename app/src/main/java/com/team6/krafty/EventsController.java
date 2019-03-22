@@ -21,6 +21,7 @@ import java.util.Objects;
 public class EventsController {
 
     ArrayList<Event> eventsList;
+    private Event theEvent;
     private static String token;
     private boolean isDeleted;
     private boolean isCreated;
@@ -102,17 +103,18 @@ public class EventsController {
     }
 
     public Event getSpecificEvent(final int id, final Context context){
-        final Event[] event = {new Event()};
+        theEvent = null;
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                event[0] = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
+                Log.d("ECNTR JSONARRAY", String.valueOf(id));
+                theEvent = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
             }
         });
         t.start();
         try {
             t.join();
-            return event[0];
+            return theEvent;
         } catch(Exception e) {
             Log.d("ECNTR JSONARRAY", e.getMessage());
         }
