@@ -84,12 +84,16 @@
     <string name="eventSchedule">Schedule</string>
     <string name="eventUpdate">Update</string>
     <string name="eventDelete">Delete</string>
-    <string name="eventCreator">Creator</string>
     <string name="createProduct">Create a Product</string>
     <string name="addMat">Add Material</string>
     <string name="viewProductLabel">View Product</string>
     <string name="productImage">Product Image</string>
     <string name="productName">Product Name</string>
+    <string name="productDesc">Description</string>
+    <string name="productPrice">Price</string>
+    <string name="productQuantity">Quantity</string>
+    <string name="productUpdate">Update</string>
+    <string name ="productDelete">Delete</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

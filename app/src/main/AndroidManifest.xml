@@ -48,6 +48,9 @@
         <activity
             android:name=".ModifyEventActivity"
             android:label="Update Event" />
+        <activity
+            android:name=".ViewProductActivity"
+            android:label="View a Product"/>
     </application>
 
 </manifest>

@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public interface DBAccessImpl {
-
+/*
     public abstract void checkEmail(String email);
     //public abstract String getResponse(HttpURLConnection connection, byte[] request);
     public abstract void checkUsername(String username);
@@ -21,5 +21,5 @@ public interface DBAccessImpl {
     public abstract Event getSpecificEvent(int id, String token);
     public abstract void createEvent(Event event, String token);
     public abstract void deleteEvent(int id, String token);
-    public abstract void updateEvent(String jsonString, String token);
+    public abstract void updateEvent(String jsonString, String token);*/
 }

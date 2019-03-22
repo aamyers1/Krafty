@@ -4,7 +4,7 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public class DjangoAccess implements DBAccessImpl {
-    public  void checkEmail(String email){}
+   /* public  void checkEmail(String email){}
   //  public  String getResponse(HttpURLConnection connection, byte[] request){}
     public  void checkUsername(String username){}
     public String createUser(User user){return " ";}
@@ -18,5 +18,5 @@ public class DjangoAccess implements DBAccessImpl {
     public  Event getSpecificEvent(int id, String token){}
     public  void createEvent(Event event, String token){}
     public  void deleteEvent(int id, String token){}
-    public  void updateEvent(String jsonString, String token){}
+    public  void updateEvent(String jsonString, String token){}*/
 }

@@ -305,19 +305,15 @@ class DBManager {
         return false;
     }
 
-    public boolean deleteEvent(int id, String token){
+    public void deleteEvent(int id, String token) throws KraftyRuntimeException{
         HttpURLConnection connection = generatePostConnection("/api/event/delete/");
         //extra header for authorization
         connection.setRequestProperty ("Authorization", "token " + token);
         String eventString = "id="+id;
         byte[] request = eventString.getBytes();
         String response = getResponse(connection,request);
-        if(response.contains("Deleted")){
-            return true;
-        }
-        else{
-            Log.d("DELETE ERROR", response);
-            return false;
+        if(!response.contains("Deleted")){
+            throw new KraftyRuntimeException("Delete Failed!", null);
         }
     }
 
@@ -330,6 +326,47 @@ class DBManager {
             throw new KraftyRuntimeException("Update Failed!", null);
         }
     }
+
+    //the following methods will be moved to DjangoAccess class during implementation
+    // todo: handle exception in KraftyException
+    public Product getProduct(int id, String token){
+        HttpURLConnection connection = generatePostConnection("/api/product/view/");
+        String string = "id=" + id;
+        byte[] request = string.getBytes();
+        String response = getResponse(connection, request);
+        Product product = new Product();
+        try {
+            product.parseJSON(new JSONObject(response));
+        }
+        catch(Exception e){
+            Log.d("jsonException",e.getMessage());
+        }
+        return  product;
+    }
+
+    public void deleteProduct(int id, String token) throws KraftyRuntimeException{
+        HttpURLConnection connection = generatePostConnection("/api/product/delete/");
+        //extra header for authorization
+        connection.setRequestProperty ("Authorization", "token " + token);
+        String string = "id="+id;
+        byte[] request = string.getBytes();
+        String response = getResponse(connection,request);
+        if(!response.contains("Deleted")){
+            throw new KraftyRuntimeException("Delete Failed!", null);
+        }
+    }
+
+    public void updateProduct(String jsonString, String token)throws KraftyRuntimeException{
+        HttpURLConnection connection = generatePostConnection("/api/product/modify/");
+        connection.setRequestProperty("Authorization", "token " + token);
+        byte[] request = jsonString.getBytes();
+        String response = getResponse(connection,request);
+        if(!response.contains("Updated")){
+            throw new KraftyRuntimeException("Update Failed!", null);
+        }
+    }
+
+
 
     //When DBAccessImpl concrete class is made, this will just call the Impl's methods
     /*
