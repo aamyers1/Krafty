@@ -16,8 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CreateProductActivity"></activity>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDBW8wccvzmIaHhWA5EDQp1BCmulIy_L5k" />
@@ -48,6 +46,9 @@
         <activity
             android:name=".ModifyEventActivity"
             android:label="Update Event" />
+        <activity android:name=".CreateProductActivity"
+            android:label="Create Product"/>
+
     </application>
 
 </manifest>

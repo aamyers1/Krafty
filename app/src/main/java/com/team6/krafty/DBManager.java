@@ -41,4 +41,7 @@ class DBManager {
     public void createEvent(Event event, String token){getImpl().createEvent(event, token);}
     public void deleteEvent(int id, String token){getImpl().deleteEvent(id, token);}
     public void updateEvent(String event, String token){getImpl().updateEvent(event, token);}
+    public void createProduct(Product product, String token){getImpl().createProduct(product,token);}
+    public void getProducts(String token){getImpl().getProducts(token);}
+
 }

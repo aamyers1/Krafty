@@ -22,4 +22,6 @@ public interface DBAccessImpl {
     public abstract void createEvent(Event event, String token);
     public abstract void deleteEvent(int id, String token);
     public abstract void updateEvent(String jsonString, String token);
+    public abstract void createProduct(Product product, String token);
+    public abstract void getProducts(String token);
 }

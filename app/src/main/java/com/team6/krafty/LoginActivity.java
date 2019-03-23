@@ -73,9 +73,11 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public Void doInBackground(String...args){
             //clear any previous inventory
-            Inventory.clearAll();
+            Inventory.getInstance().clearAll();
             //get all materials for inventory
             MaterialController.getMaterials(args[0]);
+            ProductController pc = new ProductController();
+            pc.getProducts(args[0]);
             return null;
         }
     }

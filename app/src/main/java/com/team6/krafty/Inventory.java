@@ -15,6 +15,7 @@ public class Inventory {
     //constructor is PRIVATE
     private Inventory(){
         personalMaterials = new Vector<>();
+        personalProducts = new Vector<>();
     }
 
     //use as constructor: singleton class.
@@ -88,5 +89,19 @@ public class Inventory {
     //TODO:Add clear Products when products are implemented
     public static void clearAll(){
         personalMaterials = new Vector<>();
+        personalProducts = new Vector<>();
+    }
+
+    public static Material getMaterialById(int id){
+        for(Material i: personalMaterials){
+            if(i.getId() == id){
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public static void addProduct(Product product){
+        personalProducts.add(product);
     }
 }

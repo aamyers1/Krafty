@@ -342,4 +342,60 @@ public boolean checkUsername(String username){
       throw new KraftyRuntimeException("Update Failed!", null);
     }
   }
+
+  public void createProduct(Product product, String token) throws KraftyRuntimeException{
+    HttpURLConnection connection = generatePostConnection("/api/product/create/");
+    connection.setRequestProperty("Authorization", "token " + token);
+    String jsonString = product.getJson();
+    byte[] request = jsonString.getBytes();
+    String response = getResponse(connection, request);
+    Log.d("RESPPRODUCT", response);
+    if(!response.toLowerCase().contains("product created")){
+      throw new KraftyRuntimeException("Create product failed!", null);
+    }
+    try {
+        JSONObject json = new JSONObject(response);
+        JSONArray jarray = json.getJSONArray("result");
+        int id = jarray.getJSONObject(0).getInt("id");
+        product.setId(id);
+    }
+    catch (Exception e){
+
+    }
+  }
+
+  public void getProducts(String token) {
+      try {
+          URL url = new URL("http://75.128.150.130:2283/api/product/view/");
+          try {
+              HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+              connection.setRequestMethod("GET");
+              //extra header for authorization
+              connection.setRequestProperty("Authorization", "token " + token);
+              StringBuilder response;
+              try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                  String line;
+                  response = new StringBuilder();
+                  while ((line = in.readLine()) != null) {
+                      response.append(line);
+                  }
+                  String reply = response.toString();
+                  JSONObject json = new JSONObject(reply);
+                  JSONArray jsonA = json.getJSONArray("result");
+                  for (int i = 0; i < jsonA.length(); i++) {
+                      Product product = new Product();
+                      product.parseJSON(jsonA.getJSONObject(i));
+                      Inventory.addProduct(product);
+                      Log.d("PRODUCTGET", "retrieved " + product.getName());
+                  }
+              } catch (Exception i) {
+                Log.d("GETPROD", i.getMessage());
+              }
+          } catch (java.io.IOException e) {
+              Log.d("GETPROD", e.getMessage());
+          }
+      } catch (MalformedURLException e) {
+          Log.d("GETPROD", e.getMessage());
+      }
+  }
 }

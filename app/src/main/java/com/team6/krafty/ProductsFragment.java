@@ -29,29 +29,29 @@ public class ProductsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-       // Inventory inv = Inventory.getInstance();
-       // ca = new cardAdapter(inv.getProductImages(), inv.getProductCaptions());
+        Inventory inv = Inventory.getInstance();
+        ca = new cardAdapter(inv.getProductImages(), inv.getProductCaptions());
         FloatingActionButton fab = view.findViewById(R.id.addInventory);
-       // fab.setOnClickListener(new View.OnClickListener() {
-       //     @Override
-       //     public void onClick(View view) {
-       //         Intent intent = new Intent(getActivity(), CreateProductActivity.class);
-       //         startActivity(intent);
-       //     }
-       // });
-       // RecyclerView rv = view.findViewById(R.id.matRecycler);
-       // rv.setAdapter(ca);
-       // rv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
-       // ca.setListener(new cardAdapter.Listener() {
-       //     @Override
-       //     public void onClick(int position) {
-       //         //Start a new Modify Material Activity, pass the position for processing
-       //         //Intent intent = new Intent(getView().getContext(),ModifyMaterialActivity.class );
-       //         //intent.putExtra("EXTRA_ID", position);
-       //         //startActivity(intent);
-       //         //TODO: View product page
-       //     }
-       // });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CreateProductActivity.class);
+                startActivity(intent);
+            }
+        });
+        RecyclerView rv = view.findViewById(R.id.matRecycler);
+        rv.setAdapter(ca);
+        rv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
+       ca.setListener(new cardAdapter.Listener() {
+           @Override
+           public void onClick(int position) {
+               //Start a new Modify Material Activity, pass the position for processing
+               //Intent intent = new Intent(getView().getContext(),ModifyMaterialActivity.class );
+               //intent.putExtra("EXTRA_ID", position);
+               //startActivity(intent);
+               //TODO: View product page
+           }
+       });
     }
 
     public static void nullifyAdapter(){
