@@ -79,7 +79,7 @@ public class ProductController {
             @Override
             public void run() {
                 DBManager dbManager = DBManager.getInstance();
-                dbManager.deleteEvent(id, SessionManager.getToken(context));
+                dbManager.deleteProduct(id, SessionManager.getToken(context));
             }
         });
         t.start();

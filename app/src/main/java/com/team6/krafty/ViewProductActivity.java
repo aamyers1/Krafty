@@ -9,9 +9,12 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,14 +23,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
-public class ViewProductActivity extends AppCompatActivity {
+public class ViewProductActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private int id;
     private Context context = this;
     private Product product;
+    cardAdapter ca;
+    private HashMap<Integer, Integer> materials;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,7 @@ public class ViewProductActivity extends AppCompatActivity {
          id = intent.getIntExtra("EXTRA_ID", 0);
          final ProductController controller = new ProductController();
          product = Inventory.getProduct(id);
+         materials = product.getMaterials();
 
          TextView productName = (TextView)findViewById(R.id.productName);
          productName.setText(product.getName());
@@ -72,10 +79,10 @@ public class ViewProductActivity extends AppCompatActivity {
 
 
         if(username.equals(product.getCreator())) {
-            Button btnProductUpdate = (Button)findViewById(R.id.btnProductUpdate);
+            Button btnProductUpdate = (Button) findViewById(R.id.btnProductUpdate);
             btnProductUpdate.setVisibility(Button.VISIBLE);
             btnProductUpdate.setClickable(true);
-            Button btnProductDelete = (Button)findViewById(R.id.btnProductDelete);
+            Button btnProductDelete = (Button) findViewById(R.id.btnProductDelete);
             btnProductDelete.setVisibility(Button.VISIBLE);
             btnProductDelete.setClickable(false);
 
@@ -83,54 +90,51 @@ public class ViewProductActivity extends AppCompatActivity {
             btnProductUpdate.setOnClickListener(new ViewProductActivity.onUpdateClick());
 
 
-
-            ListView lw = (ListView)findViewById(R.id.matList);
-            lw.setVisibility(ListView.VISIBLE);
-            lw.setAdapter(new lwAdapter());
+            RecyclerView rv = findViewById(R.id.recyclerMats);
+            ca = new cardAdapter(getbmps(), getMatNames());
+            rv.setAdapter(ca);
+            rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         }
 
     }
 
-   private class lwAdapter extends BaseAdapter{
-
-        private final ArrayList data;
-
-        private lwAdapter(){
-            data = new ArrayList();
-            data.addAll(product.getMaterials().entrySet());
-        }
-        @Override
-        public int getCount(){
-            return data.size();
-        }
-
-        @Override
-        public Map.Entry<String, String> getItem(int position){
-            return (Map.Entry)data.get(position);
-        }
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final View result;
-
-            if (convertView == null) {
-                result = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_products, parent, false);
-            } else {
-                result = convertView;
-            }
-
-            Map.Entry<String, String> item = getItem(position);
-
-            ((TextView) result.findViewById(android.R.id.text1)).setText(item.getKey());
-            ((TextView) result.findViewById(android.R.id.text2)).setText(item.getValue());
-
-            return result;
-        }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String item = parent.getItemAtPosition(position).toString();
     }
+
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+    }
+
+    public String[] getMatNames(){
+        String[] names = new String[materials.size()];
+        int [] ids = getIds();
+        for(int i = 0 ; i < materials.size(); i ++){
+            names[i] = Inventory.getMaterialById(ids[i]).getName() + ": " + materials.get(ids[i]);
+        }
+
+        return names;
+    }
+    public Bitmap[] getbmps(){
+        Bitmap[] bmp = new Bitmap[materials.size()];
+        int [] ids = getIds();
+        for(int i = 0; i < materials.size(); i++){
+            bmp[i] = Inventory.getMaterialById(ids[i]).getBmp();
+        }
+        return bmp;
+    }
+
+    public int[] getIds(){
+        int k = 0;
+        int[] ids = new int[materials.size()];
+        for(Integer i: materials.keySet()){
+            ids[k] = i;
+            k++;
+        }
+        return ids;
+    }
+
 
     private class onUpdateClick implements View.OnClickListener{
 

@@ -32,8 +32,8 @@ public class Product {
         this.quantity = quantity;
         this.Materials = mats;
         this.price = price;
-        this.creator = creator;
         this.image = image;
+        this.creator = creator;
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {

@@ -423,7 +423,8 @@ public boolean checkUsername(String username){
         String string = "id="+id;
         byte[] request = string.getBytes();
         String response = getResponse(connection,request);
-        if(!response.contains("Deleted")){
+        Log.d("DELETERESP", response);
+        if(response.contains("ERROR")){
             throw new KraftyRuntimeException("Delete Failed!", null);
         }
     }
@@ -433,7 +434,7 @@ public boolean checkUsername(String username){
         connection.setRequestProperty("Authorization", "token " + token);
         byte[] request = jsonString.getBytes();
         String response = getResponse(connection,request);
-        if(!response.contains("Updated")){
+        if(response.contains("ERROR")){
             throw new KraftyRuntimeException("Update Failed!", null);
         }
     }
