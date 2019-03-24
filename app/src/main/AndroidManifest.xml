@@ -46,6 +46,12 @@
         <activity
             android:name=".ModifyEventActivity"
             android:label="Update Event" />
+        <activity
+            android:name=".ViewProductActivity"
+            android:label="View a Product"/>
+
+        <activity android:name=".ModifyProductActivity"
+            android:label="Modify Product"/>
         <activity android:name=".CreateProductActivity"
             android:label="Create Product"/>
 

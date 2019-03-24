@@ -130,9 +130,8 @@ public class ViewSpecificEvent extends AppCompatActivity{
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             EventsController ec = new EventsController();
-                            if (ec.deleteEvent(id, getApplicationContext())) {
+                            ec.deleteEvent(id, getApplicationContext());
                                 finish();
-                            }
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

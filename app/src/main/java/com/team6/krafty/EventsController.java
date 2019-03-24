@@ -21,12 +21,10 @@ import java.util.Objects;
 public class EventsController {
 
     ArrayList<Event> eventsList;
-    private Event theEvent;
     private static String token;
     private boolean isDeleted;
     private boolean isCreated;
     private boolean isUpdated;
-    private DBManager dbManager = DBManager.getInstance();
 
     public EventsController(){
 
@@ -49,9 +47,6 @@ public class EventsController {
     }
 
     public LatLng[] getltlng(){
-        if (eventsList == null){
-            eventsList = new ArrayList<Event>();
-        }
         LatLng[] ltLng = new LatLng[eventsList.size()];
         for(int i = 0; i < eventsList.size(); i++){
             ltLng[i] = new LatLng(eventsList.get(i).getLatitude(), eventsList.get(i).getLongitude());
@@ -86,55 +81,58 @@ public class EventsController {
 
     public void retrieve(Context context){
         eventsList = new ArrayList<>();
-        eventsList = dbManager.getAllEvents(SessionManager.getToken(context));
-//        try {
-//            JSONArray jsonArr = json.getJSONArray("result");
-//            for(int i = 0; i < jsonArr.length(); i ++){
-//                Event newEvent = new Event();
-//                newEvent.parseJson(jsonArr.getJSONObject(i));
-//                //TODO: FILTER OUT EVENTS WHICH HAVE PASSED
-//                eventsList.add(newEvent);
-//
-//            }
-//        }
-//        catch(Exception e){
-//            Log.d("ECNTR JSONARRAY", e.getMessage());
-//        }
+        DBManager dbManager = new DBManager();
+        JSONObject json = dbManager.getAllEvents(SessionManager.getToken(context));
+        try {
+            JSONArray jsonArr = json.getJSONArray("result");
+            for(int i = 0; i < jsonArr.length(); i ++){
+                Event newEvent = new Event();
+                newEvent.parseJson(jsonArr.getJSONObject(i));
+                //TODO: FILTER OUT EVENTS WHICH HAVE PASSED
+                eventsList.add(newEvent);
+
+            }
+        }
+        catch(Exception e){
+            Log.d("ECNTR JSONARRAY", e.getMessage());
+        }
     }
 
     public Event getSpecificEvent(final int id, final Context context){
-        theEvent = null;
+        final Event event = new Event();
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d("ECNTR JSONARRAY", String.valueOf(id));
-                theEvent = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
+                DBManager dbManager = new DBManager();
+                JSONObject json = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
+                try {
+                    JSONArray jsonArray = json.getJSONArray("result");
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    event.parseJson(jsonObject);
+                } catch (Exception e) {
+                    Log.d("JSONERROR", "SINGLE EVENT PARSE ERROR");
+                }
             }
         });
         t.start();
         try {
             t.join();
-            return theEvent;
+            return event;
         } catch(Exception e) {
             Log.d("ECNTR JSONARRAY", e.getMessage());
         }
         return null;
     }
 
-    public boolean deleteEvent(final int id, final Context context){
+    public void deleteEvent(final int id, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
         token = SessionManager.getToken(context);
         //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to delete event
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    isDeleted = true;
-                    dbManager.deleteEvent(id, token);
-                } catch (KraftyRuntimeException e){
-                    Log.d("DELETE EVENT ERROR", "event error" +  e.getMessage());
-                    isDeleted = false;
-                }
+                DBManager dbManager = new DBManager();
+                dbManager.deleteEvent(id, token);
             }
         });
         t.start();
@@ -142,18 +140,19 @@ public class EventsController {
             //wait for thread to finish
             t.join();
             //show user Message
-            if(isDeleted){
+            //if(isDeleted){
                 Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
-            } else{
-                Toast.makeText(context, "Delete Failure!", Toast.LENGTH_SHORT).show();
-                Log.d("DELETE EVENT ERROR", "event delete error" +  id);
-            }
-
-            return isDeleted;
+                //return true;
+            //}
+            //else{
+              //  Toast.makeText(context, "Delete Failure!", Toast.LENGTH_SHORT).show();
+                //Log.d("DELETE EVENT ERROR", "event delete error" +  id);
+                //return false;
+            //}
         }
         catch(Exception e){
             Log.d("DELETE EVENT ERROR", "event delete error" +  e.getMessage());
-            return false;
+            //return false;
         }
     }
 
@@ -164,13 +163,8 @@ public class EventsController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                isCreated = true;
-                try {
-                    dbManager.createEvent(event, token);
-                }catch (KraftyRuntimeException e ){
-                    Log.d("CREATE EVENT ERROR", "error creating event" + e);
-                    isCreated = false;
-                }
+                DBManager dbManager = new DBManager();
+                isCreated = dbManager.createEvent(event, token);
             }
         });
         t.start();
@@ -178,16 +172,18 @@ public class EventsController {
             //wait for thread to finish
             t.join();
             //show user Message
-                if (isCreated){
-                    Toast.makeText(context, "Create Success!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.d("CREATE EVENT ERROR", "event error");
-                    Toast.makeText(context, "Create Failure!", Toast.LENGTH_SHORT).show();
-                }
-                return isCreated;
-        } catch(Exception e){
+            if(isCreated){
+                Toast.makeText(context, "Create Success!", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            else{
+                Toast.makeText(context, "Create Failure!", Toast.LENGTH_SHORT).show();
+                Log.d("CREATE EVENT ERROR", "event error" +  event.getID());
+                return false;
+            }
+        }
+        catch(Exception e){
             Log.d("CREATE EVENT ERROR", "event error" +  e.getMessage());
-            Toast.makeText(context, "Create Failure!", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -196,29 +192,22 @@ public class EventsController {
         String json = event.createJson();
         final String request = json + "&id=" + id;
         final String token = SessionManager.getToken(context);
-        final Thread t = new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                isUpdated = true;
+                DBManager dbManager = new DBManager();
                 try {
                     dbManager.updateEvent(request, token);
                 }
                 catch(KraftyRuntimeException e){
-                    Log.d("UPDATE EVENT ERROR", "event error");
-                    isUpdated = false;
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
         t.start();
         try{
             t.join();
-            if (isUpdated){
-                Toast.makeText(context, "Update Success!", Toast.LENGTH_SHORT).show();
-            }else {
-                Log.d("UPDATE EVENT ERROR", "event error");
-                Toast.makeText(context, "Update Failure!", Toast.LENGTH_SHORT).show();
-            }
-            return isUpdated;
+            return true;
         }
         catch(Exception e){ ;
             Log.d("UPDATEEVENTM", e.getMessage());

@@ -119,7 +119,6 @@ public class ModifyEventActivity extends AppCompatActivity {
 }
 
 
-    //TODO: PLEASE DEAR GOD BREAK UP SOME OF THIS (AND WE CAN REUSE IN THE OTHER SIMILAR FILE IF WE DO)
     //handles submit click
     public void onSubmitClick(){
         //essentially just gathers strings from various editTexts
@@ -131,103 +130,19 @@ public class ModifyEventActivity extends AppCompatActivity {
         double longitude = 0, latitude = 0;
         Bitmap bmp = null;
         LatLng theLatLng = null;
-        EditText et = null;
 
-        et = findViewById(R.id.eventName);
-        name = et.getText().toString();
-        if (name.length() <= 0 ){
-            Toast.makeText(getApplicationContext(), "Event Name is required", Toast.LENGTH_SHORT).show();
-            return;
-        } else if (name.length() > 256){
-            Toast.makeText(getApplicationContext(), "Event Name too long", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        TextView tv = findViewById(R.id.tvStartDate);
-        startDate = tv.getText().toString();
-        if (startDate.equals("No date selected") ){
-            Toast.makeText(getApplicationContext(), "Start date is required", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        tv = findViewById(R.id.tvEndDate);
-        endDate = tv.getText().toString();
-        if (endDate.equals("No date selected")){
-            //TODO check endDate is after startDate
-            Toast.makeText(getApplicationContext(), "End date is required", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        tv = findViewById(R.id.tvStartTime);
-        startTime = tv.getText().toString();
-        if (startTime.equals("No opening time" )){
-            Toast.makeText(getApplicationContext(), "Opening time is required", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        tv = findViewById(R.id.tvEndTime);
-        endTime = tv.getText().toString();
-        if (endTime.equals( "No closing time" )){
-            //TODO check endTime is after startTime
-            Toast.makeText(getApplicationContext(), "Closing time is required", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        et = findViewById(R.id.txtVendorNum);
-        try {
-            vendorSpots = Integer.parseInt(et.getText().toString());
-            if (vendorSpots <= 0) throw new InvalidParameterException();
-        } catch (InvalidParameterException e){
-            Toast.makeText(getApplicationContext(), "Capacity of Krafters too low", Toast.LENGTH_SHORT).show();
-            return;
-        } catch (NumberFormatException e) {
-            if (et.getText().toString().length() > 0) {
-                Toast.makeText(getApplicationContext(), "Capacity of Krafters too high", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Capacity of Krafters required", Toast.LENGTH_SHORT).show();
-            }
-            return;
-        } catch (Exception e){
-            Toast.makeText(getApplicationContext(), "Capacity of Krafters error", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        et = findViewById(R.id.txtStreet);
-        street = et.getText().toString();
-        if (street.length() > 64){
-            Toast.makeText(getApplicationContext(), "Street address too long", Toast.LENGTH_SHORT).show();
-            return;
-        } else if (street.length() <= 0){
-            Toast.makeText(getApplicationContext(), "Street address required", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        et = findViewById(R.id.txtCity);
-        city = et.getText().toString();
-        if (city.length() > 64){
-            Toast.makeText(getApplicationContext(), "City too long", Toast.LENGTH_SHORT).show();
-            return;
-        } else if (city.length() <= 0) {
-            Toast.makeText(getApplicationContext(), "City required", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        et = findViewById(R.id.txtState);
-        state = et.getText().toString();
-        if (state.length() > 2){
-            Toast.makeText(getApplicationContext(), "State too long", Toast.LENGTH_SHORT).show();
-            return;
-        } else if (state.length() <= 0){
-            Toast.makeText(getApplicationContext(), "State required", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        et = findViewById(R.id.txtZip);
-        zipcode = et.getText().toString();
-        if (zipcode.length() > 10){
-            Toast.makeText(getApplicationContext(), "Zip Code too long", Toast.LENGTH_SHORT).show();
-            return;
-        } else if(zipcode.length() <= 0){
-            Toast.makeText(getApplicationContext(), "Zip Code required", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        et = findViewById(R.id.txtDescription);
-        description = et.getText().toString();
-        if (description.length() > 256){
-            Toast.makeText(getApplicationContext(), "Description too long", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        EditText eName = findViewById(R.id.eventName);
+        TextView tvStartDate = findViewById(R.id.tvStartDate);
+        TextView tvEndDate = findViewById(R.id.tvEndDate);
+        TextView tvStartTime = findViewById(R.id.tvStartTime);
+        TextView tvEndTime = findViewById(R.id.tvEndTime);
+        EditText eVendorNum = findViewById(R.id.txtVendorNum);
+        EditText eStreet = findViewById(R.id.txtStreet);
+        EditText eCity = findViewById(R.id.txtCity);
+        EditText eState = findViewById(R.id.txtState);
+        EditText eZip = findViewById(R.id.txtZip);
+        EditText eDescription = findViewById(R.id.txtDescription);
+
         Switch sw = findViewById(R.id.swOutdoors);
         outdoors = sw.isChecked();
         sw = findViewById(R.id.swPower);
@@ -239,21 +154,44 @@ public class ModifyEventActivity extends AppCompatActivity {
         sw = findViewById(R.id.swTables);
         tables = sw.isChecked();
 
-        try {
-            theLatLng = getLocationFromAddress(getApplicationContext(), street + " " + city + " " + state + " " + zipcode);
-
-            if (theLatLng == null) {
-                throw new Exception();
-            } else {
-                longitude = theLatLng.longitude;
-                latitude = theLatLng.latitude;
-            }
-        } catch (Exception e){
-            Toast.makeText(getApplicationContext(), "Unable to validate address", Toast.LENGTH_SHORT).show();
+        try{
+            Validator.validateImage();
+            Validator.validateNameEditText(eName,"Name");
+            Validator.validateDateSet(tvStartDate, "START");
+            Validator.validateDateSet(tvEndDate, "END");
+            Validator.validateTimeSet(tvStartTime, "OPENS");
+            Validator.validateTimeSet(tvEndTime, "CLOSES");
+            Validator.validateIntEt(eVendorNum, "Capacity of Krafters");
+            Validator.validateDescriptionEditText(eDescription, "Let people know...");
+            Validator.validateStreetEditText(eStreet, "Event Address");
+            street = eStreet.getText().toString();
+            Validator.validateCityEditText(eCity, "City");
+            city = eCity.getText().toString();
+            Validator.validateStateEditText(eState, "State");
+            state = eState.getText().toString();
+            Validator.validateZipEditText(eZip, "Zip");
+            zipcode = eZip.getText().toString();
+            String address = street + " " + city + " " + state + " " + zipcode;
+            Validator.validateAddress(street, city, state, zipcode, getApplicationContext());
+            theLatLng = Validator.getLocationFromAddress(getApplicationContext(), address);
+        } catch (KraftyRuntimeException e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Event event = new Event(encodedImage, name,startDate,endDate,startTime,endTime,vendorSpots,street,city,state,zipcode,latitude,longitude,description,outdoors,power,food,wifi,tables);
+        name = eName.getText().toString();
+        startDate = tvStartDate.getText().toString();
+        endDate = tvEndDate.getText().toString();
+        startTime = tvStartDate.getText().toString();
+        endTime = tvEndTime.getText().toString();
+        vendorSpots = Integer.parseInt(eVendorNum.getText().toString());
+        description = eDescription.getText().toString();
+        latitude = theLatLng.latitude;
+        longitude = theLatLng.longitude;
+
+        Event event = new Event(encodedImage, name,startDate,endDate,startTime,endTime,vendorSpots,
+                street,city,state,zipcode,latitude,longitude,description,outdoors,power,food,wifi,
+                tables);
         EventsController ec = new EventsController();
         if(ec.updateEvent(event, id, this)){
             finish();
@@ -262,30 +200,6 @@ public class ModifyEventActivity extends AppCompatActivity {
         else{
             Toast.makeText(this,"Event update failed!", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public LatLng getLocationFromAddress(Context context, String strAddress) {
-
-        Geocoder coder = new Geocoder(context);
-        List<Address> address;
-        LatLng p1 = null;
-
-        try {
-            // May throw an IOException
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return null;
-            }
-
-            Address location = address.get(0);
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
-
-        } catch (IOException ex) {
-
-            ex.printStackTrace();
-        }
-
-        return p1;
     }
 
     private DatePickerDialog.OnDateSetListener startDatePickerListener = new DatePickerDialog.OnDateSetListener() {
