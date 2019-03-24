@@ -124,7 +124,7 @@ public class EventsController {
         return null;
     }
 
-    public boolean deleteEvent(final int id, final Context context){
+    public void deleteEvent(final int id, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
         token = SessionManager.getToken(context);
         //NETWORKING MUST BE DONE IN A SEPARATE THREAD. Attempts to delete event
@@ -132,7 +132,7 @@ public class EventsController {
             @Override
             public void run() {
                 DBManager dbManager = new DBManager();
-                isDeleted = dbManager.deleteEvent(id, token);
+                dbManager.deleteEvent(id, token);
             }
         });
         t.start();
@@ -140,19 +140,19 @@ public class EventsController {
             //wait for thread to finish
             t.join();
             //show user Message
-            if(isDeleted){
+            //if(isDeleted){
                 Toast.makeText(context, "Delete Success!", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            else{
-                Toast.makeText(context, "Delete Failure!", Toast.LENGTH_SHORT).show();
-                Log.d("DELETE EVENT ERROR", "event delete error" +  id);
-                return false;
-            }
+                //return true;
+            //}
+            //else{
+              //  Toast.makeText(context, "Delete Failure!", Toast.LENGTH_SHORT).show();
+                //Log.d("DELETE EVENT ERROR", "event delete error" +  id);
+                //return false;
+            //}
         }
         catch(Exception e){
             Log.d("DELETE EVENT ERROR", "event delete error" +  e.getMessage());
-            return false;
+            //return false;
         }
     }
 
