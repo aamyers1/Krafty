@@ -112,7 +112,7 @@ public class Product {
         }
     }
 
-    public JSONArray createJsonMaterials(){
+    public String createJsonMaterials(){
         HashMap<Integer, Integer> hash = getMaterials();
         /*Iterator it = hash.entrySet().iterator();
         while(it.hasNext()){
@@ -130,7 +130,7 @@ public class Product {
                 e.printStackTrace();
             }
         }
-        return jsonArray ;
+        return jsonArray.toString() ;
     }
 
     public String createJson(){
