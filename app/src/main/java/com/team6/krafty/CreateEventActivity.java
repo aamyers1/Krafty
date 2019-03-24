@@ -33,7 +33,8 @@ import java.util.Date;
 import java.util.List;
 import com.google.android.gms.maps.model.LatLng;
 
-public class CreateEventActivity  extends AppCompatActivity {
+public class
+CreateEventActivity  extends AppCompatActivity {
     private String encodedImage = "";
 
 
