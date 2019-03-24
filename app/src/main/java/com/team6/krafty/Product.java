@@ -5,9 +5,12 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class Product {
 
@@ -107,6 +110,34 @@ public class Product {
         else{
             bmp = null;
         }
+    }
+
+    public JSONArray createJsonMaterials(){
+        HashMap<Integer, Integer> hash = getMaterials();
+        /*Iterator it = hash.entrySet().iterator();
+        while(it.hasNext()){
+
+        }*/
+        JSONArray jsonArray = new JSONArray();
+        JSONObject tempJson = new JSONObject();
+        String json = "";
+        for(HashMap.Entry<Integer,Integer> entry:hash.entrySet()){
+            try {
+                tempJson.put("id","entry.key");
+                tempJson.put("qtyrequired","entry.value");
+                jsonArray.put(tempJson);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return jsonArray ;
+    }
+
+    public String createJson(){
+
+        return ("name=" +  getName() +"&image=" +getImage() + "&description=" +getDescription()
+                +"&price=" + getPrice() + "&qty="+getQuantity() +
+                "&Materials="+createJsonMaterials());
     }
 
 }

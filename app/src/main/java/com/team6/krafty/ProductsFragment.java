@@ -46,7 +46,7 @@ public class ProductsFragment extends Fragment {
        //     @Override
        //     public void onClick(int position) {
        //         //Start a new Modify Material Activity, pass the position for processing
-       //         //Intent intent = new Intent(getView().getContext(),ModifyMaterialActivity.class );
+       //         //Intent intent = new Intent(getView().getContext(),ViewProductActivity.class );
        //         //intent.putExtra("EXTRA_ID", position);
        //         //startActivity(intent);
        //         //TODO: View product page

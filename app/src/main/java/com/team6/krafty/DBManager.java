@@ -2,6 +2,7 @@ package com.team6.krafty;
 
 import android.util.JsonReader;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -330,7 +331,7 @@ class DBManager {
     //the following methods will be moved to DjangoAccess class during implementation
     // todo: handle exception in KraftyException
     public Product getProduct(int id, String token){
-        HttpURLConnection connection = generatePostConnection("/api/product/view/");
+        HttpURLConnection connection = generatePostConnection("/api/product/viewspecific/");
         String string = "id=" + id;
         byte[] request = string.getBytes();
         String response = getResponse(connection, request);
