@@ -51,6 +51,9 @@
         <activity
             android:name=".ViewProductActivity"
             android:label="View a Product"/>
+
+        <activity android:name=".ModifyProductActivity"
+            android:label="Modify Product"/>
     </application>
 
 </manifest>

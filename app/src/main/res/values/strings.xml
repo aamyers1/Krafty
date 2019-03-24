@@ -94,6 +94,7 @@
     <string name="productQuantity">Quantity</string>
     <string name="productUpdate">Update</string>
     <string name ="productDelete">Delete</string>
+    <string name ="matQty">Quantity</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

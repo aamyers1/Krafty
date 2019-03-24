@@ -9,11 +9,18 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 
 public class ViewProductActivity extends AppCompatActivity {
@@ -82,8 +89,55 @@ public class ViewProductActivity extends AppCompatActivity {
 
             btnProductDelete.setOnClickListener(new ViewProductActivity.onDeleteClick());
             btnProductUpdate.setOnClickListener(new ViewProductActivity.onUpdateClick());
+
+
+
+            ListView lw = (ListView)findViewById(R.id.matList);
+            lw.setVisibility(ListView.VISIBLE);
+            lw.setAdapter(new lwAdapter());
         }
 
+    }
+
+   private class lwAdapter extends BaseAdapter{
+
+        private final ArrayList data;
+
+        private lwAdapter(){
+            data = new ArrayList();
+            data.addAll(product.getMaterials().entrySet());
+        }
+        @Override
+        public int getCount(){
+            return data.size();
+        }
+
+        @Override
+        public Map.Entry<String, String> getItem(int position){
+            return (Map.Entry)data.get(position);
+        }
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final View result;
+
+            if (convertView == null) {
+                result = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_products, parent, false);
+            } else {
+                result = convertView;
+            }
+
+            Map.Entry<String, String> item = getItem(position);
+
+            ((TextView) result.findViewById(android.R.id.text1)).setText(item.getKey());
+            ((TextView) result.findViewById(android.R.id.text2)).setText(item.getValue());
+
+            return result;
+        }
     }
 
     private class onUpdateClick implements View.OnClickListener{
