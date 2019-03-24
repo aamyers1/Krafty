@@ -99,28 +99,45 @@ public class KrafteeRegisterFragment extends Fragment {
     public void onButtonClick(){
         String username, firstName, lastName, email, bio,city, state, password;
         //gets all user inputs from the GUI
-        EditText et = getView().findViewById(R.id.username);
-        username = et.getText().toString();
-        et = getView().findViewById(R.id.password);
-        password = et.getText().toString();
-        et = getView().findViewById(R.id.confirmPassword);
+        EditText eUsername = getView().findViewById(R.id.username);
+        EditText ePassword = getView().findViewById(R.id.password);
+        EditText eConfirm = getView().findViewById(R.id.confirmPassword);
+        EditText eFirst = getView().findViewById(R.id.firstName);
+        EditText eLast = getView().findViewById(R.id.txtLastName);
+        EditText eEmail = getView().findViewById(R.id.email);
+        EditText eBio = getView().findViewById(R.id.txtBio);
+        EditText eCity = getView().findViewById(R.id.txtCity);
+        EditText eState = getView().findViewById(R.id.txtState);
+
+        try {
+            Validator.validateUsername(eUsername);
+            Validator.validateBasicEditText(ePassword, "PASSWORD");
+            Validator.validateBasicEditText(eConfirm, "PASSWORD CONFIRMATION");
+            Validator.validateBasicEditText(eFirst, "FIRST NAME");
+            Validator.validateBasicEditText(eLast, "LAST NAME");
+            Validator.validateEmail(eEmail);
+            Validator.validateCityEditText(eCity, "CITY");
+            Validator.validateStateEditText(eState, "STATE");
+        } catch (KraftyRuntimeException e){
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        username = eUsername.getText().toString();
+        password = ePassword.getText().toString();
+        firstName = eFirst.getText().toString();
+        lastName = eLast.getText().toString();
+        email = eEmail.getText().toString();
+        bio = eBio.getText().toString();
+        city = eCity.getText().toString();
+        state = eState.getText().toString();
+
         //checks if both passwords match
-        if(!et.getText().toString().equals(password)){
+        if(!eConfirm.getText().toString().equals(password)){
             Toast.makeText(getContext(), "Password and Confirm Password do not match. Try again", Toast.LENGTH_SHORT).show();
             return;
         }
-        et = getView().findViewById(R.id.firstName);
-        firstName = et.getText().toString();
-        et = getView().findViewById(R.id.txtLastName);
-        lastName = et.getText().toString();
-        et = getView().findViewById(R.id.email);
-        email = et.getText().toString();
-        et = getView().findViewById(R.id.txtBio);
-        bio = et.getText().toString();
-        et = getView().findViewById(R.id.txtCity);
-        city = et.getText().toString();
-        et = getView().findViewById(R.id.txtState);
-        state = et.getText().toString();
+
         RegistrationController rc = new RegistrationController();
         boolean created = rc.createNewUser(2, username,email,password,firstName,lastName,
                 city,state, encodedImage,bio,"","","","","",getContext());

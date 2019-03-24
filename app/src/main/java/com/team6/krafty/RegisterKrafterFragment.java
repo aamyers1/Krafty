@@ -95,37 +95,56 @@ public class RegisterKrafterFragment extends Fragment {
         //gather all the data fields and send them to the controller for processing;
         int userType = 1;
         String username, email, password, firstName, lastName, city, state, bio, website, etsy, facebook, instagram, businessName;
-        EditText et = (EditText) getView().findViewById(R.id.username);
-        username = et.getText().toString();
-        et = getView().findViewById(R.id.password);
-        password = et.getText().toString();
-        et = getView().findViewById(R.id.confirmPassword);
-        if(!et.getText().toString().equals(password)){
+
+        EditText eUsername = getView().findViewById(R.id.username);
+        EditText ePassword = getView().findViewById(R.id.password);
+        EditText eConfirm = getView().findViewById(R.id.confirmPassword);
+        EditText eFirst = getView().findViewById(R.id.firstName);
+        EditText eLast = getView().findViewById(R.id.txtLastName);
+        EditText eEmail = getView().findViewById(R.id.email);
+        EditText eBio = getView().findViewById(R.id.txtBio);
+        EditText eCity = getView().findViewById(R.id.txtCity);
+        EditText eState = getView().findViewById(R.id.txtState);
+        EditText eWebsite = getView().findViewById(R.id.etWebsite);
+        EditText eEtsy = getView().findViewById(R.id.etEtsy);
+        EditText eFacebook = getView().findViewById(R.id.etFacebook);
+        EditText eInstagram = getView().findViewById(R.id.etInstagram);
+        EditText eBusiness = getView().findViewById(R.id.business);
+
+        try {
+            Validator.validateUsername(eUsername);
+            Validator.validateBasicEditText(ePassword, "PASSWORD");
+            Validator.validateBasicEditText(eConfirm, "PASSWORD CONFIRMATION");
+            Validator.validateBasicEditText(eFirst, "FIRST NAME");
+            Validator.validateBasicEditText(eLast, "LAST NAME");
+            Validator.validateEmail(eEmail);
+            Validator.validateCityEditText(eCity, "CITY");
+            Validator.validateStateEditText(eState, "STATE");
+            Validator.validateBasicEditText(eBusiness, "BUSINESS NAME");
+        } catch (KraftyRuntimeException e){
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        username = eUsername.getText().toString();
+        password = ePassword.getText().toString();
+        firstName = eFirst.getText().toString();
+        lastName = eLast.getText().toString();
+        email = eEmail.getText().toString();
+        bio = eBio.getText().toString();
+        city = eCity.getText().toString();
+        state = eState.getText().toString();
+        website = eWebsite.getText().toString();
+        etsy = eEtsy.getText().toString();
+        facebook = eFacebook.getText().toString();
+        instagram = eInstagram.getText().toString();
+        businessName = eBusiness.getText().toString();
+
+        if(!eConfirm.getText().toString().equals(password)){
             Toast.makeText(getContext(), "Passwords do not match. Try again.", Toast.LENGTH_SHORT).show();
             return;
         }
-        et = getView().findViewById(R.id.email);
-        email = et.getText().toString();
-        et = getView().findViewById(R.id.txtFname);
-        firstName = et.getText().toString();
-        et = getView().findViewById(R.id.txtLName);
-        lastName = et.getText().toString();
-        et = getView().findViewById(R.id.txtBio);
-        bio = et.getText().toString();
-        et = getView().findViewById(R.id.txtCity);
-        city = et.getText().toString();
-        et = getView().findViewById(R.id.txtState);
-        state = et.getText().toString();
-        et = getView().findViewById(R.id.etWebsite);
-        website = et.getText().toString();
-        et = getView().findViewById(R.id.etEtsy);
-        etsy = et.getText().toString();
-        et = getView().findViewById(R.id.etFacebook);
-        facebook = et.getText().toString();
-        et = getView().findViewById(R.id.etInstagram);
-        instagram = et.getText().toString();
-        et = getView().findViewById(R.id.business);
-        businessName = et.getText().toString();
+
         RegistrationController rc = new RegistrationController();
         boolean isCreated =rc.createNewUser(userType, username, email,  password,
                 firstName,lastName, city, state, encodedImage,

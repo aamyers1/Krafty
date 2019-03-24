@@ -3,6 +3,8 @@ package com.team6.krafty;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,15 +24,27 @@ public class Validator{
 
     }
 
+    public static void validateUsername(EditText et)throws KraftyRuntimeException{
+        if (et.getText().toString().equals("")) {
+            throw new KraftyRuntimeException("No value entered for USERNAME.", null);
+        }
+    }
+
+    public static void validateEmail(EditText et) throws KraftyRuntimeException{
+        if (!isValidEmail(et.getText().toString())){
+            throw new KraftyRuntimeException("Invalid EMAIL", null);
+        }
+    }
+
     public static void validateDateSet(TextView tv, String field) throws KraftyRuntimeException {
         if (tv.equals("No date selected") )
             throw new KraftyRuntimeException("Date not set for " + field, null);
     }
 
     public static void validateTimeSet(TextView tv, String field) throws KraftyRuntimeException {
-        if(tv.equals("No opening time") || tv.equals("No closing time"))
+        if(tv.equals("No opening time") || tv.equals("No closing time")) {
             throw new KraftyRuntimeException("Date not set for " + field, null);
-
+        }
     }
 
     public static void validateBasicEditText(EditText et, String field) throws KraftyRuntimeException{
@@ -142,5 +156,9 @@ public class Validator{
         }
 
         return p1;
+    }
+
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 }
