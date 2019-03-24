@@ -104,4 +104,8 @@ public class Inventory {
     public static void addProduct(Product product){
         personalProducts.add(product);
     }
+
+    public static Product getProduct(int id){
+        return personalProducts.get(id);
+    }
 }

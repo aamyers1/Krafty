@@ -17,6 +17,7 @@ public class Product {
     //form of: material id, quantity
     HashMap<Integer, Integer> Materials;
     float price;
+    String creator;
     Bitmap bmp;
 
     public Product(){Materials = new HashMap<>();}
@@ -25,12 +26,13 @@ public class Product {
         return bmp;
     }
 
-    public Product(String name, String description, String image, int quantity, HashMap<Integer, Integer> mats, float price){
+    public Product(String name, String description, String image, int quantity, HashMap<Integer, Integer> mats, float price, String creator){
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.Materials = mats;
         this.price = price;
+        this.creator = creator;
         this.image = image;
         Thread t = new Thread(new Runnable() {
             @Override
@@ -102,14 +104,18 @@ public class Product {
         this.price = price;
     }
 
+    public String getCreator(){return creator;}
+
     public void parseJSON(JSONObject json){
         try {
             this.name = json.getString("name");
             this.description = json.getString("description");
             this.id = json.getInt("id");
+            this.quantity = json.getInt("qty");
             this.price = (float)json.getDouble("price");
             JSONArray jsonA = json.getJSONArray("materials");
             getMaterialsJson(jsonA);
+            this.creator = json.getString("creator");
             this.image = json.getString("image");
             Thread t = new Thread(new Runnable() {
                 @Override

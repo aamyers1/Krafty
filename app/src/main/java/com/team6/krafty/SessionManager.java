@@ -74,6 +74,11 @@ public class SessionManager {
         return true;
     }
 
+    public static String getUsername(Context context){
+        SharedPreferences sp = context.getSharedPreferences("session", Context.MODE_PRIVATE);
+        return sp.getString("username", "none");
+    }
+
 
 
 

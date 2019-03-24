@@ -39,9 +39,9 @@ public class ViewProductActivity extends AppCompatActivity {
     public void onStart(){
         super.onStart();
          Intent intent = getIntent();
-         id = intent.getIntExtra("ID", 0);
+         id = intent.getIntExtra("EXTRA_ID", 0);
          final ProductController controller = new ProductController();
-         product = controller.getProduct(id,context);
+         product = Inventory.getProduct(id);
 
          TextView productName = (TextView)findViewById(R.id.productName);
          productName.setText(product.getName());
@@ -56,20 +56,12 @@ public class ViewProductActivity extends AppCompatActivity {
          productQuantity.setText(String.valueOf(product.getQuantity()));
 
          final ImageView productImage = (ImageView)findViewById(R.id.imageView);
-         final Bitmap bmp;
-         Thread t = new Thread(new Runnable() {
-             @Override
-             public void run() {
-                 Bitmap bmp = controller.parseProductImage(product.getImage());
-                 if(bmp!= null){
-                     productImage.setImageBitmap(bmp);
-                 }
-                 else{
-                     productImage.setBackgroundColor(Color.rgb(188,225,232));
-                 }
-             }
-         });
-         t.start();
+         if(product.getBmp() != null) {
+             productImage.setImageBitmap(product.getBmp());
+         }
+         else {
+             productImage.setBackgroundColor(Color.rgb(188,225,232));
+         }
 
          setButtonsAndViews();
     }

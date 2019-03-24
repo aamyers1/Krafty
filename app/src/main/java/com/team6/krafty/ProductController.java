@@ -14,7 +14,8 @@ public class ProductController {
 
     public boolean createProduct(String name, String description, String image, int quantity, HashMap<Integer, Integer> mats, float price, final Context context){
         isCreated = true;
-        final Product product = new Product(name, description, image, quantity, mats, price);
+        String username = SessionManager.getUsername(context);
+        final Product product = new Product(name, description, image, quantity, mats, price, username);
         final String token = SessionManager.getToken(context);
         Thread t = new Thread(new Runnable() {
             @Override
@@ -91,7 +92,7 @@ public class ProductController {
     }
 
     public boolean updateProduct(Product product, int id,final Context context){
-        String json = product.createJson();
+        String json = product.getJson();
         final String request = json + "&id=" + id;
         final String token = SessionManager.getToken(context);
         Thread t = new Thread(new Runnable() {
@@ -119,7 +120,7 @@ public class ProductController {
 
     public Bitmap parseProductImage(String encodedImage){
         Bitmap bmp = null;
-        if(!encodedImage.equals("null") && !encodedImage.equals("no image") && !encodedImage.equals("") ) {
+        if(!(encodedImage == null) && !encodedImage.equals("null") && !encodedImage.equals("no image") && !encodedImage.equals("") ) {
             try{
                 byte[] encodeByte = Base64.decode(encodedImage.replace("<", "+"), Base64.DEFAULT);
                 bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);

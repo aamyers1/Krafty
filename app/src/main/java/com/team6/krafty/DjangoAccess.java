@@ -398,4 +398,44 @@ public boolean checkUsername(String username){
           Log.d("GETPROD", e.getMessage());
       }
   }
+
+    //the following methods will be moved to DjangoAccess class during implementation
+    // todo: handle exception in KraftyException
+    public Product getProduct(int id, String token){
+        HttpURLConnection connection = generatePostConnection("/api/product/viewspecific/");
+        String string = "id=" + id;
+        byte[] request = string.getBytes();
+        String response = getResponse(connection, request);
+        Product product = new Product();
+        try {
+            product.parseJSON(new JSONObject(response));
+        }
+        catch(Exception e){
+            Log.d("jsonException",e.getMessage());
+        }
+        return  product;
+    }
+
+    public void deleteProduct(int id, String token) throws KraftyRuntimeException{
+        HttpURLConnection connection = generatePostConnection("/api/product/delete/");
+        //extra header for authorization
+        connection.setRequestProperty ("Authorization", "token " + token);
+        String string = "id="+id;
+        byte[] request = string.getBytes();
+        String response = getResponse(connection,request);
+        if(!response.contains("Deleted")){
+            throw new KraftyRuntimeException("Delete Failed!", null);
+        }
+    }
+
+    public void updateProduct(String jsonString, String token)throws KraftyRuntimeException{
+        HttpURLConnection connection = generatePostConnection("/api/product/modify/");
+        connection.setRequestProperty("Authorization", "token " + token);
+        byte[] request = jsonString.getBytes();
+        String response = getResponse(connection,request);
+        if(!response.contains("Updated")){
+            throw new KraftyRuntimeException("Update Failed!", null);
+        }
+    }
+
 }

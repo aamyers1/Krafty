@@ -42,16 +42,15 @@ public class ProductsFragment extends Fragment {
         RecyclerView rv = view.findViewById(R.id.matRecycler);
         rv.setAdapter(ca);
         rv.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
-       ca.setListener(new cardAdapter.Listener() {
-           @Override
-           public void onClick(int position) {
-               //Start a new Modify Material Activity, pass the position for processing
-               //Intent intent = new Intent(getView().getContext(),ModifyMaterialActivity.class );
-               //intent.putExtra("EXTRA_ID", position);
-               //startActivity(intent);
-               //TODO: View product page
-           }
-       });
+        ca.setListener(new cardAdapter.Listener() {
+            @Override
+            public void onClick(int position) {
+                //Start a new Modify Material Activity, pass the position for processing
+                Intent intent = new Intent(getView().getContext(),ViewProductActivity.class );
+                intent.putExtra("EXTRA_ID", position);
+                startActivity(intent);
+            }
+        });
     }
 
     public static void nullifyAdapter(){
@@ -59,6 +58,8 @@ public class ProductsFragment extends Fragment {
         ca.updateData(inv.getProductImages(), inv.getProductCaptions());
         ca.notifyDataSetChanged();
     }
+
+
 
 
 }
