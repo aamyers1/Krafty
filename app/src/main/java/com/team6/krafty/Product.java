@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 public class Product {
 
-    String name, description, image;
+    String name, description, image = "", creator;
     int quantity, id;
     HashMap<Integer, Integer> Materials;
     float price;
@@ -85,13 +85,32 @@ public class Product {
         this.price = price;
     }
 
+    public String getCreator() {return creator;}
+
     public void parseJSON(JSONObject json){
         try {
             this.name = json.getString("name");
             this.description = json.getString("description");
+            this.price = (float)json.getDouble("price");
+            this.quantity = json.getInt("qty");
+            this.image=json.getString("image");
+            this.creator= json.getString("creator");
+            parseMaterials(json.getJSONArray("Materials"));
         }
         catch(Exception e){
 
+        }
+    }
+
+    public void parseMaterials(JSONArray jsonArray){
+        JSONObject json;
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                json = jsonArray.getJSONObject(i);
+                this.Materials.put(json.getInt("id"), json.getInt("qtyrequired"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
     }
@@ -112,19 +131,14 @@ public class Product {
         }
     }
 
-    public String createJsonMaterials(){
+    public String getJsonMaterials(){
         HashMap<Integer, Integer> hash = getMaterials();
-        /*Iterator it = hash.entrySet().iterator();
-        while(it.hasNext()){
-
-        }*/
         JSONArray jsonArray = new JSONArray();
         JSONObject tempJson = new JSONObject();
-        String json = "";
         for(HashMap.Entry<Integer,Integer> entry:hash.entrySet()){
             try {
-                tempJson.put("id","entry.key");
-                tempJson.put("qtyrequired","entry.value");
+                tempJson.put("id",entry.getKey());
+                tempJson.put("qtyrequired",entry.getValue());
                 jsonArray.put(tempJson);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -137,7 +151,7 @@ public class Product {
 
         return ("name=" +  getName() +"&image=" +getImage() + "&description=" +getDescription()
                 +"&price=" + getPrice() + "&qty="+getQuantity() +
-                "&Materials="+createJsonMaterials());
+                "&Materials="+getJsonMaterials());
     }
 
 }

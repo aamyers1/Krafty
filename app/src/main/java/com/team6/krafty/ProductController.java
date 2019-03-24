@@ -1,6 +1,9 @@
 package com.team6.krafty;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -67,5 +70,19 @@ public class ProductController {
             Log.d("UPDATEPRODUCTM", e.getMessage());
         }
         return false;
+    }
+
+    public Bitmap parseProductImage(String encodedImage){
+        Bitmap bmp = null;
+        if(!encodedImage.equals("null") && !encodedImage.equals("no image") && !encodedImage.equals("") ) {
+            try{
+                byte[] encodeByte = Base64.decode(encodedImage.replace("<", "+"), Base64.DEFAULT);
+                bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            } catch (IllegalArgumentException e){
+
+                Log.d("EVENT IMAGE ERROR", "bad image base-64");
+            }
+        }
+        return bmp;
     }
 }
