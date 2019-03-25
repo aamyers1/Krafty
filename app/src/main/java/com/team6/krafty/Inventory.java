@@ -53,6 +53,14 @@ public class Inventory {
         }
     }
 
+    public static void removeProduct(int id){
+        for(int i = 0; i < getCount(); i ++){
+            if(personalMaterials.elementAt(i).getId() == id){
+                personalMaterials.removeElementAt(i);
+            }
+        }
+    }
+
     public static Bitmap[] getMaterialImages(){
         Bitmap[] materialImages = new Bitmap[personalMaterials.size()];
         for(int i = 0; i < personalMaterials.size(); i ++){
