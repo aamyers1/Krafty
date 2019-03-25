@@ -161,7 +161,8 @@ public class Product {
     }
 
     public String getJson(){
-        return "name=" +name + "&description=" + description + "&qty=" + quantity + " &price=" + price + "&image=" + image + "\"&materials\"=[" + convertMatsToJson() + "]";
+        return "name=" +name + "&description=" + description + "&qty=" + quantity + " &price=" +
+                price + "&image=" + image + "&materials=[" + convertMatsToJson() + "]";
     }
 
     private void parseBitmap(){
