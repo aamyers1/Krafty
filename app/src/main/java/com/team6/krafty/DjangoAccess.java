@@ -383,10 +383,13 @@ public boolean checkUsername(String username){
                   JSONObject json = new JSONObject(reply);
                   JSONArray jsonA = json.getJSONArray("result");
                   for (int i = 0; i < jsonA.length(); i++) {
+
                       Product product = new Product();
                       product.parseJSON(jsonA.getJSONObject(i));
+                      Log.d("PRODUCT", product.getMaterials().toString());
                       Inventory.addProduct(product);
                       Log.d("PRODUCTGET", "retrieved " + product.getName());
+
                   }
               } catch (Exception i) {
                 Log.d("GETPROD", i.getMessage());

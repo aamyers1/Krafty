@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ViewProductActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ViewProductActivity extends AppCompatActivity  {
 
     private int id;
     private Context context = this;
@@ -54,13 +55,12 @@ public class ViewProductActivity extends AppCompatActivity implements AdapterVie
          productName.setText(product.getName());
 
          TextView productDesc = (TextView)findViewById(R.id.productDesc);
-         productDesc.setText(product.getDescription());
+         productDesc.setText("Description: " + product.getDescription());
 
          TextView productPrice = (TextView)findViewById(R.id.productPrice);
-         productPrice.setText(String.valueOf(product.getPrice()));
-
+         productPrice.setText("Price: $" + String.format("%.2f", product.getPrice()));
          TextView productQuantity = (TextView)findViewById(R.id.productQuantity);
-         productQuantity.setText(String.valueOf(product.getQuantity()));
+         productQuantity.setText("In stock: " + String.valueOf(product.getQuantity()));
 
          final ImageView productImage = (ImageView)findViewById(R.id.imageView);
          if(product.getBmp() != null) {
@@ -89,22 +89,18 @@ public class ViewProductActivity extends AppCompatActivity implements AdapterVie
             btnProductDelete.setOnClickListener(new ViewProductActivity.onDeleteClick());
             btnProductUpdate.setOnClickListener(new ViewProductActivity.onUpdateClick());
 
-
             RecyclerView rv = findViewById(R.id.recyclerMats);
-            ca = new cardAdapter(getbmps(), getMatNames());
-            rv.setAdapter(ca);
-            rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            try {
+                ca = new cardAdapter(getbmps(), getMatNames());
+                rv.setAdapter(ca);
+                rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            }
+            catch(Exception e){
+                Log.d("WHTATTHEFUCK", e.getMessage());
+            }
+
         }
 
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String item = parent.getItemAtPosition(position).toString();
-    }
-
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
     }
 
     public String[] getMatNames(){

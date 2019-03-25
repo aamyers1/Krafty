@@ -91,9 +91,9 @@ public class ProductController {
         }
     }
 
-    public boolean updateProduct(Product product, int id,final Context context){
-        String json = product.getJson();
-        final String request = json + "&id=" + id;
+    public boolean updateProduct(int id,final Context context){
+        Product p = Inventory.getProduct(id);
+        final String request = p.getJson() + "&id=" + id;
         final String token = SessionManager.getToken(context);
         Thread t = new Thread(new Runnable() {
             @Override
@@ -103,7 +103,9 @@ public class ProductController {
                     dbManager.updateProduct(request, token);
                 }
                 catch(KraftyRuntimeException e){
-                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("ERROR", e.getMessage());
+                    isCreated = false;
                 }
             }
         });
@@ -118,18 +120,6 @@ public class ProductController {
         return false;
     }
 
-    public Bitmap parseProductImage(String encodedImage){
-        Bitmap bmp = null;
-        if(!(encodedImage == null) && !encodedImage.equals("null") && !encodedImage.equals("no image") && !encodedImage.equals("") ) {
-            try{
-                byte[] encodeByte = Base64.decode(encodedImage.replace("<", "+"), Base64.DEFAULT);
-                bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            } catch (IllegalArgumentException e){
 
-                Log.d("EVENT IMAGE ERROR", "bad image base-64");
-            }
-        }
-        return bmp;
-    }
 
 }

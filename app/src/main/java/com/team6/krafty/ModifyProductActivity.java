@@ -2,6 +2,7 @@ package com.team6.krafty;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,17 +30,24 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
     private int id;
     cardAdapter ca;
     private HashMap<Integer, Integer> materials;
+    Product p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_product);
         id = getIntent().getIntExtra("id", 0);
+        p = Inventory.getProduct(id);
+        materials = p.getMaterials();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ModifyProductActivity.AsyncFillFields asyncFillFields = new ModifyProductActivity.AsyncFillFields();
-        asyncFillFields.execute();
         ImageView iv = findViewById(R.id.productImg);
+        if(p.getBmp() != null) {
+            iv.setImageBitmap(p.getBmp());
+        }
+        else{
+            iv.setBackgroundColor(Color.rgb(188,225,232));
+        }
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,6 +55,7 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
                 startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), 100);
             }
         });
+
 
         RecyclerView rv = findViewById(R.id.recyclerMats);
         ca = new cardAdapter(getbmps(),getMatNames());
@@ -84,6 +93,15 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
                 nullifyAdapter();
             }
         });
+
+        EditText et = findViewById(R.id.etName);
+        et.setText(p.getName());
+        et = findViewById(R.id.etDesc);
+        et.setText(p.getDescription());
+        et = findViewById(R.id.etPrice);
+        et.setText(String.valueOf(p.getPrice()));
+        et = findViewById(R.id.etQuantity);
+        et.setText(String.valueOf(p.getQuantity()));
     }
 
     public void onSubmitClick(){
@@ -101,15 +119,14 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             return;
         }
-        String name = pName.getText().toString();
-        int quantity = Integer.parseInt(pQuant.getText().toString());
-        float price = Float.parseFloat(pPrice.getText().toString());
-        String desc = pDesc.getText().toString();
+        p.setName( pName.getText().toString());
+        p.setQuantity(Integer.parseInt(pQuant.getText().toString()));
+        p.setPrice(Float.parseFloat(pPrice.getText().toString()));
+        p.setDescription(pDesc.getText().toString());
+        p.setMaterials(materials);
         ProductController pc = new ProductController();
-        String creator = SessionManager.getUsername(this);
-        Product product = new Product(name,desc,encodedImage,quantity,materials,price,creator);
 
-        if(pc.updateProduct(product,id,this)){
+        if(pc.updateProduct(id,this)){
             ProductsFragment.nullifyAdapter();
             finish();
         }
@@ -185,29 +202,6 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
         return ids;
     }
 
-    public class AsyncFillFields extends AsyncTask<Void, Void, Void> {
-        Product p;
-
-        @Override
-        public Void doInBackground(Void... params) {
-            ProductController pc = new ProductController();
-            p = pc.getProduct(id, getApplicationContext());
-            materials=p.getMaterials();
-            return null;
-        }
-
-        @Override
-        public void onPostExecute(Void v) {
-            EditText et = findViewById(R.id.etName);
-            et.setText(p.getName());
-            et = findViewById(R.id.etDesc);
-            et.setText(p.getDescription());
-            et = findViewById(R.id.etPrice);
-            et.setText(String.valueOf(p.getPrice()));
-            et = findViewById(R.id.etQuantity);
-            et.setText(String.valueOf(p.getQuantity()));
-        }
-    }
 
 
 }

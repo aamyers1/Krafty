@@ -48,7 +48,7 @@
             android:label="Update Event" />
         <activity
             android:name=".ViewProductActivity"
-            android:label="View a Product"/>
+            android:label="View Product"/>
 
         <activity android:name=".ModifyProductActivity"
             android:label="Modify Product"/>
