@@ -154,6 +154,8 @@ public class ViewProductActivity extends AppCompatActivity  {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             ProductController pc = new ProductController();
                             pc.deleteProduct(product.getId(), getApplicationContext());
+                            Inventory.removeProduct(id);
+                            ProductsFragment.nullifyAdapter();
                             finish();
                         }
                     })
