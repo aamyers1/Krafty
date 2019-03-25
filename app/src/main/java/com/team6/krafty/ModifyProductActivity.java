@@ -143,7 +143,7 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
             Uri imageUri = data.getData();
 
             //Put image in imageview
-            ImageView imgProfile = findViewById(R.id.matImage);
+            ImageView imgProfile = findViewById(R.id.productImg);
             imgProfile.setImageURI(imageUri);
 
             //Convert image to bitmap, then into base64
