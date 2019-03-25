@@ -24,7 +24,6 @@ public class ProductController {
                     DBManager.getInstance().createProduct(product, token);
                 }
                 catch(KraftyRuntimeException e){
-                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                     isCreated = false;
                 }
             }

@@ -148,7 +148,7 @@ public class Product {
         StringBuilder sb = new StringBuilder();
         if(Materials != null && Materials.size() > 0) {
             for (int i : Materials.keySet()) {
-                sb.append("{id:" + i + "&qtyrequired:" + Materials.get(i) + "},");
+                sb.append("{\"id\":" + i + ",\"qtyrequired\":" + Materials.get(i) + "},");
             }
             String s = sb.toString();
             s = s.substring(0, s.lastIndexOf(","));
@@ -161,7 +161,7 @@ public class Product {
     }
 
     public String getJson(){
-        return "name=" +name + "&description=" + description + "&qty=" + quantity + " &price=" + price + "&image=" + image + "&materials[" + convertMatsToJson() + "]";
+        return "name=" +name + "&description=" + description + "&qty=" + quantity + " &price=" + price + "&image=" + image + "\"&materials\"=[" + convertMatsToJson() + "]";
     }
 
     private void parseBitmap(){

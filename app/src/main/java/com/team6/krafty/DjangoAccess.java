@@ -349,9 +349,9 @@ public boolean checkUsername(String username){
     String jsonString = product.getJson();
     byte[] request = jsonString.getBytes();
     String response = getResponse(connection, request);
-    Log.d("RESPPRODUCT", response);
     if(!response.toLowerCase().contains("product created")){
-      throw new KraftyRuntimeException("Create product failed!", null);
+      //throw new KraftyRuntimeException("Create product failed!", null);
+        Log.d("PRODRESP", response);
     }
     try {
         JSONObject json = new JSONObject(response);
@@ -428,7 +428,7 @@ public boolean checkUsername(String username){
         String response = getResponse(connection,request);
         Log.d("DELETERESP", response);
         if(response.contains("ERROR")){
-            throw new KraftyRuntimeException("Delete Failed!", null);
+            //throw new KraftyRuntimeException("Delete Failed!", null);
         }
     }
 

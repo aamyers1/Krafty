@@ -153,7 +153,7 @@ public class ViewProductActivity extends AppCompatActivity  {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             ProductController pc = new ProductController();
-                            pc.deleteProduct(id, getApplicationContext());
+                            pc.deleteProduct(product.getId(), getApplicationContext());
                             finish();
                         }
                     })
