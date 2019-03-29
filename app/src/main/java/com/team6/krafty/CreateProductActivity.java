@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -145,7 +146,7 @@ public class CreateProductActivity extends AppCompatActivity implements AdapterV
     public String[] getMatNames(){
         String[] names = new String[materials.size()];
         int [] ids = getIds();
-        for(int i = 0 ; i < materials.size(); i ++){
+        for(int i = 0 ; i < ids.length; i ++){
             names[i] = Inventory.getMaterialById(ids[i]).getName() + ": " + materials.get(ids[i]);
         }
         return names;
@@ -154,7 +155,7 @@ public class CreateProductActivity extends AppCompatActivity implements AdapterV
     public Bitmap[] getbmps(){
         Bitmap[] bmp = new Bitmap[materials.size()];
         int [] ids = getIds();
-        for(int i = 0; i < materials.size(); i++){
+        for(int i = 0; i < ids.length; i++){
             bmp[i] = Inventory.getMaterialById(ids[i]).getBmp();
         }
         return bmp;

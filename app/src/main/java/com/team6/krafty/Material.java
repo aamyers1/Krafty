@@ -97,6 +97,8 @@ public class Material {
 
     public Bitmap getBmp(){return bmp;}
 
+    public void setBmp(Bitmap bmp){this.bmp = bmp;}
+
     //Setters
     public void setName(String name){
         this.name = name;
@@ -120,6 +122,8 @@ public class Material {
     public void setQuantity(int quantity){
         this.quantity = quantity;
     }
+
+
 
     public void setPrice(double price){
         this.price = price;

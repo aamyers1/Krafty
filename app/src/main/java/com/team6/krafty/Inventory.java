@@ -1,6 +1,7 @@
 package com.team6.krafty;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -101,9 +102,9 @@ public class Inventory {
     }
 
     public static Material getMaterialById(int id){
-        for(Material i: personalMaterials){
-            if(i.getId() == id){
-                return i;
+        for(int i = 0; i < personalMaterials.size(); i++){
+            if(personalMaterials.get(i).getId() == id){
+                return personalMaterials.get(i);
             }
         }
         return null;

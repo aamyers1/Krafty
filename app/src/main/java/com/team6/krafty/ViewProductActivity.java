@@ -137,7 +137,7 @@ public class ViewProductActivity extends AppCompatActivity  {
         @Override
         public void onClick(View view){
             Intent intent = new Intent(getApplicationContext(), ModifyProductActivity.class);
-            intent.putExtra("id", product.getId());
+            intent.putExtra("id", id);
             startActivity(intent);
         }
     }

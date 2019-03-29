@@ -136,10 +136,11 @@ public class Product {
         try {
             for (int i = 0; i < json.length(); i++) {
                 JSONObject p = json.getJSONObject(i);
-                Materials.put(p.getInt("id"), p.getInt("qtyrequired"));
+                Materials.put(p.getInt("id"), p.getInt("qty"));
             }
         }
         catch(Exception e){
+            Log.d("ERROR PM", json.toString());
             Log.d("ERROR PM", e.getMessage());
         }
     }

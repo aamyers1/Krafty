@@ -12,7 +12,7 @@ public interface DBAccessImpl {
     public abstract boolean checkUsername(String username);
     public abstract String createUser(User user);
     public abstract String login( String username, String password);
-    public abstract String getMaterial(String token);
+    public abstract void getMaterial(String token);
     public abstract void createMaterial(Material material, String token);
     public abstract void modifyMaterial(Material material, String token);
     public abstract void deleteMaterial(int id, String token);

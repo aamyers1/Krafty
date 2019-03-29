@@ -22,10 +22,10 @@ import java.io.IOException;
 public class ModifyMaterialActivity extends AppCompatActivity {
 
     //Variable for passing the material array position
-    private static final String EXTRA_ID = "matid";
     private int matId;
     private int id;
     private String encodedImage = "";
+    Material copy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,12 @@ public class ModifyMaterialActivity extends AppCompatActivity {
         //get the specified material using the id
         Material thisMat = Inventory.getMaterial(id);
         matId = thisMat.getId();
+        copy = new Material();
+        copy.setName(thisMat.getName());
+        copy.setPrice(thisMat.getPrice());
+        copy.setQuantity(thisMat.getQuantity());
+        copy.setBmp(thisMat.getBmp());
+        copy.setPurchased(thisMat.getPurchased());
         //Find the needed views, set values based on the material
         Button addQty = findViewById(R.id.Plus);
         Button minusQty = findViewById(R.id.Minus);
@@ -135,6 +141,13 @@ public class ModifyMaterialActivity extends AppCompatActivity {
                 if (mc.modifyMaterial(mt, getApplicationContext())) {
                     MaterialFragment.nullifyAdapter();
                     finish();
+                }
+                else{
+                    mt.setQuantity(copy.getQuantity());
+                    mt.setPrice(copy.getPrice());
+                    mt.setBmp(copy.getBmp());
+                    mt.setName(copy.getName());
+                    mt.setPurchased(copy.getPurchased());
                 }
             }
         }

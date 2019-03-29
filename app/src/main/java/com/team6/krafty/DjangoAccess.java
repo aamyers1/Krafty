@@ -128,7 +128,7 @@ public boolean checkUsername(String username){
   }
 
   //do not refactor unless we have other get requests
-  public String getMaterial(String token){
+  public void getMaterial(String token){
     try {
       URL url = new URL("http://75.128.150.130:2283/api/material/view/");
       try {
@@ -143,18 +143,18 @@ public boolean checkUsername(String username){
           while ((line = in.readLine()) != null) {
             response.append(line);
           }
-          return response.toString();
+          parseForMats(response.toString());
         }
         catch(Exception i){
-          return token;
+          Log.d("GETMATERR", i.getMessage());
         }
       }
       catch(java.io.IOException e){
-        return"No connection";
+          Log.d("GETMATERR", "No connection");
       }
     }
     catch(MalformedURLException e){
-      return "Malformed URL";
+        Log.d("GETMATERR", "Malformed URL");
     }
   }
 
@@ -252,7 +252,6 @@ public boolean checkUsername(String username){
             for(int i = 0; i < jsonArr.length(); i ++){
               Event newEvent = new Event();
               newEvent.parseJson(jsonArr.getJSONObject(i));
-              //TODO: FILTER OUT EVENTS WHICH HAVE PASSED
               eventsList.add(newEvent);
 
             }
@@ -439,6 +438,25 @@ public boolean checkUsername(String username){
         String response = getResponse(connection,request);
         if(response.contains("ERROR")){
             throw new KraftyRuntimeException("Update Failed!", null);
+        }
+    }
+    private static void parseForMats(String jsonObject){
+        try {
+            //first attempt to get the JSONObject
+            JSONObject primaryObject = new JSONObject(jsonObject);
+            //then get the array of objects within the primaryObject
+            JSONArray jsonArray = primaryObject.getJSONArray("result");
+            //iterate through each array value
+            for(int i = 0; i < jsonArray.length(); i++){
+                //get the object, create a new material with it, and add to inventory
+                JSONObject singleMat = jsonArray.getJSONObject(i);
+                Material newMat = new Material();
+                newMat.parseJson(singleMat);
+                Inventory.addMaterial(newMat);
+            }
+        }
+        catch(Exception e){
+            Log.d("PARSE MATERIAL ERROR", e.getMessage());
         }
     }
 
