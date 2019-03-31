@@ -45,7 +45,6 @@ public class ViewSpecificEvent extends AppCompatActivity{
         TextView eventAddress = (TextView)findViewById(R.id.eventAddress);
         eventAddress.setText(event.getAddress());
 
-
         TextView eventDate = (TextView)findViewById(R.id.eventDate);
         eventDate.setText(event.getDate() + " to " + event.getEndDate());
 
@@ -95,18 +94,34 @@ public class ViewSpecificEvent extends AppCompatActivity{
         SharedPreferences sp = getApplicationContext().getSharedPreferences("session", Context.MODE_PRIVATE);
         String username = sp.getString("username", "test");
 
+        Button btnEventSchedule = (Button)findViewById(R.id.btnEventSchedule);
+        btnEventSchedule.setClickable(true);
+        btnEventSchedule.setOnClickListener(new onScheduleClick());
 
-           if(username.equals(event.getCreator())) {
-                Button btnEventUpdate = (Button)findViewById(R.id.btnSubmit);
-                btnEventUpdate.setVisibility(Button.VISIBLE);
-                btnEventUpdate.setClickable(true);
-                Button btnEventDelete = (Button)findViewById(R.id.btnEventDelete);
-                btnEventDelete.setVisibility(Button.VISIBLE);
-                btnEventDelete.setClickable(false);
+        if(username.equals(event.getCreator())) {
+            Button btnEventUpdate = (Button)findViewById(R.id.btnSubmit);
+            btnEventUpdate.setVisibility(Button.VISIBLE);
+            btnEventUpdate.setClickable(true);
+            Button btnEventDelete = (Button)findViewById(R.id.btnEventDelete);
+            btnEventDelete.setVisibility(Button.VISIBLE);
+            btnEventDelete.setClickable(false);
 
-                btnEventDelete.setOnClickListener(new onDeleteClick());
-                btnEventUpdate.setOnClickListener(new onUpdateClick());
+            btnEventDelete.setOnClickListener(new onDeleteClick());
+            btnEventUpdate.setOnClickListener(new onUpdateClick());
+        }
+    }
+
+    private class onScheduleClick implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view){
+            final EventsController controller = new EventsController();
+            if (controller.scheduleForEvent(id,context)){
+                final ScheduleController scheduleController = new ScheduleController();
+                // TODO add event to schedule when that shizz is all hooked up
+                //scheduleController.addEvent(id, event);
             }
+        }
     }
 
     private class onUpdateClick implements View.OnClickListener{
@@ -142,7 +157,4 @@ public class ViewSpecificEvent extends AppCompatActivity{
                     .show();
         }
     }
-
-
-
 }
