@@ -99,8 +99,8 @@ public class RegisterKrafterFragment extends Fragment {
         EditText eUsername = getView().findViewById(R.id.username);
         EditText ePassword = getView().findViewById(R.id.password);
         EditText eConfirm = getView().findViewById(R.id.confirmPassword);
-        EditText eFirst = getView().findViewById(R.id.firstName);
-        EditText eLast = getView().findViewById(R.id.txtLastName);
+        EditText eFirst = getView().findViewById(R.id.txtFname);
+        EditText eLast = getView().findViewById(R.id.txtLName);
         EditText eEmail = getView().findViewById(R.id.email);
         EditText eBio = getView().findViewById(R.id.txtBio);
         EditText eCity = getView().findViewById(R.id.txtCity);

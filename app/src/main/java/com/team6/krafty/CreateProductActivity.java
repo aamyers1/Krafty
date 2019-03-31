@@ -62,6 +62,7 @@ public class CreateProductActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onClick(View v){
                 int itemPos = matSpinner.getSelectedItemPosition();
+                if(itemPos == -1){return;}
                 int id = Inventory.getMaterial(itemPos).getId();
                 EditText qty = findViewById(R.id.etQty);
                 try {

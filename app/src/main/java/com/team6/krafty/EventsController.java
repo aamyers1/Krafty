@@ -79,19 +79,6 @@ public class EventsController {
     public void retrieve(Context context){
         eventsList = new ArrayList<>();
         eventsList = dbManager.getAllEvents(SessionManager.getToken(context));
-//        try {
-//            JSONArray jsonArr = json.getJSONArray("result");
-//            for(int i = 0; i < jsonArr.length(); i ++){
-//                Event newEvent = new Event();
-//                newEvent.parseJson(jsonArr.getJSONObject(i));
-//                //TODO: FILTER OUT EVENTS WHICH HAVE PASSED
-//                eventsList.add(newEvent);
-//
-//            }
-//        }
-//        catch(Exception e){
-//            Log.d("ECNTR JSONARRAY", e.getMessage());
-//        }
     }
 
     public Event getSpecificEvent(final int id, final Context context){

@@ -86,11 +86,12 @@ public class Event implements Schedulable {
             endTime = temp.substring(0, temp.indexOf(" "));
             endDate = temp.substring(temp.indexOf(" "));
             description = json.getString("description");
-            imgString = json.getString("image");
+            if(json.has("image")) {
+                imgString = json.getString("image");
+            }
         }
         catch(Exception e){
             Log.d("Error event parse", "Event could not be parsed from json");
-            e.printStackTrace();
         }
     }
 
