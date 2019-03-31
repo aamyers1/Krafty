@@ -219,6 +219,19 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/eventSchedule"
+                android:clickable="false"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventTables" />
+            <Button
+                android:id="@+id/btnEventUnschedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/eventUnschedule"
+                android:clickable="false"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventTables" />
 
@@ -228,39 +241,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:clickable="false"
                 android:text="@string/eventUpdate"
                 android:textColor="@android:color/background_light"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.201"
+                app:layout_constraintEnd_toStartOf="@+id/btnEventDelete"
                 app:layout_constraintStart_toEndOf="@+id/btnEventSchedule"
-                app:layout_constraintTop_toBottomOf="@+id/eventTables"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toTopOf="@+id/btnEventSchedule" />
 
             <Button
                 android:id="@+id/btnEventDelete"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
                 android:clickable="false"
                 android:text="@string/eventDelete"
                 android:textColor="@android:color/background_light"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.826"
-                app:layout_constraintStart_toEndOf="@+id/btnSubmit"
-                app:layout_constraintTop_toBottomOf="@+id/eventTables"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toTopOf="@+id/btnSubmit" />
+
+
+            <TextView
+                android:id="@+id/tvKraftersAttending"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
+                android:hint="@string/kraftersAttendingHeading"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnEventSchedule" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

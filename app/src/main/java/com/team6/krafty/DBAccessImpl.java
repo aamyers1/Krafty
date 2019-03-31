@@ -1,7 +1,5 @@
 package com.team6.krafty;
 
-import org.json.JSONObject;
-
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
@@ -22,6 +20,8 @@ public interface DBAccessImpl {
     public abstract void createEvent(Event event, String token);
     public abstract void deleteEvent(int id, String token);
     public abstract void updateEvent(String jsonString, String token);
+    public abstract void scheduleForEvent(Integer eventID, String token);
+    public abstract void unscheduleForEvent(Integer eventID, String token);
     public abstract void createProduct(Product product, String token);
     public abstract void getProducts(String token);
     public abstract Product getProduct(int id, String token);

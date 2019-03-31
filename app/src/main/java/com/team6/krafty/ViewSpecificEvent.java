@@ -45,7 +45,6 @@ public class ViewSpecificEvent extends AppCompatActivity{
         TextView eventAddress = (TextView)findViewById(R.id.eventAddress);
         eventAddress.setText(event.getAddress());
 
-
         TextView eventDate = (TextView)findViewById(R.id.eventDate);
         eventDate.setText(event.getDate() + " to " + event.getEndDate());
 
@@ -95,18 +94,57 @@ public class ViewSpecificEvent extends AppCompatActivity{
         SharedPreferences sp = getApplicationContext().getSharedPreferences("session", Context.MODE_PRIVATE);
         String username = sp.getString("username", "test");
 
+        // TODO check if/else event is in schedule, display schedule/unschedule buttons accordingly
+        boolean eventIsInSchedule = false;
+        if (eventIsInSchedule) {
+            Button btnEventUnschedule = (Button) findViewById(R.id.btnEventUnschedule);
+            btnEventUnschedule.setVisibility(Button.VISIBLE);
+            btnEventUnschedule.setClickable(true);
+            btnEventUnschedule.setOnClickListener(new onUnscheduleClick());
+        } else {
+            Button btnEventSchedule = (Button) findViewById(R.id.btnEventSchedule);
+            btnEventSchedule.setVisibility(Button.VISIBLE);
+            btnEventSchedule.setClickable(true);
+            btnEventSchedule.setOnClickListener(new onScheduleClick());
+        }
 
-           if(username.equals(event.getCreator())) {
-                Button btnEventUpdate = (Button)findViewById(R.id.btnSubmit);
-                btnEventUpdate.setVisibility(Button.VISIBLE);
-                btnEventUpdate.setClickable(true);
-                Button btnEventDelete = (Button)findViewById(R.id.btnEventDelete);
-                btnEventDelete.setVisibility(Button.VISIBLE);
-                btnEventDelete.setClickable(false);
+        if(username.equals(event.getCreator())) {
+            Button btnEventUpdate = (Button)findViewById(R.id.btnSubmit);
+            btnEventUpdate.setVisibility(Button.VISIBLE);
+            btnEventUpdate.setClickable(true);
+            Button btnEventDelete = (Button)findViewById(R.id.btnEventDelete);
+            btnEventDelete.setVisibility(Button.VISIBLE);
+            btnEventDelete.setClickable(false);
 
-                btnEventDelete.setOnClickListener(new onDeleteClick());
-                btnEventUpdate.setOnClickListener(new onUpdateClick());
+            btnEventDelete.setOnClickListener(new onDeleteClick());
+            btnEventUpdate.setOnClickListener(new onUpdateClick());
+        }
+    }
+
+    private class onScheduleClick implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view){
+            final EventsController controller = new EventsController();
+            if (controller.scheduleForEvent(id,context)){
+                final ScheduleController scheduleController = new ScheduleController();
+                // TODO add event to schedule when that shizz is all hooked up
+                //scheduleController.addEvent(id, event);
             }
+        }
+    }
+
+    private class onUnscheduleClick implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view){
+            final EventsController controller = new EventsController();
+            if (controller.unscheduleForEvent(id,context)){
+                final ScheduleController scheduleController = new ScheduleController();
+                // TODO remove event to schedule when that shizz is all hooked up
+                //scheduleController.removeEvent(id, event);
+            }
+        }
     }
 
     private class onUpdateClick implements View.OnClickListener{
@@ -142,7 +180,4 @@ public class ViewSpecificEvent extends AppCompatActivity{
                     .show();
         }
     }
-
-
-
 }

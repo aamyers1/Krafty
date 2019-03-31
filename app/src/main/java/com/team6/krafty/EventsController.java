@@ -18,6 +18,8 @@ public class EventsController {
     private boolean isDeleted;
     private boolean isCreated;
     private boolean isUpdated;
+    private boolean isScheduled;
+    private boolean isUnscheduled;
     private DBManager dbManager = DBManager.getInstance();
 
     public EventsController(){
@@ -201,6 +203,69 @@ public class EventsController {
         }
         catch(Exception e){ ;
             Log.d("UPDATEEVENTM", e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean scheduleForEvent(final Integer eventId, Context context){
+        final String token = SessionManager.getToken(context);
+        final Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                isScheduled = true;
+                try {
+                    dbManager.scheduleForEvent(eventId, token);
+                }
+                catch(KraftyRuntimeException e){
+                    Log.d("SCHEDULE EVENT ERROR", e.getMessage());
+                    isScheduled = false;
+                }
+            }
+        });
+        t.start();
+        try{
+            t.join();
+            if (isScheduled){
+                Toast.makeText(context, "Schedule Success!", Toast.LENGTH_SHORT).show();
+            }else {
+                Log.d("SCHEDULE EVENT ERROR", "event error");
+                Toast.makeText(context, "Schedule Failure!", Toast.LENGTH_SHORT).show();
+            }
+            return isScheduled;
+        }
+        catch(Exception e){ ;
+            Log.d("SCHEDULEEVENTM", e.getMessage());
+        }
+        return false;
+    }
+    public boolean unscheduleForEvent(final Integer eventId, Context context){
+        final String token = SessionManager.getToken(context);
+        final Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                isUnscheduled = true;
+                try {
+                    dbManager.unscheduleForEvent(eventId, token);
+                }
+                catch(KraftyRuntimeException e){
+                    Log.d("UNSCHEDULE EVENT ERROR", e.getMessage());
+                    isUnscheduled = false;
+                }
+            }
+        });
+        t.start();
+        try{
+            t.join();
+            if (isUnscheduled){
+                Toast.makeText(context, "Unschedule Success!", Toast.LENGTH_SHORT).show();
+            }else {
+                Log.d("UNSCHEDULE EVENT ERROR", "event error");
+                Toast.makeText(context, "Unschedule Failure!", Toast.LENGTH_SHORT).show();
+            }
+            return isScheduled;
+        }
+        catch(Exception e){ ;
+            Log.d("UNSCHEDULEEVENTM", e.getMessage());
         }
         return false;
     }
