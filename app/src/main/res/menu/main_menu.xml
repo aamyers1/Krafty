@@ -11,6 +11,10 @@
         android:icon="@drawable/ic_event_black_24dp"/>
 
     <item
+        android:id="@+id/schedule"
+        android:title="@string/eventSchedule" />
+
+    <item
         android:id="@+id/logout"
         android:title="@string/logout"
         android:icon="@drawable/ic_exit_to_app_black_24dp"/>

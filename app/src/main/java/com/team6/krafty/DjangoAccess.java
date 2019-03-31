@@ -371,10 +371,9 @@ public boolean checkUsername(String username){
               connection.setRequestMethod("GET");
               //extra header for authorization
               connection.setRequestProperty("Authorization", "token " + token);
-              StringBuilder response;
+              StringBuilder response = new StringBuilder();
               try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                   String line;
-                  response = new StringBuilder();
                   while ((line = in.readLine()) != null) {
                       response.append(line);
                   }
@@ -391,13 +390,13 @@ public boolean checkUsername(String username){
 
                   }
               } catch (Exception i) {
-                Log.d("GETPROD", i.getMessage());
+                  Log.d("GETPROD3", i.getMessage());
               }
           } catch (java.io.IOException e) {
-              Log.d("GETPROD", e.getMessage());
+              Log.d("GETPROD2", e.getMessage());
           }
       } catch (MalformedURLException e) {
-          Log.d("GETPROD", e.getMessage());
+          Log.d("GETPROD1", e.getMessage());
       }
   }
 

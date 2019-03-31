@@ -60,7 +60,7 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
         Intent intent = null;
         switch(id) {
             case R.id.home:
-                fragment = new UpdateProfileFragment();
+                fragment = new ProfileFragment();
                 break;
             case R.id.logout:
                 SessionManager.logout(this);
@@ -71,6 +71,9 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
                 break;
             case R.id.events:
                 fragment = new ViewEventsFragment();
+                break;
+            case R.id.schedule:
+                fragment = new ScheduleFragment();
                 break;
             default:
                 break;

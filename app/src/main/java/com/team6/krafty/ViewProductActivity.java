@@ -96,7 +96,7 @@ public class ViewProductActivity extends AppCompatActivity  {
                 rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             }
             catch(Exception e){
-                Log.d("WHTATTHEFUCK", e.getMessage());
+                Log.d("CA ERROR", e.getMessage());
             }
 
         }

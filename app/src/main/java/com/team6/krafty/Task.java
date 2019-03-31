@@ -9,7 +9,11 @@ public class Task implements Schedulable {
     int qty;
 
     public Task(int id, int prodId, int qty, String date, String time){
-
+        this.date = date;
+        this.time = time;
+        this.id = id;
+        this.prodId = prodId;
+        this.qty = qty;
     }
     public String getDate(){
         return date;
@@ -20,7 +24,7 @@ public class Task implements Schedulable {
     }
 
     public String getTitle(){
-        return Inventory.getProductById(prodId).getName() + ": " + qty;
+        return "TEST PRODUCT: " + qty;
     }
 
     public int getType(){
