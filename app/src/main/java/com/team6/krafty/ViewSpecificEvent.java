@@ -94,9 +94,19 @@ public class ViewSpecificEvent extends AppCompatActivity{
         SharedPreferences sp = getApplicationContext().getSharedPreferences("session", Context.MODE_PRIVATE);
         String username = sp.getString("username", "test");
 
-        Button btnEventSchedule = (Button)findViewById(R.id.btnEventSchedule);
-        btnEventSchedule.setClickable(true);
-        btnEventSchedule.setOnClickListener(new onScheduleClick());
+        // TODO check if/else event is in schedule, display schedule/unschedule buttons accordingly
+        boolean eventIsInSchedule = false;
+        if (eventIsInSchedule) {
+            Button btnEventUnschedule = (Button) findViewById(R.id.btnEventUnschedule);
+            btnEventUnschedule.setVisibility(Button.VISIBLE);
+            btnEventUnschedule.setClickable(true);
+            btnEventUnschedule.setOnClickListener(new onUnscheduleClick());
+        } else {
+            Button btnEventSchedule = (Button) findViewById(R.id.btnEventSchedule);
+            btnEventSchedule.setVisibility(Button.VISIBLE);
+            btnEventSchedule.setClickable(true);
+            btnEventSchedule.setOnClickListener(new onScheduleClick());
+        }
 
         if(username.equals(event.getCreator())) {
             Button btnEventUpdate = (Button)findViewById(R.id.btnSubmit);
@@ -120,6 +130,19 @@ public class ViewSpecificEvent extends AppCompatActivity{
                 final ScheduleController scheduleController = new ScheduleController();
                 // TODO add event to schedule when that shizz is all hooked up
                 //scheduleController.addEvent(id, event);
+            }
+        }
+    }
+
+    private class onUnscheduleClick implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view){
+            final EventsController controller = new EventsController();
+            if (controller.unscheduleForEvent(id,context)){
+                final ScheduleController scheduleController = new ScheduleController();
+                // TODO remove event to schedule when that shizz is all hooked up
+                //scheduleController.removeEvent(id, event);
             }
         }
     }

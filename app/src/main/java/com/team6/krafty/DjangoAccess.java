@@ -342,22 +342,37 @@ public boolean checkUsername(String username){
     }
   }
 
-  public void scheduleForEvent(Integer eventId, String token ) throws KraftyRuntimeException {
-      HttpURLConnection connection = generatePostConnection("/api/schedule/event/");
-      connection.setRequestProperty("Authorization", "token " + token);
+    public void scheduleForEvent(Integer eventId, String token ) throws KraftyRuntimeException {
+        HttpURLConnection connection = generatePostConnection("/api/schedule/event/");
+        connection.setRequestProperty("Authorization", "token " + token);
 
-      String jsonString = "event="+eventId;
-      byte[] request = jsonString.getBytes();
-      String response = getResponse(connection,request);
-      if(!response.contains("scheduled")){
-          try{
-              JSONObject jsonResponse = new JSONObject(response);
-              throw new KraftyRuntimeException(jsonResponse.getString("message"), null);
-          } catch (Exception e){
-              throw new KraftyRuntimeException("Schedule Failed!: "+e.getMessage(), null);
-          }
-      }
-  }
+        String jsonString = "event="+eventId;
+        byte[] request = jsonString.getBytes();
+        String response = getResponse(connection,request);
+        if(!response.contains("scheduled")){
+            try{
+                JSONObject jsonResponse = new JSONObject(response);
+                throw new KraftyRuntimeException(jsonResponse.getString("message"), null);
+            } catch (Exception e){
+                throw new KraftyRuntimeException("Schedule Failed!: "+e.getMessage(), null);
+            }
+        }
+    }  public void unscheduleForEvent(Integer eventId, String token ) throws KraftyRuntimeException {
+        HttpURLConnection connection = generatePostConnection("/api/unschedule/event/");
+        connection.setRequestProperty("Authorization", "token " + token);
+
+        String jsonString = "event="+eventId;
+        byte[] request = jsonString.getBytes();
+        String response = getResponse(connection,request);
+        if(!response.contains("unscheduled")){
+            try{
+                JSONObject jsonResponse = new JSONObject(response);
+                throw new KraftyRuntimeException(jsonResponse.getString("message"), null);
+            } catch (Exception e){
+                throw new KraftyRuntimeException("Unschedule Failed!: "+response, null);
+            }
+        }
+    }
 
   public void createProduct(Product product, String token) throws KraftyRuntimeException{
     HttpURLConnection connection = generatePostConnection("/api/product/create/");
