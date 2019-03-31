@@ -110,6 +110,15 @@ public class Inventory {
         return null;
     }
 
+    public static Product getProductById(int id){
+        for(int i = 0; i < personalProducts.size(); i++){
+            if(personalProducts.get(i).getId() == id){
+                return personalProducts.get(i);
+            }
+        }
+        return null;
+    }
+
     public static void addProduct(Product product){
         personalProducts.add(product);
     }

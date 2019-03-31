@@ -58,7 +58,6 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
         int id = item.getItemId();
         Fragment fragment = null;
         Intent intent = null;
-        //TODO: Other pages: Schedule, Events, Profile(Which will likely just be home)
         switch(id) {
             case R.id.home:
                 fragment = new UpdateProfileFragment();
