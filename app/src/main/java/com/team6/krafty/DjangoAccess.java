@@ -338,7 +338,12 @@ public boolean checkUsername(String username){
     byte[] request = jsonString.getBytes();
     String response = getResponse(connection,request);
     if(!response.contains("Updated")){
-      throw new KraftyRuntimeException("Update Failed!", null);
+        try{
+            JSONObject jsonResponse = new JSONObject(response);
+            throw new KraftyRuntimeException(jsonResponse.getString("message"), null);
+        } catch (Exception e){
+            throw new KraftyRuntimeException("Update Failed!: "+e.getMessage(), null);
+        }
     }
   }
 

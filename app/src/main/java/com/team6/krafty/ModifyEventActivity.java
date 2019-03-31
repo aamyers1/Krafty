@@ -182,7 +182,7 @@ public class ModifyEventActivity extends AppCompatActivity {
         name = eName.getText().toString();
         startDate = tvStartDate.getText().toString();
         endDate = tvEndDate.getText().toString();
-        startTime = tvStartDate.getText().toString();
+        startTime = tvStartTime.getText().toString();
         endTime = tvEndTime.getText().toString();
         vendorSpots = Integer.parseInt(eVendorNum.getText().toString());
         description = eDescription.getText().toString();

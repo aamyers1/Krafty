@@ -185,7 +185,7 @@ public class EventsController {
                     dbManager.updateEvent(request, token);
                 }
                 catch(KraftyRuntimeException e){
-                    Log.d("UPDATE EVENT ERROR", "event error");
+                    Log.d("UPDATE EVENT ERROR", e.getMessage());
                     isUpdated = false;
                 }
             }
