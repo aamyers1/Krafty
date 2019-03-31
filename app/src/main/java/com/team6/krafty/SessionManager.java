@@ -9,6 +9,15 @@ import android.widget.Toast;
 public class SessionManager {
     private static DBManager dbManager = DBManager.getInstance();
     private static String token;
+    private static User profile;
+
+    public static void setUser(User user){
+        profile = user;
+    }
+
+    public static User getUser(){
+        return profile;
+    }
 
     //gets the current token
     public static String getToken(Context context){

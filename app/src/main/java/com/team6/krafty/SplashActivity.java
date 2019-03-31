@@ -42,10 +42,11 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
         NavigationView navView = (NavigationView)findViewById(R.id.nav_view);
 
         setUpNavMenu(navView);
+        SessionManager.setUser(profile);
         //set the listener
         navView.setNavigationItemSelectedListener(this);
 
-        Fragment fragment = new UpdateProfileFragment();
+        Fragment fragment = new ProfileFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
