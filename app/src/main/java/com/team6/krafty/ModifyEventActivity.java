@@ -293,7 +293,7 @@ public class ModifyEventActivity extends AppCompatActivity {
 
         @Override
         public void onPostExecute(Void v){
-            EditText et = findViewById(R.id.materialName);
+            EditText et = findViewById(R.id.eventName);
             et.setText(e.getName());
             et = findViewById(R.id.txtVendorNum);
             et.setText(e.getVendorSpots() + "");
