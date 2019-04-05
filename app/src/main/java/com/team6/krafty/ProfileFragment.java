@@ -48,6 +48,12 @@ public class ProfileFragment extends Fragment {
             }
         });
         User profile = SessionManager.getUser();
+        if (profile == null){
+
+            Toast.makeText(getContext(), "Failed to get user data.", Toast.LENGTH_SHORT).show();
+            return; // TODO go to log out? retry user get?
+        }
+
         if(profile.getUserType() != 2){
             FrameLayout fl = view.findViewById(R.id.krafterFrame);
             View v = getLayoutInflater().inflate(R.layout.krafterprofile, fl, true);

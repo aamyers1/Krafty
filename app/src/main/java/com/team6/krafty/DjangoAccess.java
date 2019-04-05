@@ -362,11 +362,13 @@ public boolean checkUsername(String username){
                 throw new KraftyRuntimeException("Schedule Failed!: "+e.getMessage(), null);
             }
         }
-    }  public void unscheduleForEvent(Integer eventId, String token ) throws KraftyRuntimeException {
-        HttpURLConnection connection = generatePostConnection("/api/unschedule/event/");
+    }
+
+    public void unscheduleForEvent(Integer scheduleId, String token ) throws KraftyRuntimeException {
+        HttpURLConnection connection = generatePostConnection("/api/schedule/delete/");
         connection.setRequestProperty("Authorization", "token " + token);
 
-        String jsonString = "event="+eventId;
+        String jsonString = "id="+scheduleId;
         byte[] request = jsonString.getBytes();
         String response = getResponse(connection,request);
         if(!response.contains("unscheduled")){

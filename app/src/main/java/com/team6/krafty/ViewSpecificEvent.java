@@ -34,6 +34,11 @@ public class ViewSpecificEvent extends AppCompatActivity{
         id = intent.getIntExtra("ID", 0);
         final EventsController controller = new EventsController();
         event = controller.getSpecificEvent(id,context);
+        if (event == null){
+            Toast.makeText(getApplicationContext(), "Failed to open event.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         //set values of Event to controls
         TextView eventName = (TextView)findViewById(R.id.eventName);
@@ -139,11 +144,12 @@ public class ViewSpecificEvent extends AppCompatActivity{
         @Override
         public void onClick(View view){
             final EventsController controller = new EventsController();
-            if (controller.unscheduleForEvent(id,context)){
-                final ScheduleController scheduleController = new ScheduleController();
-                // TODO remove event to schedule when that shizz is all hooked up
-                //scheduleController.removeEvent(id, event);
-            }
+            // TODO Get scheduleId  and send for unscheduling
+//            if (controller.unscheduleForEvent(scheduleId,context)){
+//                final ScheduleController scheduleController = new ScheduleController();
+//                // TODO remove event to schedule when that shizz is all hooked up
+//                //scheduleController.removeEvent(id, event);
+//            }
         }
     }
 
