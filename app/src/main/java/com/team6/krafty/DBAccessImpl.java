@@ -29,5 +29,6 @@ public interface DBAccessImpl {
     public abstract void deleteProduct(int id, String token);
     public abstract void updateProduct(String jsonString, String token);
     public abstract HashMap<String, String> getEventKrafters(int eventId, String token);
+    void getSchedule(String token);
 
 }

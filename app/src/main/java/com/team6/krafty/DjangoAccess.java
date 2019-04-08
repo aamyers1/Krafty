@@ -534,4 +534,40 @@ public boolean checkUsername(String username){
         return krafters;
     }
 
+    public void getSchedule(String token){
+      HttpURLConnection connection = generatePostConnection("/api/schedule/view");
+      connection.setRequestProperty ("Authorization", "token " + token);
+      String response = getResponse(connection,"".getBytes());
+
+
+      try{
+          JSONObject jsonObject = new JSONObject(response);
+          JSONArray allItems = jsonObject.getJSONArray("result");
+          for(int i =0; i < allItems.length(); i++){
+              JSONObject current = allItems.getJSONObject(i);
+              String type = current.getString("type");
+              if(type.toLowerCase().equals("p")){
+                  //is a task
+                  int schedID = current.getInt("scheduleid");
+                  int productID = current.getInt("taskid");
+                  String dateTime = current.getString("date");
+                  String date = dateTime.substring(dateTime.indexOf("M") + 1);
+                  String time = dateTime.substring(0, dateTime.indexOf("M") + 1);
+                  int qty = current.getInt("qty");
+                  Task task = new Task(schedID, productID, qty, date, time);
+                  Schedule.getInstance().addItem(task, schedID);
+              }
+              else{
+                  //is an event
+                  int schedID = current.getInt("scheduleid");
+                  int eventID = current.getInt("taskid");
+                  Event e = getSpecificEvent(eventID, token);
+                  Schedule.getInstance().addItem(e, schedID);
+              }
+          }
+      }
+      catch(Exception e){
+          Log.d("PARSE ERROR SCHED", e.getMessage());
+      }
+    }
 }

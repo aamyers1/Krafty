@@ -49,5 +49,6 @@ class DBManager {
     public void updateProduct(String jsonString, String token){getImpl().updateProduct(jsonString, token);}
     public Product getProduct(int id, String token){return getImpl().getProduct(id, token);}
     public HashMap<String,String> getEventKrafters(int eventId, String token){return getImpl().getEventKrafters(eventId, token);}
+    public void getSchedule(String token){getImpl().getSchedule(token);}
 
 }

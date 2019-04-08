@@ -27,6 +27,7 @@ public class ScheduleFragment extends Fragment {
 
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        ScheduleController.getSchedule(view.getContext());
         RecyclerView rv = view.findViewById(R.id.schedRecycler);
         ScheduleCardAdapter sca = new ScheduleCardAdapter();
         rv.setAdapter(sca);
