@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class EventsController {
@@ -20,6 +21,7 @@ public class EventsController {
     private boolean isUpdated;
     private boolean isScheduled;
     private boolean isUnscheduled;
+    private HashMap<String, String> krafters;
     private DBManager dbManager = DBManager.getInstance();
 
     public EventsController(){
@@ -88,7 +90,6 @@ public class EventsController {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d("ECNTR JSONARRAY", String.valueOf(id));
                 theEvent = dbManager.getSpecificEvent(id, SessionManager.getToken(context));
             }
         });
@@ -282,5 +283,37 @@ public class EventsController {
             }
         }
         return bmp;
+    }
+
+    public HashMap <String, String> getScheduledKrafters(final int eventId, final Context context){
+        final String token = SessionManager.getToken(context);
+        krafters = new HashMap<>();
+
+        final Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    krafters = (HashMap<String, String>) dbManager.getEventKrafters(eventId, token);
+                }
+                catch(KraftyRuntimeException e){
+                    Log.d("EVENT GETKRAFTERS ERROR", e.getMessage());
+                }
+            }
+        });
+        t.start();
+        try{
+            t.join();
+        }
+        catch(Exception e){ ;
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.d("GETKRAFTERSEVENTM", e.getMessage());
+        }
+
+        if (krafters == null){
+            Log.d("EVENT GETKRAFTERS ERROR", "event error");
+            Toast.makeText(context, "Error retrieving Krafters", Toast.LENGTH_SHORT).show();
+        }
+
+        return krafters;
     }
 }

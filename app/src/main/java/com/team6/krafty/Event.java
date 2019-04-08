@@ -4,11 +4,14 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class Event implements Schedulable {
     private Boolean power, wifi, outdoors, tables, food;
     private String creator, city, street, state, zipcode, startTime, endTime, startDate, endDate, name, imgString = "", description;
     private int id, vendorSpots, takenSpots;
     private double longitude, latitude;
+    private HashMap<String, String> krafters;
 
     Event(){}
 
@@ -182,4 +185,16 @@ public class Event implements Schedulable {
         this.id = id;
     }
 
+    public void setKrafters(HashMap<String, String> theKrafters){ krafters = (HashMap<String, String>) theKrafters.clone(); }
+
+    public  HashMap<String, String> getKrafters(){ return krafters; }
+
+    public boolean usernameIsScheduled(String username) {
+        if (getKrafters() == null) {
+            Log.d("EVENT", "krafters was null");
+            return false;
+        } else {
+            return getKrafters().containsKey(username);
+        }
+    }
 }

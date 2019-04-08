@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,11 +17,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 public class ViewSpecificEvent extends AppCompatActivity{
 
     private int id;
     private Context context = this;
     private Event event;
+    private HashMap <Integer, User> krafterList;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,16 +96,19 @@ public class ViewSpecificEvent extends AppCompatActivity{
             }
         });
         t.start();
+
+        event.setKrafters(controller.getScheduledKrafters(event.getID(), context));
+
         setButtons();
 
+        //TODO we have the list of krafters, now put them in the listview
+        fillListView();
     }
     private void setButtons(){
         SharedPreferences sp = getApplicationContext().getSharedPreferences("session", Context.MODE_PRIVATE);
         String username = sp.getString("username", "test");
-
-        // TODO check if/else event is in schedule, display schedule/unschedule buttons accordingly
-        boolean eventIsInSchedule = false;
-        if (eventIsInSchedule) {
+        // Check if/else event is in schedule, display schedule/unschedule buttons accordingly
+        if (event.usernameIsScheduled(username)) {
             Button btnEventUnschedule = (Button) findViewById(R.id.btnEventUnschedule);
             btnEventUnschedule.setVisibility(Button.VISIBLE);
             btnEventUnschedule.setClickable(true);
@@ -145,7 +152,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
         public void onClick(View view){
             final EventsController controller = new EventsController();
             // TODO Get scheduleId  and send for unscheduling
-//            if (controller.unscheduleForEvent(scheduleId,context)){
+//            if (controller.unscheduleForEvent(id,context)){
 //                final ScheduleController scheduleController = new ScheduleController();
 //                // TODO remove event to schedule when that shizz is all hooked up
 //                //scheduleController.removeEvent(id, event);
@@ -185,5 +192,9 @@ public class ViewSpecificEvent extends AppCompatActivity{
                     })
                     .show();
         }
+    }
+
+    private void fillListView(){
+
     }
 }

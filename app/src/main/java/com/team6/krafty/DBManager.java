@@ -1,6 +1,7 @@
 package com.team6.krafty;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 class DBManager {
 
@@ -47,5 +48,6 @@ class DBManager {
     public void deleteProduct(int id, String token){getImpl().deleteProduct(id, token);}
     public void updateProduct(String jsonString, String token){getImpl().updateProduct(jsonString, token);}
     public Product getProduct(int id, String token){return getImpl().getProduct(id, token);}
+    public HashMap<String,String> getEventKrafters(int eventId, String token){return getImpl().getEventKrafters(eventId, token);}
 
 }

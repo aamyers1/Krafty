@@ -2,6 +2,7 @@ package com.team6.krafty;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface DBAccessImpl {
 
@@ -27,5 +28,6 @@ public interface DBAccessImpl {
     public abstract Product getProduct(int id, String token);
     public abstract void deleteProduct(int id, String token);
     public abstract void updateProduct(String jsonString, String token);
+    public abstract HashMap<String, String> getEventKrafters(int eventId, String token);
 
 }

@@ -3,6 +3,7 @@ package com.team6.krafty;
 import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -14,6 +15,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DjangoAccess implements DBAccessImpl {
 
@@ -364,11 +366,12 @@ public boolean checkUsername(String username){
         }
     }
 
-    public void unscheduleForEvent(Integer scheduleId, String token ) throws KraftyRuntimeException {
+    public void unscheduleForEvent(Integer scheduleItemId, String token ) throws KraftyRuntimeException {
         HttpURLConnection connection = generatePostConnection("/api/schedule/delete/");
         connection.setRequestProperty("Authorization", "token " + token);
 
-        String jsonString = "id="+scheduleId;
+        Log.d("EVENT-UNSCHEDULE", "id="+scheduleItemId+"&type=e");
+        String jsonString = "id="+scheduleItemId+"&type=e";
         byte[] request = jsonString.getBytes();
         String response = getResponse(connection,request);
         if(!response.contains("unscheduled")){
@@ -496,6 +499,39 @@ public boolean checkUsername(String username){
         catch(Exception e){
             Log.d("PARSE MATERIAL ERROR", e.getMessage());
         }
+    }
+
+    public HashMap<String, String> getEventKrafters(int eventId, String token){
+      HashMap<String, String> krafters = new HashMap<>();
+        HttpURLConnection connection = generatePostConnection("/api/schedule/krafters/");
+        connection.setRequestProperty("Authorization", "Token " + token);
+
+        String string = "id="+eventId;
+        byte[] request = string.getBytes();
+        String response = getResponse(connection,request);
+        if(response.contains("ERROR") || response.contains("http") || response.contains("unexpected end of stream")){
+            throw new KraftyRuntimeException("Failed to get scheduled Krafters", null);
+        }
+
+
+        //first attempt to get the JSONObject
+        try {
+            JSONObject primaryObject = new JSONObject(response);
+            //then get the array of objects within the primaryObject
+            JSONArray jsonArray = primaryObject.getJSONArray("result");
+            //iterate through each array value
+            for (int i = 0; i < jsonArray.length(); i++) {
+                //get the object, create a new material with it, and add to inventory
+                JSONObject userObject = jsonArray.getJSONObject(i);
+                String username = userObject.getString("username");
+                String name = userObject.getString("business");
+                krafters.put(username, name);
+            }
+        } catch (JSONException e){
+            throw new KraftyRuntimeException("Failed to get scheduled Krafters", null);
+        }
+
+        return krafters;
     }
 
 }
