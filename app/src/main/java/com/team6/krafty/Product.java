@@ -136,7 +136,11 @@ public class Product {
         try {
             for (int i = 0; i < json.length(); i++) {
                 JSONObject p = json.getJSONObject(i);
-                Materials.put(p.getInt("id"), p.getInt("qty"));
+                String s = p.getString("mid");
+                s = s.replaceAll("[^0-9]", "");
+                int id = Integer.parseInt(s);
+
+                Materials.put(id, p.getInt("qty"));
             }
         }
         catch(Exception e){

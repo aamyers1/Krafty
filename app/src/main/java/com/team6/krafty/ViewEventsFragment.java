@@ -2,6 +2,7 @@ package com.team6.krafty;
 
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -40,6 +42,7 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
  private GoogleMap mMap;
  FusedLocationProviderClient flpc;
     private View v;
+    private boolean locationPermission;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,7 +80,11 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+        if(android.os.Build.VERSION.SDK_INT >= 23){
+            getPermission();
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || locationPermission) {
             mMap.setMyLocationEnabled(true);
         }
         flpc = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -123,5 +130,30 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
             return null;
         }
     }
+
+    @TargetApi(23)
+    private void getPermission(){
+        ActivityCompat.requestPermissions(this.getActivity(),
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                200);
+
+    }
+
+
+    public void onRequestPermissionsResult(int requestCode,String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 200: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    locationPermission = true;
+                }
+                else {
+                    locationPermission = false;
+                }
+            }
+        }
+    }
+
 
 }
