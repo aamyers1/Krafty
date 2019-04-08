@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //switch to update fragment
-                Toast.makeText(getContext(), "I see you're trying to update.... what a shame nobody implemented it.....", Toast.LENGTH_SHORT).show();
+
+                Fragment fragment = new UpdateProfileFragment();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                 ft.addToBackStack(null);
+                ft.replace(R.id.content_frame, fragment);
+
+                ft.commit();
+                //Toast.makeText(getContext(), "I see you're trying to update.... what a shame nobody implemented it.....", Toast.LENGTH_SHORT).show();
             }
         });
         User profile = SessionManager.getUser();

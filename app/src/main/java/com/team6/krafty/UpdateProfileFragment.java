@@ -1,11 +1,18 @@
 package com.team6.krafty;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +24,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static android.app.Activity.RESULT_OK;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class UpdateProfileFragment extends Fragment {
     static DBManager dbManager = DBManager.getInstance();
+    private String encodedImage = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,13 +53,65 @@ public class UpdateProfileFragment extends Fragment {
         String token = SessionManager.getToken(getView().getContext());
         FillFields ff = new FillFields();
         ff.execute(token);
+
+        ImageView iv = view.findViewById(R.id.imgProfile);
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //start activity passing pick media intent and PICK_IMAGE code (100)
+                startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), 100);
+            }
+        });
         Button b = view.findViewById(R.id.btnSubmit);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onUpdateClick();
+
                 //TODO: UPDATE USER INFO IF CHANGED
             }
         });
+
+    }
+
+    public void onUpdateClick(){
+        EditText uFirst = getView().findViewById(R.id.etFirst);
+        EditText uLast = getView().findViewById(R.id.etLast);
+        EditText uCity = getView().findViewById(R.id.etCity);
+        EditText uState = getView().findViewById(R.id.etState);
+        EditText uBio = getView().findViewById(R.id.etBio);
+        EditText uBuss = getView().findViewById(R.id.etBusinessName);
+        EditText uEtsy = getView().findViewById(R.id.etEtsy);
+        EditText uFacebook= getView().findViewById(R.id.etFacebook);
+        EditText uInstagram = getView().findViewById(R.id.etInstagram);
+        EditText uWebsite = getView().findViewById(R.id.etWebsite);
+        try{
+            Validator.validateBasicEditText(uFirst,"First");
+            Validator.validateBasicEditText(uLast,"Last");
+            Validator.validateBasicEditText(uCity,"City");
+            Validator.validateBasicEditText(uState,"State");
+            Validator.validateBasicEditText(uBio,"Bio");
+        }
+        catch(KraftyRuntimeException e){
+           Toast.makeText(getView().getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        User user = SessionManager.getUser();
+        user.setFirst(uFirst.getText().toString());
+        user.setLast(uLast.getText().toString());
+        user.setCity(uCity.getText().toString());
+        user.setState(uState.getText().toString());
+        user.setBio(uBio.getText().toString());
+        user.setBusinessName(uBuss.getText().toString());
+        user.setEtsy(uEtsy.getText().toString());
+        user.setFacebook(uFacebook.getText().toString());
+        user.setInstagram(uInstagram.getText().toString());
+        user.setWebsite(uWebsite.getText().toString());
+        RegistrationController rc = new RegistrationController();
+        if (rc.updateProfile(user,getView().getContext())){
+            getActivity().onBackPressed();
+        }
     }
 
     private class FillFields extends AsyncTask<String, Void, User> {
@@ -68,7 +135,42 @@ public class UpdateProfileFragment extends Fragment {
             if(profile.getUserType()!= 2) {
                 FrameLayout fl = getView().findViewById(R.id.krafterFrame);
                 View v = getLayoutInflater().inflate(R.layout.fragment_update_krafter_profile, fl, true);
-                //must set these fields
+                // set these fields
+                EditText etBusiness = getView().findViewById(R.id.etBusinessName);
+                if(profile.getBusinessName() != null){
+                    etBusiness.setText(profile.getBusinessName());
+                } else {
+                    etBusiness.setText("");
+                }
+
+                EditText etEtsy = getView().findViewById(R.id.etEtsy);
+                if(profile.getEtsy() != null){
+                    etEtsy.setText(profile.getEtsy());
+                } else {
+                    etEtsy.setText("");
+                }
+
+                EditText etFacebook = getView().findViewById(R.id.etFacebook);
+                if(profile.getFacebook() != null){
+                    etFacebook.setText(profile.getFacebook());
+                } else {
+                    etFacebook.setText("");
+                }
+
+                EditText etInstagram = getView().findViewById(R.id.etInstagram);
+                if(profile.getInstagram() != null){
+                    etInstagram.setText(profile.getInstagram());
+                } else {
+                    etInstagram.setText("");
+                }
+
+                EditText etWebsite = getView().findViewById(R.id.etWebsite);
+                if(profile.getWebsite() != null){
+                    etWebsite.setText(profile.getWebsite());
+                } else {
+                    etWebsite.setText("");
+                }
+
             }
 
             TextView txtUsername = getView().findViewById(R.id.txtUsername);
@@ -122,6 +224,72 @@ public class UpdateProfileFragment extends Fragment {
             } else {
                 etBio.setText("");
             }
+
+
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //If result was ok and was of PICK_IMAGE activity
+        if (resultCode == RESULT_OK && requestCode == 100) {
+            Uri imageUri = data.getData();
+            Context applicationContext = getView().getContext();
+            //Put image in imageview
+            ImageView imgProfile = getView().findViewById(R.id.imgProfile);
+            imgProfile.setImageURI(imageUri);
+
+            //Convert image to bitmap, then into base64
+            Bitmap imageAsBitmap = null;
+            try {
+                imageAsBitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(), imageUri);
+            } catch (IOException e) { //for file not found
+                e.printStackTrace();
+            }
+            ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
+            imageAsBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrOutStrm);
+            byte[] bArr = byteArrOutStrm.toByteArray();
+            encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT).replace("+", "<");
+        }
+    }
+
+   /* @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //If result was ok and was of PICK_IMAGE activity
+        if (resultCode == RESULT_OK && requestCode == 100) {
+            Uri imageUri = data.getData();
+            Context applicationContext = RegisterActivity.getContextOfApplication();
+            InputStream imageStream = null;
+            try {
+                imageStream = applicationContext.getContentResolver().openInputStream(imageUri);
+            } catch (FileNotFoundException e) {
+                Toast.makeText(applicationContext, "File not found.", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            } catch (RuntimeException e) {
+                Toast.makeText(applicationContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+            //Put image in imageview
+            ImageView imgProfile = getView().findViewById(R.id.imgProfile);
+            imgProfile.setImageBitmap(selectedImage);
+
+
+            //Convert image to bitmap, then into base64
+            Bitmap imageAsBitmap = null;
+            try {
+                imageAsBitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(), imageUri);
+            } catch (IOException e) { //for file not found
+                e.printStackTrace();
+            }
+            ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
+            imageAsBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrOutStrm);
+            byte[] bArr = byteArrOutStrm.toByteArray();
+            encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT).replace("+", "<");
+        }
+    }*/
 }

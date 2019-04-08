@@ -108,6 +108,21 @@ public boolean checkUsername(String username){
     return response;
   }
 
+  //updates existing user in the database.
+    public void updateProfile(User user,String token){
+        HttpURLConnection connection = generatePostConnection("/api/user/modify/");
+        //extra header for authorization
+        connection.setRequestProperty ("Authorization", "token " + token);
+        String userString = user.createJson();
+        byte[] request = userString.getBytes();
+        String response = getResponse(connection,request);
+        if(! response.contains("OK")){
+            Log.d("UPDATE ERROR", response);
+            throw new KraftyRuntimeException("Update Failed!", null);
+        }
+
+    }
+
   //returns token string if user successfully logged in or null obj if not successful
   public String login( String username, String password){
 

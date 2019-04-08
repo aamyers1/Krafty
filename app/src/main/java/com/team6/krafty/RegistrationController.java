@@ -68,6 +68,32 @@ public class RegistrationController {
         }
     }
 
+    //updates user profile
+    public boolean updateProfile(final User user, final Context context){
+        final String token = SessionManager.getToken(context);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    dbManager.updateProfile(user,token);
+                }
+                catch(KraftyRuntimeException e){
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        t.start();
+        try{
+            t.join();
+            Toast.makeText(context, "Update Success!", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        catch (Exception e){
+            Toast.makeText(context, "Update failed!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
 
     //checks if a username is already taken based on a User object
     private boolean checkUsername(final User user){

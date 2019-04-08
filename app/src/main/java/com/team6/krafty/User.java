@@ -113,6 +113,26 @@ public class User {
         return dateJoined;
     }
 
+    public void setFirst(String first) { this.first = first; }
+
+    public void setLast(String last) { this.last = last; }
+
+    public void setBio(String bio) { this.bio = bio; }
+
+    public void setCity(String city) { this.city = city; }
+
+    public void setState(String state) { this.state = state; }
+
+    public void setBusinessName(String businessName) { this.businessName = businessName; }
+
+    public void setEtsy(String etsy) { this.etsy = etsy; }
+
+    public void setFacebook(String facebook) { this.facebook = facebook; }
+
+    public void setInstagram(String instagram) { this.instagram = instagram; }
+
+    public void setWebsite(String website) { this.website = website; }
+
     private void parseBitmap(){
         if(!this.imageString.equals("null") && !this.imageString.equals("no image")) {
             byte[] encodeByte = Base64.decode(imageString.replace("<", "+"), Base64.DEFAULT);

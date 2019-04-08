@@ -10,6 +10,7 @@ public interface DBAccessImpl {
     public abstract String getResponse(HttpURLConnection connection, byte[] request);
     public abstract boolean checkUsername(String username);
     public abstract String createUser(User user);
+    public abstract void updateProfile(User user,String token);
     public abstract String login( String username, String password);
     public abstract void getMaterial(String token);
     public abstract void createMaterial(Material material, String token);

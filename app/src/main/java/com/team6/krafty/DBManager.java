@@ -30,6 +30,7 @@ class DBManager {
     public boolean checkEmail(String email){return getImpl().checkEmail(email);}
     public boolean checkUsername(String username){return getImpl().checkUsername(username);}
     public String createUser(User user){return getImpl().createUser(user);}
+    public void updateProfile(User user, String token){getImpl().updateProfile(user,token);}
     public String login( String username, String password){return getImpl().login(username,password);}
     public void getMaterial(String token){getImpl().getMaterial(token);}
     public void createMaterial(Material material, String token){ getImpl().createMaterial(material, token);}
