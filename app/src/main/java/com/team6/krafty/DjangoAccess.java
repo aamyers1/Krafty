@@ -34,7 +34,7 @@ public class DjangoAccess implements DBAccessImpl {
   public HttpURLConnection generatePostConnection(String APIPath)throws KraftyRuntimeException{
     HttpURLConnection connection;
     try {
-      URL url = new URL("http://75.128.150.130:2283" + APIPath);
+      URL url = new URL("http://kraftyapp.servehttp.com" + APIPath);
       connection = (HttpURLConnection)url.openConnection();
       connection.setRequestMethod("POST");
       connection.setDoOutput(true);
@@ -584,5 +584,28 @@ public boolean checkUsername(String username){
       catch(Exception e){
           Log.d("PARSE ERROR SCHED", e.getMessage());
       }
+    }
+
+    public void createTask(Task task, String token) throws KraftyRuntimeException {
+        HttpURLConnection connection = generatePostConnection("/api/schedule/product/");
+        connection.setRequestProperty("Authorization", "token " + token);
+
+        String jsonString = task.getJson();
+        byte[] request = jsonString.getBytes();
+        String response = getResponse(connection,request);
+        if(response.toLowerCase().contains("ERROR")){
+            Log.d("PRODRESP", response);
+            throw new KraftyRuntimeException("Create task failed!", null);
+
+        }
+        try {
+            JSONObject json = new JSONObject(response);
+            JSONArray jarray = json.getJSONArray("result");
+            int id = jarray.getJSONObject(0).getInt("id");
+            task.setId(id);
+        }
+        catch (Exception e){
+
+        }
     }
 }

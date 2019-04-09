@@ -51,5 +51,6 @@ class DBManager {
     public Product getProduct(int id, String token){return getImpl().getProduct(id, token);}
     public HashMap<String,String> getEventKrafters(int eventId, String token){return getImpl().getEventKrafters(eventId, token);}
     public void getSchedule(String token){getImpl().getSchedule(token);}
+    public void createTask(Task task, String token){getImpl().createTask(task, token);}
 
 }

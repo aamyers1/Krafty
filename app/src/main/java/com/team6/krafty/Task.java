@@ -34,4 +34,13 @@ public class Task implements Schedulable {
     public int getID(){
         return id;
     }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public String getJson(){
+        String date = getTime() + " " + getDate();
+        return "pid=" +prodId + "&qty=" + qty + "&date=" + date;
+    }
 }

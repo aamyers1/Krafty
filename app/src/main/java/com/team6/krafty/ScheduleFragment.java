@@ -1,8 +1,10 @@
 package com.team6.krafty;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,11 +29,24 @@ public class ScheduleFragment extends Fragment {
 
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.addTask);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onButtonClick();
+            }
+        });
         ScheduleController.getSchedule(view.getContext());
         RecyclerView rv = view.findViewById(R.id.schedRecycler);
         ScheduleCardAdapter sca = new ScheduleCardAdapter();
         rv.setAdapter(sca);
         rv.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+    }
+
+    //The floating action button listener method. Starts Create Task Activity
+    public void onButtonClick(){
+        Intent intent = new Intent(getActivity(), CreateTaskActivity.class);
+        startActivity(intent);
     }
 
 }
