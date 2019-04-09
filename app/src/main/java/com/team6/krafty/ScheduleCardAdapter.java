@@ -110,7 +110,7 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
                                     if (sc.unscheduleForEvent(Schedule.getInstance().getIDS().get(schedIDPos), thisContext, "p")) {
                                         Schedule.getInstance().getSchedule().remove(item);
                                         Schedule.getInstance().getIDS().remove(schedIDPos);
-                                        
+                                        updateData();
                                     }
                                 }
                             })
@@ -134,6 +134,10 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
             super(v);
             ll = v;
         }
+    }
+
+    public void updateData(){
+        fragment.resetFragment();
     }
 
 }
