@@ -306,7 +306,7 @@ public boolean checkUsername(String username){
         JSONObject jsonObject = jsonArray.getJSONObject(0);
         event.parseJson(jsonObject);
       } catch (Exception e) {
-        Log.d("JSONERROR", "SINGLE EVENT PARSE ERROR");
+        Log.d("JSONERROR", "SINGLE EVENT PARSE ERROR" + e.getMessage() + " " + response);
       }
       return event;
     }
@@ -384,15 +384,12 @@ public boolean checkUsername(String username){
     public void unscheduleForEvent(Integer scheduleItemId, String token ) throws KraftyRuntimeException {
         HttpURLConnection connection = generatePostConnection("/api/schedule/delete/");
         connection.setRequestProperty("Authorization", "token " + token);
-
-        Log.d("EVENT-UNSCHEDULE", "id="+scheduleItemId+"&type=e");
         String jsonString = "id="+scheduleItemId+"&type=e";
         byte[] request = jsonString.getBytes();
         String response = getResponse(connection,request);
-        if(!response.contains("unscheduled")){
+        if(!response.contains("Item deleted from schedule")){
             try{
-                JSONObject jsonResponse = new JSONObject(response);
-                throw new KraftyRuntimeException(jsonResponse.getString("message"), null);
+                throw new KraftyRuntimeException(response, null);
             } catch (Exception e){
                 throw new KraftyRuntimeException("Unschedule Failed!: "+response, null);
             }
@@ -457,7 +454,7 @@ public boolean checkUsername(String username){
       }
   }
 
-    //the following methods will be moved to DjangoAccess class during implementation
+
     // todo: handle exception in KraftyException
     public Product getProduct(int id, String token){
         HttpURLConnection connection = generatePostConnection("/api/product/viewspecific/");

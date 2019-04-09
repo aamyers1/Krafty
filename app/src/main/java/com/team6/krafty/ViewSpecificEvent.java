@@ -138,25 +138,17 @@ public class ViewSpecificEvent extends AppCompatActivity{
         @Override
         public void onClick(View view){
             final EventsController controller = new EventsController();
-            if (controller.scheduleForEvent(id,context)){
-                final ScheduleController scheduleController = new ScheduleController();
-                // TODO add event to schedule when that shizz is all hooked up
-                //scheduleController.addEvent(id, event);
-            }
+            controller.scheduleForEvent(id,context);
         }
     }
 
     private class onUnscheduleClick implements View.OnClickListener{
-
         @Override
         public void onClick(View view){
             final EventsController controller = new EventsController();
-            // TODO Get scheduleId  and send for unscheduling
-//            if (controller.unscheduleForEvent(id,context)){
-//                final ScheduleController scheduleController = new ScheduleController();
-//                // TODO remove event to schedule when that shizz is all hooked up
-//                //scheduleController.removeEvent(id, event);
-//            }
+            ScheduleController.getSchedule(view.getContext());
+            int schedID = Schedule.getInstance().getSchedIDByEventID(id);
+            controller.unscheduleForEvent(schedID,context);
         }
     }
 
