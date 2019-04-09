@@ -25,6 +25,10 @@ public class Schedule {
         return schedule;
     }
 
+    public ArrayList<Integer> getIDS(){
+        return ids;
+    }
+
     public void addItem(Schedulable s, int i){
         ids.add(i);
         schedule.add(s);
@@ -44,6 +48,15 @@ public class Schedule {
     public void clearSchedule(){
         ids = new ArrayList<>();
         schedule = new ArrayList<>();
+    }
+
+    public int getSchedIDPosByTask(Task task){
+        for(int i = 0; i < schedule.size(); i++){
+            if(schedule.get(i) == task){
+                return i;
+            }
+        }
+        return -1;
     }
 
     public boolean isScheduled(int eventID){

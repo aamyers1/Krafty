@@ -1,7 +1,9 @@
 package com.team6.krafty;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -18,7 +21,9 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
 
     private ArrayList<String> dates;
     private Listener listener;
+    private SpecificScheduleCardAdapter ssca;
     Context thisContext;
+    ScheduleFragment fragment;
 
     //create a generic listener interface for the adapter
     interface Listener {
@@ -31,7 +36,8 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
     }
 
     //constructor
-    public ScheduleCardAdapter(Context context){
+    public ScheduleCardAdapter(Context context, ScheduleFragment fragment){
+        this.fragment = fragment;
         thisContext = context;
         ArrayList<Schedulable> schedule = Schedule.getInstance().getSchedule();
         dates = new ArrayList<>();
@@ -62,7 +68,6 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
         TextView tv = ll.findViewById(R.id.date);
         tv.setText(dates.get(position));
 
-
         //set the onClickListener for the cardview. The implementation of the RecyclerView will define a specific listener
         ll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,24 +79,47 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
         });
 
         RecyclerView rv = ll.findViewById(R.id.schedRecycler);
-        ArrayList<Schedulable> scheduleDate = new ArrayList<>();
+        final ArrayList<Schedulable> scheduleDate = new ArrayList<>();
         for (Schedulable i : Schedule.getInstance().getSchedule()) {
             if (i.getDate().equals(dates.get(position))) {
                 scheduleDate.add(i);
             }
         }
-        SpecificScheduleCardAdapter ssca = new SpecificScheduleCardAdapter(scheduleDate);
+        ssca = new SpecificScheduleCardAdapter(scheduleDate);
         rv.setAdapter(ssca);
         rv.setLayoutManager(new LinearLayoutManager(ll.getContext(), LinearLayoutManager.VERTICAL, false));
         ssca.setListener(new SpecificScheduleCardAdapter.Listener() {
             @Override
             public void onClick(int position) {
-                Schedulable item = Schedule.getInstance().getSchedule().get(position);
+                final Schedulable item = scheduleDate.get(position);
                 if (item.getType() == 1) {
                     int id = item.getID();
                     Intent intent = new Intent(thisContext, ViewSpecificEvent.class);
                     intent.putExtra("ID", id);
                     thisContext.startActivity(intent);
+                }
+                else{
+                    new AlertDialog.Builder(thisContext)
+                            .setTitle("Delete Confirmation")
+                            .setMessage("Do you want to remove this task?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    ScheduleController sc = ScheduleController.getInstance();
+                                    int schedIDPos = Schedule.getInstance().getSchedIDPosByTask((Task)item);
+                                    if (sc.unscheduleForEvent(Schedule.getInstance().getIDS().get(schedIDPos), thisContext, "p")) {
+                                        Schedule.getInstance().getSchedule().remove(item);
+                                        Schedule.getInstance().getIDS().remove(schedIDPos);
+                                        
+                                    }
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    Toast.makeText(thisContext, "Task not deleted", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .show();
                 }
             }
         });
@@ -105,15 +133,6 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
         public ViewHolder(LinearLayout v){
             super(v);
             ll = v;
-        }
-    }
-
-    public void updateData(){
-        ArrayList<Schedulable> schedule = Schedule.getInstance().getSchedule();
-        for(Schedulable i: schedule){
-            if(!dates.contains(i.getDate())){
-                dates.add(i.getDate());
-            }
         }
     }
 

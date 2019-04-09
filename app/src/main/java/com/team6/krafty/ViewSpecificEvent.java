@@ -165,7 +165,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
         public void onClick(View view){
             ScheduleController controller = ScheduleController.getInstance();
             int schedID = Schedule.getInstance().getSchedIDByEventID(id);
-            controller.unscheduleForEvent(schedID, view.getContext());
+            controller.unscheduleForEvent(schedID, view.getContext(), "e");
             Button b = (Button)view;
             b.setVisibility(View.INVISIBLE);
             b.setClickable(false);

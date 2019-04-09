@@ -109,7 +109,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         time = tvTime.getText().toString();
 
         Task task = new Task(0, prodId, qty, date, time);
-        ScheduleController sc = new ScheduleController();
+        ScheduleController sc = ScheduleController.getInstance();
         if(sc.createTask(task,getApplicationContext())){
             finish();
         }

@@ -24,7 +24,7 @@ public class Task implements Schedulable {
     }
 
     public String getTitle(){
-        return Inventory.getProductById(prodId).getName() + qty;
+        return Inventory.getProductById(prodId).getName() + ": "  + qty;
     }
 
     public int getType(){

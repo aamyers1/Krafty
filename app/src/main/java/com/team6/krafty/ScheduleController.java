@@ -110,14 +110,14 @@ public class ScheduleController {
         }
         return false;
     }
-    public boolean unscheduleForEvent(final Integer eventId, Context context){
+    public boolean unscheduleForEvent(final Integer eventId, Context context, final String type){
         final String token = SessionManager.getToken(context);
         final Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 isUnscheduled = true;
                 try {
-                    DBManager.getInstance().unscheduleForEvent(eventId, token);
+                    DBManager.getInstance().unscheduleForEvent(eventId, token, type);
                 }
                 catch(KraftyRuntimeException e){
                     Log.d("UNSCHEDULE EVENT ERROR", e.getMessage());

@@ -2,10 +2,12 @@ package com.team6.krafty;
 
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,7 +41,7 @@ public class ScheduleFragment extends Fragment {
         View view = getView();
         ScheduleController.getSchedule(view.getContext());
         RecyclerView rv = view.findViewById(R.id.schedRecycler);
-        ScheduleCardAdapter sca = new ScheduleCardAdapter(view.getContext());
+        ScheduleCardAdapter sca = new ScheduleCardAdapter(view.getContext(), this);
         rv.setAdapter(sca);
         rv.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
     }
@@ -49,5 +51,6 @@ public class ScheduleFragment extends Fragment {
         Intent intent = new Intent(getActivity(), CreateTaskActivity.class);
         startActivity(intent);
     }
+
 
 }

@@ -381,10 +381,11 @@ public boolean checkUsername(String username){
         }
     }
 
-    public void unscheduleForEvent(Integer scheduleItemId, String token ) throws KraftyRuntimeException {
+    public void unscheduleForEvent(Integer scheduleItemId, String token, String type) throws KraftyRuntimeException {
         HttpURLConnection connection = generatePostConnection("/api/schedule/delete/");
         connection.setRequestProperty("Authorization", "token " + token);
-        String jsonString = "id="+scheduleItemId+"&type=e";
+        String jsonString = "id="+scheduleItemId+"&type=" + type;
+        Log.d("FFFFFFff", jsonString);
         byte[] request = jsonString.getBytes();
         String response = getResponse(connection,request);
         if(!response.contains("Item deleted from schedule")){
@@ -550,8 +551,7 @@ public boolean checkUsername(String username){
       HttpURLConnection connection = generatePostConnection("/api/schedule/view/");
       connection.setRequestProperty ("Authorization", "token " + token);
       String response = getResponse(connection,"".getBytes());
-
-
+      Log.d("AAAAAAA" , response);
       try{
           JSONObject jsonObject = new JSONObject(response);
           JSONArray allItems = jsonObject.getJSONArray("result");
@@ -562,7 +562,7 @@ public boolean checkUsername(String username){
                   //is a task
                   int schedID = current.getInt("scheduleid");
                   int productID = current.getInt("taskid");
-                  String dateTime = current.getString("date");
+                  String dateTime = current.getString("start");
                   String date = dateTime.substring(dateTime.indexOf("M") + 1);
                   String time = dateTime.substring(0, dateTime.indexOf("M") + 1);
                   int qty = current.getInt("qty");
@@ -586,10 +586,10 @@ public boolean checkUsername(String username){
     public void createTask(Task task, String token) throws KraftyRuntimeException {
         HttpURLConnection connection = generatePostConnection("/api/schedule/product/");
         connection.setRequestProperty("Authorization", "token " + token);
-
         String jsonString = task.getJson();
         byte[] request = jsonString.getBytes();
         String response = getResponse(connection,request);
+        Log.d("PRODRESP", response);
         if(response.toLowerCase().contains("ERROR")){
             Log.d("PRODRESP", response);
             throw new KraftyRuntimeException("Create task failed!", null);
