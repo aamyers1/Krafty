@@ -8,8 +8,6 @@ import android.widget.Toast;
 public class ScheduleController {
     private DBManager dbManager = DBManager.getInstance();
     private boolean isScheduled;
-
-    private boolean isScheduled;
     private boolean isUnscheduled;
     private static ScheduleController instance;
 
