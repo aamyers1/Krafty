@@ -550,7 +550,7 @@ public boolean checkUsername(String username){
     }
 
     public void getSchedule(String token){
-      HttpURLConnection connection = generatePostConnection("/api/schedule/view");
+      HttpURLConnection connection = generatePostConnection("/api/schedule/view/");
       connection.setRequestProperty ("Authorization", "token " + token);
       String response = getResponse(connection,"".getBytes());
 
