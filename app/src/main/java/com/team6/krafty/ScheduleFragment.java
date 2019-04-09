@@ -37,7 +37,6 @@ public class ScheduleFragment extends Fragment {
     public void onStart(){
         super.onStart();
         View view = getView();
-        Schedule.getInstance().clearSchedule();
         ScheduleController.getSchedule(view.getContext());
         RecyclerView rv = view.findViewById(R.id.schedRecycler);
         ScheduleCardAdapter sca = new ScheduleCardAdapter(view.getContext());

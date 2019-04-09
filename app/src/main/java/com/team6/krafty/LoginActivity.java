@@ -9,8 +9,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * Login Activity is the starting activity for the application. This activity handles basic
+ * session management via login and links to the registration and splash activities.
+ */
 public class LoginActivity extends AppCompatActivity {
 
+    /**
+     * Method that generates the basis of the Activity. First checks if the user is logged in
+     * currently. If yes, switch to splash page and load data. If no, display login page.
+     * @param savedInstanceState Bundle containing state information that can be used on fragment
+     *                           relaunch or resume to restore state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +47,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    //login button click
-    //sends username/password to session manager.
+    /**
+     * Handles user action of clicking the login button. Attempts to log the user in by
+     * validating credentials against the database.
+     */
     public void onClickLogin(){
         //get the necessary values from user input
         EditText tv = findViewById(R.id.txtUsername);
@@ -62,14 +74,26 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    //sign up button click -> sends to registration
+    /**
+     * Handles the Sign Up button click by sending the user to the registration page
+     * @param view View clicked (Button)
+     */
     public void onClickSignUp(View view){
         Intent intent= new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Asynchronous inner class used to retrieve inventory data without blocking the UI thread
+     */
     private class MaterialGetter extends AsyncTask<String, Void, Void>{
 
+        /**
+         * Fetches user inventory information viea the Material and Products controllers
+         * respectively.
+         * @param args Contains the user token to fetch inventory
+         * @return
+         */
         @Override
         public Void doInBackground(String...args){
             //clear any previous inventory

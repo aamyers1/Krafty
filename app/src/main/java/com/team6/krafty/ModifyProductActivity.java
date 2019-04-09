@@ -127,7 +127,7 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
         p.setMaterials(materials);
         ProductController pc = new ProductController();
 
-        if(pc.updateProduct(id,this)){
+        if(pc.updateProduct(p,this)){
             ProductsFragment.nullifyAdapter();
             finish();
         }

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,23 +17,34 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Class that allows the generation of a new product specific to a user and allows
+ * upload to the database
+ */
 public class CreateProductActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
     String encodedImage;
     cardAdapter ca;
     private HashMap<Integer, Integer> materials;
+    Spinner matSpinner;
+
+    /**
+     * Constructs the Activity and its components by inflating the xml, setting listeners to components,
+     * and initializing necessary variables.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_product);
+        //initialize hashmap of materials
         materials = new HashMap<>();
         ImageView iv = findViewById(R.id.productImg);
+        //set image view click listener
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,14 +52,17 @@ public class CreateProductActivity extends AppCompatActivity implements AdapterV
                 startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), 100);
             }
         });
+        //set up recyclerView for materials
         RecyclerView rv = findViewById(R.id.recyclerMats);
         ca = new cardAdapter(getbmps(),getMatNames());
         rv.setAdapter(ca);
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        final Spinner matSpinner = findViewById(R.id.spinnerMats);
+        //set up material spinner with adapter
+        matSpinner = findViewById(R.id.spinnerMats);
         String[] matNames = Inventory.getMaterialCaptions();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,matNames);
         matSpinner.setAdapter(arrayAdapter);
+        //set button click listeners
         Button submitButton = findViewById(R.id.btnSubmit);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,58 +71,84 @@ public class CreateProductActivity extends AppCompatActivity implements AdapterV
             }
         });
         Button addMaterialButton = findViewById(R.id.btnAddMat);
-        addMaterialButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                int itemPos = matSpinner.getSelectedItemPosition();
-                if(itemPos == -1){return;}
-                int id = Inventory.getMaterial(itemPos).getId();
-                EditText qty = findViewById(R.id.etQty);
-                try {
-                    Validator.validateIntEt(qty, "Quantity");
-                }
-                catch(KraftyRuntimeException e){
-                    Toast.makeText(CreateProductActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                int quantity = Integer.parseInt(qty.getText().toString());
-                materials.put(id, quantity);
-                nullifyAdapter();
-            }
-        });
+        addMaterialButton.setOnClickListener(new MaterialClick());
     }
 
-    //handles submit click
+    /**
+     * Inner class to handle clicks to add material to Product
+     */
+    private class MaterialClick  implements View.OnClickListener{
+
+        /**
+         * Handles click of add material button
+         * @param v View that was pressed (Button)
+         */
+        @Override
+        public void onClick(View v){
+            //get selected item position
+            int itemPos = matSpinner.getSelectedItemPosition();
+            //check that an item is selected. If no, return.
+            if(itemPos == -1){return;}
+            //get the corresponding material ID
+            int id = Inventory.getMaterial(itemPos).getId();
+            //get quantity
+            EditText qty = findViewById(R.id.etQty);
+            //validate that qty is an integer
+            try {
+                Validator.validateIntEt(qty, "Quantity");
+            }
+            catch(KraftyRuntimeException e){
+                Toast.makeText(CreateProductActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            int quantity = Integer.parseInt(qty.getText().toString());
+            //add this material and qty to the hashmap and update the adapter
+            materials.put(id, quantity);
+            nullifyAdapter();
+        }
+    }
+
+    /**
+     * Method to handle click of the submit button. Gathers field data, validates, and submits
+     * to the database.
+     */
     private void onSubmitClick() {
-
-
+        //reference fields
         EditText pName = findViewById(R.id.etName);
         EditText pQuant = findViewById(R.id.etQuantity);
         EditText pPrice = findViewById(R.id.etPrice);
         EditText pDesc = findViewById(R.id.etDesc);
+        //validate data
         try{
             Validator.validateBasicEditText(pName, "Name");
             Validator.validateIntEt(pQuant, "Quantity");
             Validator.validateDoubleEt(pPrice, "Price");
             Validator.validateBasicEditText(pDesc, "Description");
         }
+        //try to send to database
         catch(KraftyRuntimeException e){
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             return;
         }
+        //gather data
         String name = pName.getText().toString();
         int quantity = Integer.parseInt(pQuant.getText().toString());
         float price = Float.parseFloat(pPrice.getText().toString());
         String desc = pDesc.getText().toString();
+        //create controller and pass data
         ProductController pc = new ProductController();
         if(pc.createProduct(name,desc, encodedImage, quantity, materials,price, this)){
             ProductsFragment.nullifyAdapter();
             finish();
         }
-
     }
 
-    //For results of requests
+    /**
+     * Gets the result of a request for a gallery image from the user
+     * @param requestCode Code that identifies the request from others
+     * @param resultCode Code that signals the state of the result
+     * @param data Data returned from the request (Image data)
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -135,15 +174,31 @@ public class CreateProductActivity extends AppCompatActivity implements AdapterV
             encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT).replace("+", "<");
         }
     }
+
+    /**
+     * Necessary method for the spinner adapter
+     * @param parent AdapterView
+     * @param view View
+     * @param position Selected item index
+     * @param id id of the selected item
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
     }
 
+    /**
+     * Necessary method for spinner adapter. If nothing selected, do nothing.
+     * @param arg0
+     */
     public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
+
     }
 
+    /**
+     * Gets all material names based on the Inventory
+     * @return String array of material names
+     */
     public String[] getMatNames(){
         String[] names = new String[materials.size()];
         int [] ids = getIds();
@@ -153,6 +208,10 @@ public class CreateProductActivity extends AppCompatActivity implements AdapterV
         return names;
     }
 
+    /**
+     * Gets all Bitmap images from the array of materials
+     * @return Bitmap image array
+     */
     public Bitmap[] getbmps(){
         Bitmap[] bmp = new Bitmap[materials.size()];
         int [] ids = getIds();
@@ -162,11 +221,18 @@ public class CreateProductActivity extends AppCompatActivity implements AdapterV
         return bmp;
     }
 
+    /**
+     * Nullifies adapter when data is updated externally
+     */
     public void nullifyAdapter(){
         ca.updateData(getbmps(), getMatNames());
         ca.notifyDataSetChanged();
     }
 
+    /**
+     * Gets the IDs of the materials in the materials HashMap
+     * @return Array of integer material IDs
+     */
     public int[] getIds(){
         int k = 0;
         int[] ids = new int[materials.size()];

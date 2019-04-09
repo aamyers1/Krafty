@@ -10,46 +10,71 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * Class that generates cards that display an image with a caption to be used to
+ * display products and their captions. Used to populate a RecyclerView with data.
+ */
 public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
 
     private String[] captions;
     private  Bitmap[] images;
     private Listener listener;
 
-    //create a generic listener interface for the adapter
+    /**
+     * Simple onClick interface for an individual card
+     */
     interface Listener {
         void onClick(int position);
     }
 
-    //sets the listener for this adapter
+    /**
+     * Sets the listener
+     * @param listener Listener object to be used with the onClick event
+     */
     public void setListener(Listener listener){
         this.listener = listener;
     }
 
-    //constructor
+    /**
+     * Constructor
+     * @param images Array of bitmap images displayed on card
+     * @param captions Array of String captions to display on card
+     */
     public cardAdapter(Bitmap[] images, String[] captions){
         this.captions = captions;
         this.images = images;
     }
 
-    //gets the number of items to be created
+    /**
+     * Gets the number of items in the adapter
+     * @return int number of items
+     */
     @Override
     public int getItemCount(){
         return captions.length;
     }
 
-    //sets the viewholder, in this case the cardview in captionedcard.xml
+    /**
+     * Sets the viewHolder, in this case cardview in captionedcard.xml
+     * @param parent Containing object
+     * @param viewType specifies integer representation of viewtype
+     * @return
+     */
     @Override
     public cardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType){
         CardView cv = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.captionedcard,parent, false);
         return new ViewHolder(cv);
     }
 
-    //when viewholder is bound
+    /**
+     * When a ViewHolder object is bound, the card data is placed
+     * @param holder CardView object
+     * @param position The index of the current card
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder , final int position){
         CardView cardView = holder.cardView;
-        ImageView iv = (ImageView)cardView.findViewById(R.id.imgCaption);
+        ImageView iv = cardView.findViewById(R.id.imgCaption);
         if(images[position] != null){
             iv.setImageBitmap(images[position]);
         }
@@ -59,7 +84,6 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
         iv.setContentDescription(captions[position]);
         TextView tv = cardView.findViewById(R.id.txtCaption);
         tv.setText(captions[position]);
-
         //set the onClickListener for the cardview. The implementation of the RecyclerView will define a specific listener
         cardView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -71,17 +95,28 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
         });
     }
 
-    //Viewholder of the adapter
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    /**
+     * Inner class that is the ViewHolder of the adapter. Extends
+     */
+    static class ViewHolder extends RecyclerView.ViewHolder{
 
         private CardView cardView;
 
-        public ViewHolder(CardView v){
+        /**
+         * Constructs ViewHolder object from CardView v
+         * @param v CardView to be set
+         */
+        ViewHolder(CardView v){
             super(v);
             cardView = v;
         }
     }
 
+    /**
+     * Updates the adapter data when required by the caller
+     * @param images Bitmap array of images to be placed in cards
+     * @param captions String array of captions to label cards
+     */
     public void updateData(Bitmap[] images, String[] captions){
         this.captions = captions;
         this.images = images;
