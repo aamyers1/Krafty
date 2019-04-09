@@ -1,9 +1,7 @@
 package com.team6.krafty;
 
-
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -16,20 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment used to display current user's profile information.
  */
 public class ProfileFragment extends Fragment {
 
-
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
-
-
+    /**
+     * Method called on object instantiation. Inflates XML file fragment_profile.xml
+     * @param inflater LayoutInflater to inflate the xml file
+     * @param container Containing object for the inflated xml
+     * @param savedInstanceState - Bundle containing state information that can be used on fragment
+     *                             relaunch or resume to restore state
+     * @return Inflated xml object
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,9 +35,17 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    /**
+     * Method run once XML is inflated. If user type is Krafter or Admin, add additional fields.
+     * Fill fields with appropriate information from the database.
+     * @param view Total view displayed to user
+     * @param savedInstanceState Bundle containing state information that can be used on fragment
+     *                           relaunch or resume to restore state
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Button btn = view.findViewById(R.id.updateButton);
+        //links to the update profile activity
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,16 +55,13 @@ public class ProfileFragment extends Fragment {
                 ft.addToBackStack(null);
                 ft.replace(R.id.content_frame, fragment);
                 ft.commit();
-
             }
         });
         User profile = SessionManager.getUser();
         if (profile == null){
-
             Toast.makeText(getContext(), "Failed to get user data.", Toast.LENGTH_SHORT).show();
-            return; // TODO go to log out? retry user get?
+            return;
         }
-
         if(profile.getUserType() != 2){
             FrameLayout fl = view.findViewById(R.id.krafterFrame);
             View v = getLayoutInflater().inflate(R.layout.krafterprofile, fl, true);

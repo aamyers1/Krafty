@@ -13,13 +13,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+/**
+ * Class that allows the generation of a new user material and upload to the database.
+ */
 public class CreateMaterialActivity extends AppCompatActivity {
     private String encodedImage = "";
 
+    /**
+     * Constucts the Create Material Activity. Inflates the XML, sets toolbar and click listeners.
+     * @param savedInstanceState Bundle object containing saved state information able to be retrieved
+     *                           for use upon a reload of the class.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +50,10 @@ public class CreateMaterialActivity extends AppCompatActivity {
         });
     }
 
-    //handles submit click
+    /**
+     * Handler for the submitClick action. Gathers and validates data before sending
+     * to be stored in the external database.
+     */
     public void onSubmitClick(){
         //essentially just gathers strings from various editTexts
         String matName, matPrice, matQuantity, matLocation;
@@ -67,12 +77,18 @@ public class CreateMaterialActivity extends AppCompatActivity {
         matLocation = mLoc.getText().toString();
         MaterialController mc = new MaterialController();
         if(mc.addMaterial(matName, encodedImage, matQuantity, matPrice, matLocation,this)){
+            //reset the adapter to show changes
             MaterialFragment.nullifyAdapter();
             finish();
         }
     }
 
-    //For results of requests
+    /**
+     * Gets the result of a request for a gallery image from the user
+     * @param requestCode Code that identifies the request from others
+     * @param resultCode Code that signals the state of the result
+     * @param data Data returned from the request (Image data)
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);

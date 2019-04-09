@@ -1,12 +1,10 @@
 package com.team6.krafty;
 
 import android.graphics.Bitmap;
-import android.util.Log;
-
-import java.util.ArrayList;
 import java.util.Vector;
 
 public class Inventory {
+
     //holds the inventory instance
     private static Inventory inventory = new Inventory();
     //holds a specific user's inventory of materials
@@ -35,11 +33,6 @@ public class Inventory {
         personalMaterials.add(material);
     }
 
-    //returns the entire arraylist
-    //TODO: Check that this will return a copy and not a reference because we don't actually want modification through this path.
-    public static Vector<Material> getPersonalMaterials() {
-        return personalMaterials;
-    }
 
     //gets a material from a specific location in the array
     public static Material getMaterial(int position){
@@ -91,7 +84,6 @@ public class Inventory {
     }
 
     //clears all inventory items
-    //TODO:Add clear Products when products are implemented
     public static void clearAll(){
         personalMaterials = new Vector<>();
         personalProducts = new Vector<>();

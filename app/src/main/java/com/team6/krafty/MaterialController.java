@@ -3,19 +3,28 @@ package com.team6.krafty;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-
+/**
+ * Material controller class acts as an intermediate between the GUI and business objects/database access
+ * for operations relating to Material objects.
+ */
 public class MaterialController {
 
     private static DBManager dbManager = DBManager.getInstance();
     private static boolean valid;
     private static String message;
     private static String token;
-    private static String response = "";
 
-    //adds a material to database
+    /**
+     * Adds a user material to the database
+     * @param name String name of the material
+     * @param image String base 64 encoding of the material image
+     * @param quantity String quantity owned of material
+     * @param price String price of the material
+     * @param location String location purchased
+     * @param context Context to link back to the original context of the caller
+     * @return boolean of success or failure
+     */
     public boolean addMaterial(final String name,final String image,final  String quantity, final String price,final  String location, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
         valid = true;
@@ -56,7 +65,12 @@ public class MaterialController {
         return valid;
     }
 
-    //adds a material to database
+    /**
+     * Modifies an existing material in the database
+     * @param material Material object to be updated
+     * @param context Context of the calling object
+     * @return Boolean indicating success or failure of the operation
+     */
     public boolean modifyMaterial(final Material material, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
         token = SessionManager.getToken(context);
@@ -93,7 +107,12 @@ public class MaterialController {
     }
 
 
-    //deletes a material
+    /**
+     * Deletes a material from the database
+     * @param id The integer id of the material to be deleted
+     * @param context Context of the calling object
+     * @return Boolean describing success or failure of the operation
+     */
     public boolean deleteMaterial(final int id, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
         token = SessionManager.getToken(context);
@@ -129,7 +148,10 @@ public class MaterialController {
     }
 
 
-    //gets all materials for a given user based on token received on login
+    /**
+     * Retrieves all materials for the specified user from the database
+     * @param token Token received upon login used for authentication in the database
+     */
     public static void getMaterials(final String token){
         //ask DB for response
         Thread t = new Thread(new Runnable() {
@@ -138,7 +160,7 @@ public class MaterialController {
                 try {
                     dbManager.getMaterial(token);
                 } catch (KraftyRuntimeException e){
-                    Log.d("GET MATs ERROR", "mat error " +  e);
+                    Log.d("GET MATS ERROR", "mat error " +  e);
                 }
             }
         });
