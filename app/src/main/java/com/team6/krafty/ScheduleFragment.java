@@ -25,13 +25,16 @@ public class ScheduleFragment extends Fragment {
 
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.addTask);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onButtonClick();
-            }
-        });
+        int userType = SessionManager.getUserType(getView().getContext());
+        if(userType!= 2) {
+            FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.addTask);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onButtonClick();
+                }
+            });
+        }
 
     }
 
