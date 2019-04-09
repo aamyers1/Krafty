@@ -108,6 +108,7 @@ public class User {
     public Bitmap getBmp() {
         return bmp;
     }
+    public String getImageString(){return  imageString;}
 
     public String getDateJoined(){
         return dateJoined;
@@ -132,6 +133,8 @@ public class User {
     public void setInstagram(String instagram) { this.instagram = instagram; }
 
     public void setWebsite(String website) { this.website = website; }
+
+    public void setImageString(String imageString){ this.imageString = imageString;}
 
     private void parseBitmap(){
         if(!this.imageString.equals("null") && !this.imageString.equals("no image")) {

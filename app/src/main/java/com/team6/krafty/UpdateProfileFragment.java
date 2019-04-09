@@ -108,6 +108,8 @@ public class UpdateProfileFragment extends Fragment {
         user.setFacebook(uFacebook.getText().toString());
         user.setInstagram(uInstagram.getText().toString());
         user.setWebsite(uWebsite.getText().toString());
+        if(!(encodedImage.equals("")) & !encodedImage.equals(user.getImageString()))
+            user.setImageString(encodedImage);
         RegistrationController rc = new RegistrationController();
         if (rc.updateProfile(user,getView().getContext())){
             getActivity().onBackPressed();
@@ -254,42 +256,4 @@ public class UpdateProfileFragment extends Fragment {
             encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT).replace("+", "<");
         }
     }
-
-   /* @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        //If result was ok and was of PICK_IMAGE activity
-        if (resultCode == RESULT_OK && requestCode == 100) {
-            Uri imageUri = data.getData();
-            Context applicationContext = RegisterActivity.getContextOfApplication();
-            InputStream imageStream = null;
-            try {
-                imageStream = applicationContext.getContentResolver().openInputStream(imageUri);
-            } catch (FileNotFoundException e) {
-                Toast.makeText(applicationContext, "File not found.", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            } catch (RuntimeException e) {
-                Toast.makeText(applicationContext, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-            Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-
-            //Put image in imageview
-            ImageView imgProfile = getView().findViewById(R.id.imgProfile);
-            imgProfile.setImageBitmap(selectedImage);
-
-
-            //Convert image to bitmap, then into base64
-            Bitmap imageAsBitmap = null;
-            try {
-                imageAsBitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(), imageUri);
-            } catch (IOException e) { //for file not found
-                e.printStackTrace();
-            }
-            ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
-            imageAsBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrOutStrm);
-            byte[] bArr = byteArrOutStrm.toByteArray();
-            encodedImage = Base64.encodeToString(bArr, Base64.DEFAULT).replace("+", "<");
-        }
-    }*/
 }
