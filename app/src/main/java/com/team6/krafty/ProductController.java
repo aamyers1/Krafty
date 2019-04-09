@@ -90,8 +90,9 @@ public class ProductController {
         }
     }
 
-    public boolean updateProduct(int id,final Context context){
-        Product p = Inventory.getProduct(id);
+    public boolean updateProduct(Product p,final Context context){
+        isCreated = true;
+        int id = p.getId();
         final String request = p.getJson() + "&id=" + id;
         final String token = SessionManager.getToken(context);
         Thread t = new Thread(new Runnable() {

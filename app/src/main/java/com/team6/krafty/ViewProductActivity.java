@@ -31,7 +31,6 @@ import java.util.Map;
 public class ViewProductActivity extends AppCompatActivity  {
 
     private int id;
-    private Context context = this;
     private Product product;
     cardAdapter ca;
     private HashMap<Integer, Integer> materials;
@@ -139,6 +138,7 @@ public class ViewProductActivity extends AppCompatActivity  {
             Intent intent = new Intent(getApplicationContext(), ModifyProductActivity.class);
             intent.putExtra("id", id);
             startActivity(intent);
+            finish();
         }
     }
 

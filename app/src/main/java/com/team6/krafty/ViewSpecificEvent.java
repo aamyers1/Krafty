@@ -221,7 +221,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
     private class onBusinessClick implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-            //TODO this is where we display the products of the business
+            //TODO this is where we GO TO PROFILE OF USER CLICKED....
             Log.d("EVENT-LISTITEM", "You clicked Item: " + id + " at position:" + position);
         }
     }

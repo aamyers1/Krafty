@@ -45,14 +45,12 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //switch to update fragment
-
                 Fragment fragment = new UpdateProfileFragment();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                 ft.addToBackStack(null);
+                ft.addToBackStack(null);
                 ft.replace(R.id.content_frame, fragment);
-
                 ft.commit();
-                //Toast.makeText(getContext(), "I see you're trying to update.... what a shame nobody implemented it.....", Toast.LENGTH_SHORT).show();
+
             }
         });
         User profile = SessionManager.getUser();
