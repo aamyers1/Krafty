@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,5 +56,14 @@ public class ScheduleFragment extends Fragment {
         startActivity(intent);
     }
 
+    public void resetFragment(){
+        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            fragmentManager.beginTransaction().detach(this).commitNow();
+            fragmentManager.beginTransaction().attach(this).commitNow();
+        } else {
+            fragmentManager.beginTransaction().detach(this).attach(this).commit();
+        }
+    }
 
 }
