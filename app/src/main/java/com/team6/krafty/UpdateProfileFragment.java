@@ -108,6 +108,8 @@ public class UpdateProfileFragment extends Fragment {
         user.setFacebook(uFacebook.getText().toString());
         user.setInstagram(uInstagram.getText().toString());
         user.setWebsite(uWebsite.getText().toString());
+        if(!(encodedImage.equals("")) & !encodedImage.equals(user.getImageString()))
+            user.setImageString(encodedImage);
         RegistrationController rc = new RegistrationController();
         if (rc.updateProfile(user,getView().getContext())){
             getActivity().onBackPressed();
