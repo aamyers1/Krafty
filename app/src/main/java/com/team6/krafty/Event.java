@@ -4,6 +4,7 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Event implements Schedulable {
@@ -191,10 +192,32 @@ public class Event implements Schedulable {
 
     public boolean usernameIsScheduled(String username) {
         if (getKrafters() == null) {
-            Log.d("EVENT", "krafters was null");
             return false;
         } else {
             return getKrafters().containsKey(username);
         }
+    }
+
+    public ArrayList<String> getKraftersBusinesses(){
+        ArrayList<String> theBusinesses = new ArrayList<>();
+        if (getKrafters() == null){
+            theBusinesses.add("No Krafters attending");
+            Log.d("EVENT-BUSINESS", "getKrafters was null!");
+            return theBusinesses;
+        }
+        for (String business : getKrafters().values()) {
+            Log.d("EVENT-KRAFTERVALUES", business + "blah");
+        }
+        for (String business : getKrafters().values()) {
+            theBusinesses.add(business);
+            Log.d("EVENT-BUSINESS", business + " blah");
+        }
+
+        if (theBusinesses.size() == 0) {
+            theBusinesses.add("No Krafters attending");
+            Log.d("EVENT-BUSINESS", "business was size 0");
+        }
+
+        return theBusinesses;
     }
 }

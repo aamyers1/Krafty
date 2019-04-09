@@ -8,15 +8,20 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ViewSpecificEvent extends AppCompatActivity{
@@ -25,6 +30,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
     private Context context = this;
     private Event event;
     private HashMap <Integer, User> krafterList;
+    private ListView krafterListView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,13 +102,20 @@ public class ViewSpecificEvent extends AppCompatActivity{
             }
         });
         t.start();
+        try{
+            t.join();
+        }
+        catch (Exception e){
+
+        }
 
         event.setKrafters(controller.getScheduledKrafters(event.getID(), context));
 
-        setButtons();
-
-        //TODO we have the list of krafters, now put them in the listview
+        krafterListView = (ListView) findViewById(R.id.lvKrafters);
         fillListView();
+        krafterListView.setOnItemClickListener(new onBusinessClick());
+
+        setButtons();
     }
     private void setButtons(){
         SharedPreferences sp = getApplicationContext().getSharedPreferences("session", Context.MODE_PRIVATE);
@@ -138,25 +151,17 @@ public class ViewSpecificEvent extends AppCompatActivity{
         @Override
         public void onClick(View view){
             final EventsController controller = new EventsController();
-            if (controller.scheduleForEvent(id,context)){
-                final ScheduleController scheduleController = new ScheduleController();
-                // TODO add event to schedule when that shizz is all hooked up
-                //scheduleController.addEvent(id, event);
-            }
+            controller.scheduleForEvent(id,context);
         }
     }
 
     private class onUnscheduleClick implements View.OnClickListener{
-
         @Override
         public void onClick(View view){
             final EventsController controller = new EventsController();
-            // TODO Get scheduleId  and send for unscheduling
-//            if (controller.unscheduleForEvent(id,context)){
-//                final ScheduleController scheduleController = new ScheduleController();
-//                // TODO remove event to schedule when that shizz is all hooked up
-//                //scheduleController.removeEvent(id, event);
-//            }
+            ScheduleController.getSchedule(view.getContext());
+            int schedID = Schedule.getInstance().getSchedIDByEventID(id);
+            controller.unscheduleForEvent(schedID,context);
         }
     }
 
@@ -172,8 +177,8 @@ public class ViewSpecificEvent extends AppCompatActivity{
 
     private class onDeleteClick implements View.OnClickListener {
 
-        @Override
-        public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
             new AlertDialog.Builder(ViewSpecificEvent.this)
                     .setTitle("Delete Confirmation")
                     .setMessage("Do you really want to delete this event?")
@@ -195,6 +200,20 @@ public class ViewSpecificEvent extends AppCompatActivity{
     }
 
     private void fillListView(){
+        ArrayList<String> krafterBusinesses = event.getKraftersBusinesses();
 
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                krafterBusinesses
+        );
+        krafterListView.setAdapter(arrayAdapter);
+    }
+    private class onBusinessClick implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+            //TODO this is where we display the products of the business
+            Log.d("EVENT-LISTITEM", "You clicked Item: " + id + " at position:" + position);
+        }
     }
 }

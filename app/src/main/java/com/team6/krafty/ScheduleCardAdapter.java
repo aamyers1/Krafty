@@ -1,9 +1,11 @@
 package com.team6.krafty;
 
-import android.graphics.Paint;
-import android.support.v7.widget.CardView;
+
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
 
     private ArrayList<String> dates;
     private Listener listener;
+    Context thisContext;
 
     //create a generic listener interface for the adapter
     interface Listener {
@@ -28,7 +31,8 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
     }
 
     //constructor
-    public ScheduleCardAdapter(){
+    public ScheduleCardAdapter(Context context){
+        thisContext = context;
         ArrayList<Schedulable> schedule = Schedule.getInstance().getSchedule();
         dates = new ArrayList<>();
         for(Schedulable i: schedule){
@@ -53,30 +57,44 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
 
     //when viewholder is bound
     @Override
-    public void onBindViewHolder(ViewHolder holder , final int position){
+    public void onBindViewHolder(ViewHolder holder , final int position) {
         LinearLayout ll = holder.ll;
         TextView tv = ll.findViewById(R.id.date);
         tv.setText(dates.get(position));
 
 
         //set the onClickListener for the cardview. The implementation of the RecyclerView will define a specific listener
-        ll.setOnClickListener(new View.OnClickListener(){
+        ll.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onClick(position);
+                }
             }
         });
 
         RecyclerView rv = ll.findViewById(R.id.schedRecycler);
         ArrayList<Schedulable> scheduleDate = new ArrayList<>();
-        for(Schedulable i: Schedule.getInstance().getSchedule()){
-            if(i.getDate().equals(dates.get(position))){
+        for (Schedulable i : Schedule.getInstance().getSchedule()) {
+            if (i.getDate().equals(dates.get(position))) {
                 scheduleDate.add(i);
             }
         }
         SpecificScheduleCardAdapter ssca = new SpecificScheduleCardAdapter(scheduleDate);
         rv.setAdapter(ssca);
         rv.setLayoutManager(new LinearLayoutManager(ll.getContext(), LinearLayoutManager.VERTICAL, false));
+        ssca.setListener(new SpecificScheduleCardAdapter.Listener() {
+            @Override
+            public void onClick(int position) {
+                Schedulable item = Schedule.getInstance().getSchedule().get(position);
+                if (item.getType() == 1) {
+                    int id = item.getID();
+                    Intent intent = new Intent(thisContext, ViewSpecificEvent.class);
+                    intent.putExtra("ID", id);
+                    thisContext.startActivity(intent);
+                }
+            }
+        });
     }
 
     //Viewholder of the adapter

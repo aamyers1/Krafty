@@ -14,12 +14,6 @@ import android.view.ViewGroup;
 
 public class ScheduleFragment extends Fragment {
 
-
-    public ScheduleFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,9 +30,17 @@ public class ScheduleFragment extends Fragment {
                 onButtonClick();
             }
         });
+
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        View view = getView();
+        Schedule.getInstance().clearSchedule();
         ScheduleController.getSchedule(view.getContext());
         RecyclerView rv = view.findViewById(R.id.schedRecycler);
-        ScheduleCardAdapter sca = new ScheduleCardAdapter();
+        ScheduleCardAdapter sca = new ScheduleCardAdapter(view.getContext());
         rv.setAdapter(sca);
         rv.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
     }
