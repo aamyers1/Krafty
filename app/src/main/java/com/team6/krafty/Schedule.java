@@ -46,6 +46,17 @@ public class Schedule {
         schedule = new ArrayList<>();
     }
 
+    public boolean isScheduled(int eventID){
+        for(int i =0; i< schedule.size(); i++){
+            if(schedule.get(i).getType() == 1){
+                if(schedule.get(i).getID() == eventID){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
 
 }

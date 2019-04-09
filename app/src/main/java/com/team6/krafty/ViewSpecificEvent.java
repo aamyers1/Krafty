@@ -120,8 +120,9 @@ public class ViewSpecificEvent extends AppCompatActivity{
     private void setButtons(){
         SharedPreferences sp = getApplicationContext().getSharedPreferences("session", Context.MODE_PRIVATE);
         String username = sp.getString("username", "test");
+        ScheduleController.getSchedule(getApplicationContext());
         // Check if/else event is in schedule, display schedule/unschedule buttons accordingly
-        if (event.usernameIsScheduled(username)) {
+        if (ScheduleController.getInstance().checkScheduled(event.getID())) {
             Button btnEventUnschedule = (Button) findViewById(R.id.btnEventUnschedule);
             btnEventUnschedule.setVisibility(Button.VISIBLE);
             btnEventUnschedule.setClickable(true);
@@ -150,18 +151,25 @@ public class ViewSpecificEvent extends AppCompatActivity{
 
         @Override
         public void onClick(View view){
-            final EventsController controller = new EventsController();
+            ScheduleController controller = ScheduleController.getInstance();
             controller.scheduleForEvent(id,context);
+            Button b = (Button)view;
+            b.setVisibility(View.INVISIBLE);
+            b.setClickable(false);
+            setButtons();
         }
     }
 
     private class onUnscheduleClick implements View.OnClickListener{
         @Override
         public void onClick(View view){
-            final EventsController controller = new EventsController();
-            ScheduleController.getSchedule(view.getContext());
+            ScheduleController controller = ScheduleController.getInstance();
             int schedID = Schedule.getInstance().getSchedIDByEventID(id);
-            controller.unscheduleForEvent(schedID,context);
+            controller.unscheduleForEvent(schedID, view.getContext());
+            Button b = (Button)view;
+            b.setVisibility(View.INVISIBLE);
+            b.setClickable(false);
+            setButtons();
         }
     }
 
@@ -209,6 +217,7 @@ public class ViewSpecificEvent extends AppCompatActivity{
         );
         krafterListView.setAdapter(arrayAdapter);
     }
+
     private class onBusinessClick implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> l, View v, int position, long id) {
