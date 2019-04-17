@@ -169,6 +169,7 @@ public class Event implements Schedulable {
     public int getVendorSpots() { return vendorSpots; }
 
     public int getTakenSpots() { return takenSpots; }
+    public void setTakenSpots(int takenSpots) { this.takenSpots = takenSpots; }
 
     public boolean getFood(){ return  food;}
 
@@ -186,7 +187,10 @@ public class Event implements Schedulable {
         this.id = id;
     }
 
-    public void setKrafters(HashMap<String, String> theKrafters){ krafters = (HashMap<String, String>) theKrafters.clone(); }
+    public void setKrafters(HashMap<String, String> theKrafters){
+        krafters = (HashMap<String, String>) theKrafters.clone();
+        this.setTakenSpots(krafters.size());
+    }
 
     public  HashMap<String, String> getKrafters(){ return krafters; }
 
@@ -202,20 +206,14 @@ public class Event implements Schedulable {
         ArrayList<String> theBusinesses = new ArrayList<>();
         if (getKrafters() == null){
             theBusinesses.add("No Krafters attending");
-            Log.d("EVENT-BUSINESS", "getKrafters was null!");
             return theBusinesses;
         }
         for (String business : getKrafters().values()) {
-            Log.d("EVENT-KRAFTERVALUES", business + "blah");
-        }
-        for (String business : getKrafters().values()) {
             theBusinesses.add(business);
-            Log.d("EVENT-BUSINESS", business + " blah");
         }
 
         if (theBusinesses.size() == 0) {
             theBusinesses.add("No Krafters attending");
-            Log.d("EVENT-BUSINESS", "business was size 0");
         }
 
         return theBusinesses;

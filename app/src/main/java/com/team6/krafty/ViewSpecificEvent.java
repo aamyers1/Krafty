@@ -69,9 +69,6 @@ public class ViewSpecificEvent extends AppCompatActivity{
         TextView numOfVendors = (TextView)findViewById(R.id.eventVendors);
         numOfVendors.setText(String.valueOf(event.getVendorSpots()));
 
-        TextView numSignedUp = (TextView)findViewById(R.id.numVendorsSigned);
-        numSignedUp.setText(String.valueOf(event.getTakenSpots()));
-
         Switch eventOutdoors = (Switch)findViewById(R.id.eventOutdoors);
         if (event.getOutDoors()) eventOutdoors.setChecked(true);
 
@@ -110,6 +107,9 @@ public class ViewSpecificEvent extends AppCompatActivity{
         }
 
         event.setKrafters(controller.getScheduledKrafters(event.getID(), context));
+
+        TextView numSignedUp = (TextView)findViewById(R.id.numVendorsSigned);
+        numSignedUp.setText(String.valueOf(event.getTakenSpots()));
 
         krafterListView = (ListView) findViewById(R.id.lvKrafters);
         fillListView();
@@ -209,7 +209,6 @@ public class ViewSpecificEvent extends AppCompatActivity{
 
     private void fillListView(){
         ArrayList<String> krafterBusinesses = event.getKraftersBusinesses();
-
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
@@ -222,7 +221,9 @@ public class ViewSpecificEvent extends AppCompatActivity{
         @Override
         public void onItemClick(AdapterView<?> l, View v, int position, long id) {
             //TODO this is where we GO TO PROFILE OF USER CLICKED....
-            Log.d("EVENT-LISTITEM", "You clicked Item: " + id + " at position:" + position);
+            String username = event.getKrafters().keySet().toArray()[(int)id].toString();
+
+            Toast.makeText(getApplicationContext(),username, Toast.LENGTH_SHORT).show();
         }
     }
 }
