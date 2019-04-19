@@ -563,8 +563,8 @@ public boolean checkUsername(String username){
                   int schedID = current.getInt("scheduleid");
                   int productID = current.getInt("taskid");
                   String dateTime = current.getString("start");
-                  String date = dateTime.substring(dateTime.indexOf("M") + 1);
-                  String time = dateTime.substring(0, dateTime.indexOf("M") + 1);
+                  String date = dateTime.substring(dateTime.indexOf("M") + 1).trim();
+                  String time = dateTime.substring(0, dateTime.indexOf("M") + 1).trim();
                   int qty = current.getInt("qty");
                   Task task = new Task(schedID, productID, qty, date, time);
                   Schedule.getInstance().addItem(task, schedID);

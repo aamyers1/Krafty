@@ -67,8 +67,6 @@ public class UpdateProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onUpdateClick();
-
-                //TODO: UPDATE USER INFO IF CHANGED
             }
         });
 

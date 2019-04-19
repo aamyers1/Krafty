@@ -41,6 +41,7 @@ public class ScheduleController {
         t.start();
         try{
             t.join();
+            Schedule.getInstance().sortSched();
         }
         catch(Exception e){
             Log.d("ERR SCHED CONT", e.getMessage());
