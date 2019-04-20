@@ -439,10 +439,7 @@ public boolean checkUsername(String username){
 
                       Product product = new Product();
                       product.parseJSON(jsonA.getJSONObject(i));
-                      Log.d("PRODUCT", product.getMaterials().toString());
                       Inventory.addProduct(product);
-                      Log.d("PRODUCTGET", "retrieved " + product.getName());
-
                   }
               } catch (Exception i) {
                   Log.d("GETPROD3", i.getMessage());
@@ -543,7 +540,6 @@ public boolean checkUsername(String username){
         } catch (JSONException e){
             throw new KraftyRuntimeException("Failed to get scheduled Krafters", null);
         }
-
         return krafters;
     }
 
@@ -551,7 +547,6 @@ public boolean checkUsername(String username){
       HttpURLConnection connection = generatePostConnection("/api/schedule/view/");
       connection.setRequestProperty ("Authorization", "token " + token);
       String response = getResponse(connection,"".getBytes());
-      Log.d("AAAAAAA" , response);
       try{
           JSONObject jsonObject = new JSONObject(response);
           JSONArray allItems = jsonObject.getJSONArray("result");
