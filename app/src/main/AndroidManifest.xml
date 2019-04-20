@@ -20,47 +20,71 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDBW8wccvzmIaHhWA5EDQp1BCmulIy_L5k" />
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:label="Register" />
-        <activity android:name=".SplashActivity" />
+            android:label="Register"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".SplashActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".CreateMaterialActivity"
-            android:label="Create a Material" />
+            android:label="Create a Material"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ModifyMaterialActivity"
-            android:label="Modify a Material" />
+            android:label="Modify a Material"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".CreateEventActivity"
-            android:label="Create an Event" />
+            android:label="Create an Event"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ViewSpecificEvent"
-            android:label="View an Event" />
+            android:label="View an Event"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ModifyEventActivity"
-            android:label="Update Event" />
+            android:label="Update Event"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ViewProductActivity"
-            android:label="View Product"/>
+            android:label="View Product"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ModifyProductActivity"
-            android:label="Modify Product"/>
+            android:label="Modify Product"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".CreateProductActivity"
-            android:label="Create Product"/>
+            android:label="Create Product"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".CreateTaskActivity"
-            android:label="Create Task"/>
+            android:label="Create Task"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
     </application>
 

@@ -1,8 +1,6 @@
 package com.team6.krafty;
 
 import android.util.Log;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Schedule {
@@ -79,8 +77,6 @@ public class Schedule {
         int minDate;
         ArrayList<Schedulable> updatedSchedule = new ArrayList<>();
         ArrayList<Integer> updatedIDs = new ArrayList<>();
-
-        Log.d("SIZEBEFORE", schedule.size() + " ");
         while(schedule.size() != 0){
             minTime = convertTime(schedule.get(0));
             minDate = convertDate(schedule.get(0));
@@ -106,7 +102,6 @@ public class Schedule {
         }
         schedule = updatedSchedule;
         ids = updatedIDs;
-        Log.d("SIZEAFTER", schedule.size() + " ");
     }
 
 
