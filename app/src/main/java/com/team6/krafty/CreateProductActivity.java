@@ -1,5 +1,7 @@
 package com.team6.krafty;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -72,6 +75,35 @@ public class CreateProductActivity extends AppCompatActivity implements AdapterV
         });
         Button addMaterialButton = findViewById(R.id.btnAddMat);
         addMaterialButton.setOnClickListener(new MaterialClick());
+        ca.setListener(new cardAdapter.Listener() {
+            @Override
+            public void onClick(final int position) {
+                new AlertDialog.Builder(CreateProductActivity.this)
+                        .setTitle("Confirmation")
+                        .setMessage("Do you want to remove this Material?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                int id = 0;
+                                String[] matNames =getMatNames();
+                                for (int i=0; i <matNames.length; i ++){
+                                    String matName = "";
+                                    if (matNames[i].equals(ca.getCaption(position)))
+                                        matName = matNames[i].substring(0,matNames[i].indexOf(":"));
+                                        id = Inventory.getMaterialByName(matName).getId();
+                                }
+                            materials.remove(id);
+                            nullifyAdapter();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Toast.makeText(getApplicationContext(), "Material not removed.", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 
     /**
@@ -104,6 +136,7 @@ public class CreateProductActivity extends AppCompatActivity implements AdapterV
             int quantity = Integer.parseInt(qty.getText().toString());
             //add this material and qty to the hashmap and update the adapter
             materials.put(id, quantity);
+            Log.d("MatID",Integer.toString(id));
             nullifyAdapter();
         }
     }

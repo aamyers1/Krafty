@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,4 +123,14 @@ public class cardAdapter extends RecyclerView.Adapter<cardAdapter.ViewHolder>{
         this.images = images;
     }
 
+    //test only
+    /**
+     * Returns the caption of a given position
+     * @param pos position from cardAdapter
+     * @return the caption from captions array
+     */
+    public String getCaption(int pos){
+        //Log.d("name", captions[pos].substring(0,captions[pos].indexOf(":")));
+        return captions[pos];
+    }
 }

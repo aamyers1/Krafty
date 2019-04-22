@@ -98,6 +98,16 @@ public class Inventory {
         return null;
     }
 
+    //test
+    public static Material getMaterialByName(String name){
+        for(int i = 0; i < personalMaterials.size(); i++){
+            if(personalMaterials.get(i).getName().equals(name)){
+                return personalMaterials.get(i);
+            }
+        }
+        return null;
+    }
+
     public static Product getProductById(int id){
         for(int i = 0; i < personalProducts.size(); i++){
             if(personalProducts.get(i).getId() == id){
