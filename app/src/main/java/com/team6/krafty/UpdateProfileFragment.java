@@ -239,15 +239,28 @@ public class UpdateProfileFragment extends Fragment {
             Context applicationContext = getView().getContext();
             //Put image in imageview
             ImageView imgProfile = getView().findViewById(R.id.imgProfile);
-            imgProfile.setImageURI(imageUri);
+            imgProfile.setImageDrawable(null);
+            imgProfile.setBackgroundColor(Color.rgb(188, 225, 232));
 
             //Convert image to bitmap, then into base64
             Bitmap imageAsBitmap = null;
             try {
                 imageAsBitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(), imageUri);
+                Validator.validateImage(imageAsBitmap, "Profile Image");
             } catch (IOException e) { //for file not found
                 e.printStackTrace();
+            } catch (KraftyRuntimeException e){
+                Toast.makeText(getView().getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            } catch (RuntimeException e){
+                if (e.getMessage().contains("draw too large")){
+                    Toast.makeText(getView().getContext(), "Image too large", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
+
+            imgProfile.setImageURI(imageUri);
+
             ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -176,18 +177,31 @@ public class RegisterKrafterFragment extends Fragment {
             }
             Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
 
-            //Put image in imageview
             ImageView imgProfile = getView().findViewById(R.id.imgProfile);
-            imgProfile.setImageBitmap(selectedImage);
+            imgProfile.setImageDrawable(null);
+            imgProfile.setBackgroundColor(Color.rgb(188, 225, 232));
 
 
             //Convert image to bitmap, then into base64
             Bitmap imageAsBitmap = null;
             try {
                 imageAsBitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(), imageUri);
+                Validator.validateImage(imageAsBitmap, "Profile Image");
             } catch (IOException e) { //for file not found
                 e.printStackTrace();
+            } catch (KraftyRuntimeException e){
+                Toast.makeText(applicationContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            } catch (RuntimeException e){
+                if (e.getMessage().contains("draw too large")){
+                    Toast.makeText(applicationContext, "Image too large", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
+
+            //Put image in imageview
+            imgProfile.setImageBitmap(selectedImage);
+
             ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();
