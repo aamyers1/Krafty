@@ -34,5 +34,6 @@ public interface DBAccessImpl {
     void getSchedule(String token);
     public abstract void createTask(Task task, String token);
     public abstract HashMap<String, Product> getKrafterProducts(String username, String token);
+    public abstract void createReport(String token, String report, String type, int id);
 
 }

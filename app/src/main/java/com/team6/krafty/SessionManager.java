@@ -10,6 +10,7 @@ public class SessionManager {
     private static DBManager dbManager = DBManager.getInstance();
     private static String token;
     private static User profile;
+    private static User external;
 
     public static void setUser(User user){
         profile = user;
@@ -17,6 +18,30 @@ public class SessionManager {
 
     public static User getUser(){
         return profile;
+    }
+
+    public static User getExternalUser(final String username){
+        final String tok = token;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    external = dbManager.getUser(tok, username);
+                }
+                catch(Exception e){
+                    Log.d("ERRRRR", e.getMessage());
+                }
+            }
+        });
+        t.start();
+        try{
+            t.join();
+            return external;
+        }
+        catch(Exception j){
+            Log.d("ERR", j.getMessage());
+        }
+        return null;
     }
 
     //gets the current token

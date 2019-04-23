@@ -263,13 +263,13 @@ public boolean checkUsername(String username){
       Log.d("REQUEST: " , request);
     byte[] query = request.getBytes();
     String response = getResponse(connection, query);
-    Log.d("RESPONSE: " , response);
     try {
       User profile = new User();
       profile.parseJson(new JSONObject(response));
       return profile;
     }
     catch(Exception e){
+        Log.d("RES", username);
       Log.d("RESPONSE", "response: " + response);
       Log.d("ERROR GETTING USER", e.getMessage());
       return null;
@@ -673,5 +673,17 @@ public boolean checkUsername(String username){
             throw new KraftyRuntimeException("Failed to get download products", null);
         }
         return products;
+    }
+
+    public void createReport(String token, String report, String type, int id) throws KraftyRuntimeException{
+        HttpURLConnection connection = generatePostConnection("/api/report/");
+        connection.setRequestProperty("Authorization", "token " + token);
+        String req = "type=" + type + "&reason=" +report + "&id=" + id;
+        byte[] request = req.getBytes();
+        String response = getResponse(connection, request);
+        if(!response.contains("Reported Successfully")){
+            throw new KraftyRuntimeException("Report Failed!", null);
+        }
+
     }
 }
