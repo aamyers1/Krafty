@@ -6,9 +6,11 @@ import android.widget.Toast;
 
 
 public class ScheduleController {
+
     private DBManager dbManager = DBManager.getInstance();
     private boolean isScheduled;
     private boolean isUnscheduled;
+    private String message;
     private static ScheduleController instance;
 
 
@@ -41,6 +43,7 @@ public class ScheduleController {
         t.start();
         try{
             t.join();
+            Schedule.getInstance().sortSched();
         }
         catch(Exception e){
             Log.d("ERR SCHED CONT", e.getMessage());

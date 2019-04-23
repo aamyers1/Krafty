@@ -439,10 +439,7 @@ public boolean checkUsername(String username){
 
                       Product product = new Product();
                       product.parseJSON(jsonA.getJSONObject(i));
-                      Log.d("PRODUCT", product.getMaterials().toString());
                       Inventory.addProduct(product);
-                      Log.d("PRODUCTGET", "retrieved " + product.getName());
-
                   }
               } catch (Exception i) {
                   Log.d("GETPROD3", i.getMessage());
@@ -543,7 +540,6 @@ public boolean checkUsername(String username){
         } catch (JSONException e){
             throw new KraftyRuntimeException("Failed to get scheduled Krafters", null);
         }
-
         return krafters;
     }
 
@@ -551,7 +547,6 @@ public boolean checkUsername(String username){
       HttpURLConnection connection = generatePostConnection("/api/schedule/view/");
       connection.setRequestProperty ("Authorization", "token " + token);
       String response = getResponse(connection,"".getBytes());
-      Log.d("AAAAAAA" , response);
       try{
           JSONObject jsonObject = new JSONObject(response);
           JSONArray allItems = jsonObject.getJSONArray("result");
@@ -563,8 +558,8 @@ public boolean checkUsername(String username){
                   int schedID = current.getInt("scheduleid");
                   int productID = current.getInt("taskid");
                   String dateTime = current.getString("start");
-                  String date = dateTime.substring(dateTime.indexOf("M") + 1);
-                  String time = dateTime.substring(0, dateTime.indexOf("M") + 1);
+                  String date = dateTime.substring(dateTime.indexOf("M") + 1).trim();
+                  String time = dateTime.substring(0, dateTime.indexOf("M") + 1).trim();
                   int qty = current.getInt("qty");
                   Task task = new Task(schedID, productID, qty, date, time);
                   Schedule.getInstance().addItem(task, schedID);

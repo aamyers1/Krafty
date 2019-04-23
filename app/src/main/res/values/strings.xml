@@ -100,8 +100,6 @@
     <string name="dateReq">Date Required</string>
     <string name="timeReq">Time Required</string>
     <string name="noTime">No time chosen</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="viewProduct">View Product</string>
     <string name="kraftersAttendingHeading">Krafters Attending</string>

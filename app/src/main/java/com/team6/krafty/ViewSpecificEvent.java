@@ -12,10 +12,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -69,9 +71,6 @@ public class ViewSpecificEvent extends AppCompatActivity{
         TextView numOfVendors = (TextView)findViewById(R.id.eventVendors);
         numOfVendors.setText(String.valueOf(event.getVendorSpots()));
 
-        TextView numSignedUp = (TextView)findViewById(R.id.numVendorsSigned);
-        numSignedUp.setText(String.valueOf(event.getTakenSpots()));
-
         Switch eventOutdoors = (Switch)findViewById(R.id.eventOutdoors);
         if (event.getOutDoors()) eventOutdoors.setChecked(true);
 
@@ -111,9 +110,13 @@ public class ViewSpecificEvent extends AppCompatActivity{
 
         event.setKrafters(controller.getScheduledKrafters(event.getID(), context));
 
+        TextView numSignedUp = (TextView)findViewById(R.id.numVendorsSigned);
+        numSignedUp.setText(String.valueOf(event.getTakenSpots()));
+
         krafterListView = (ListView) findViewById(R.id.lvKrafters);
         fillListView();
         krafterListView.setOnItemClickListener(new onBusinessClick());
+        setListViewHeightBasedOnChildren(krafterListView);
 
         setButtons();
     }
@@ -209,7 +212,6 @@ public class ViewSpecificEvent extends AppCompatActivity{
 
     private void fillListView(){
         ArrayList<String> krafterBusinesses = event.getKraftersBusinesses();
-
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
@@ -222,7 +224,30 @@ public class ViewSpecificEvent extends AppCompatActivity{
         @Override
         public void onItemClick(AdapterView<?> l, View v, int position, long id) {
             //TODO this is where we GO TO PROFILE OF USER CLICKED....
-            Log.d("EVENT-LISTITEM", "You clicked Item: " + id + " at position:" + position);
+            String username = event.getKrafters().keySet().toArray()[(int)id].toString();
+
+            Toast.makeText(getApplicationContext(),username, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 }

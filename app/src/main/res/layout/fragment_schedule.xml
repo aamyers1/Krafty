@@ -6,6 +6,13 @@
     android:orientation="vertical"
     tools:context=".ScheduleFragment">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/schedRecycler"
         android:layout_width="match_parent"

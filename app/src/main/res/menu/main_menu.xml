@@ -8,11 +8,12 @@
     <item
         android:id="@+id/events"
         android:title="@string/events"
-        android:icon="@drawable/ic_event_black_24dp"/>
+        android:icon="@drawable/ic_location_on_black_24dp"/>
 
     <item
         android:id="@+id/schedule"
-        android:title="@string/eventSchedule" />
+        android:title="@string/eventSchedule"
+        android:icon="@drawable/ic_event_black_24dp"/>
 
     <item
         android:id="@+id/logout"

@@ -42,8 +42,8 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
         ArrayList<Schedulable> schedule = Schedule.getInstance().getSchedule();
         dates = new ArrayList<>();
         for(Schedulable i: schedule){
-            if(!dates.contains(i.getDate())){
-                dates.add(i.getDate());
+            if(!dates.contains(i.getDate().trim())){
+                dates.add(i.getDate().trim());
             }
         }
     }
@@ -81,7 +81,7 @@ public class ScheduleCardAdapter extends RecyclerView.Adapter<ScheduleCardAdapte
         RecyclerView rv = ll.findViewById(R.id.schedRecycler);
         final ArrayList<Schedulable> scheduleDate = new ArrayList<>();
         for (Schedulable i : Schedule.getInstance().getSchedule()) {
-            if (i.getDate().equals(dates.get(position))) {
+            if (i.getDate().trim().equals(dates.get(position))) {
                 scheduleDate.add(i);
             }
         }
