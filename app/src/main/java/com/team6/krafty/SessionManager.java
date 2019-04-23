@@ -20,8 +20,8 @@ public class SessionManager {
         return profile;
     }
 
-    public static User getExternalUser(final String username){
-        final String tok = token;
+    public static User getExternalUser(Context context, final String username){
+        final String tok = getToken(context);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {

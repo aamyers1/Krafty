@@ -35,9 +35,8 @@ public class KrafterProfileActivity extends AppCompatActivity {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState);
         String un = getIntent().getStringExtra("username");
-        User profile = SessionManager.getExternalUser(un);
+        User profile = SessionManager.getExternalUser(this, un);
         setContentView(R.layout.activity_krafter_profile);
-        setContentView(R.layout.activity_create_event);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,8 +46,8 @@ public class KrafterProfileActivity extends AppCompatActivity {
         }
         if(profile.getUserType() != 2){
             FrameLayout fl = findViewById(R.id.krafterFrame);
-            View v = getLayoutInflater().inflate(R.layout.krafterprofile, fl, true);
-            TextView t = findViewById(R.id.Fields);
+            View v = getLayoutInflater().inflate(R.layout.krafterprofile, fl, false);
+            TextView t = v.findViewById(R.id.Fields);
             StringBuilder krafterInfo = new StringBuilder();
             if(profile.getBusinessName()!= null && !profile.getBusinessName().equals("")){
                 krafterInfo.append("Business Name: " + profile.getBusinessName() + "\n");

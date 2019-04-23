@@ -269,7 +269,7 @@ public boolean checkUsername(String username){
       return profile;
     }
     catch(Exception e){
-        Log.d("RES", username);
+        Log.d("RES", username + " " + token);
       Log.d("RESPONSE", "response: " + response);
       Log.d("ERROR GETTING USER", e.getMessage());
       return null;
