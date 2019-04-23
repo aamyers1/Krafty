@@ -19,7 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
+/**
+ * Class that allows Krafters to schedule products to be created
+ */
 public class CreateTaskActivity extends AppCompatActivity {
     cardAdapter ca;
     private int prodId;
@@ -84,7 +86,9 @@ public class CreateTaskActivity extends AppCompatActivity {
     }
 
 
-    //handles submit click
+    /**
+     * Validates data and creates task object upon Submit button click
+     */
     public void onSubmitClick(){
         //essentially just gathers strings from various editTexts
 

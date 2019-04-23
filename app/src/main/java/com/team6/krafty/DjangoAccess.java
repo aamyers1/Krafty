@@ -601,6 +601,12 @@ public boolean checkUsername(String username){
       }
     }
 
+    /**
+     * Creates a task object within the database
+     * @param task The task object to be sent to the database
+     * @param token The user's token used for authentication
+     * @throws KraftyRuntimeException
+     */
     public void createTask(Task task, String token) throws KraftyRuntimeException {
         HttpURLConnection connection = generatePostConnection("/api/schedule/product/");
         connection.setRequestProperty("Authorization", "token " + token);
