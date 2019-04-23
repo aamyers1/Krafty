@@ -104,5 +104,7 @@
     <string name="viewProduct">View Product</string>
     <string name="kraftersAttendingHeading">Krafters Attending</string>
     <string name="eventUnschedule">Unschedule</string>
+    <string name="prompt">Type here…</string>
+    <string name="report">Thank you for taking the time to report inappropriate behavior. We review all reports and take all claims seriously. Please tell us what violated community guidelines below.</string>
 
 </resources>

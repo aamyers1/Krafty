@@ -66,7 +66,7 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
                 SessionManager.logout(this);
                 intent = new Intent(this, LoginActivity.class);
                 break;
-            case 500:
+            case R.id.inventory:
                 fragment = new InventoryFragment();
                 break;
             case R.id.events:
@@ -114,20 +114,16 @@ public class SplashActivity extends AppCompatActivity implements NavigationView.
         try{
             t.join();
             //If a krafter, add inventory option to the menu
-            //TODO: FIGURE OUT HOW TO ADD IT TO THE RIGHT PLACE IN THE LIST
             SharedPreferences sp = getSharedPreferences("session", Context.MODE_PRIVATE);
             SharedPreferences.Editor edit = sp.edit();
             edit.putString("username", profile.getUsername());
             edit.putInt("userType", profile.getUserType());
             edit.apply();
 
-            if(profile.getUserType() == 1 || profile.getUserType() == 0) {
+            if(profile.getUserType() == 2) {
                 Menu menu = navView.getMenu();
-                MenuItem mi = menu.add(menu.NONE, MENU_INVENTORY, 0, "Inventory");
-                mi.setIcon(R.drawable.ic_archive_black_24dp);
-            }
-            else{
-
+                MenuItem inventory = menu.findItem(R.id.inventory);
+                inventory.setVisible(false);
             }
         }
         catch (Exception e){

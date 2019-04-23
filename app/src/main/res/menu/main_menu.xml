@@ -6,6 +6,11 @@
         android:icon="@drawable/ic_account_box_black_24dp"/>
 
     <item
+        android:id="@+id/inventory"
+        android:title="@string/inventory"
+        android:icon="@drawable/ic_archive_black_24dp"/>
+
+    <item
         android:id="@+id/events"
         android:title="@string/events"
         android:icon="@drawable/ic_location_on_black_24dp"/>

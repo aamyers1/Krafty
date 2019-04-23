@@ -85,6 +85,9 @@ public class DjangoAccess implements DBAccessImpl {
       Log.d("RESPONSE ERR", e.getMessage());
       return e.getMessage();
     }
+    finally {
+        connection.disconnect();
+    }
   }
 
 public boolean checkUsername(String username){
@@ -161,18 +164,22 @@ public boolean checkUsername(String username){
             response.append(line);
           }
           parseForMats(response.toString());
+          connection.disconnect();
         }
         catch(Exception i){
           Log.d("GETMATERR", i.getMessage());
+          connection.disconnect();
         }
       }
       catch(java.io.IOException e){
           Log.d("GETMATERR", "No connection");
       }
+
     }
     catch(MalformedURLException e){
         Log.d("GETMATERR", "Malformed URL");
     }
+
   }
 
   public void createMaterial(Material material, String token){
@@ -262,6 +269,7 @@ public boolean checkUsername(String username){
           while ((line = in.readLine()) != null) {
             response.append(line);
           }
+          connection.disconnect();
           JSONObject jsonObject = new JSONObject(response.toString());
 
           try {
@@ -272,9 +280,11 @@ public boolean checkUsername(String username){
               eventsList.add(newEvent);
 
             }
+
           }
           catch(Exception e){
             Log.d("ECNTR JSONARRAY", e.getMessage());
+            connection.disconnect();
           }
 
           return eventsList;
@@ -432,6 +442,7 @@ public boolean checkUsername(String username){
                   while ((line = in.readLine()) != null) {
                       response.append(line);
                   }
+                  connection.disconnect();
                   String reply = response.toString();
                   JSONObject json = new JSONObject(reply);
                   JSONArray jsonA = json.getJSONArray("result");
@@ -443,6 +454,7 @@ public boolean checkUsername(String username){
                   }
               } catch (Exception i) {
                   Log.d("GETPROD3", i.getMessage());
+                  connection.disconnect();
               }
           } catch (java.io.IOException e) {
               Log.d("GETPROD2", e.getMessage());

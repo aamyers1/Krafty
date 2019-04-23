@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -108,6 +109,16 @@ public class ViewSpecificEvent extends AppCompatActivity{
 
         }
 
+        FloatingActionButton report = findViewById(R.id.report);
+        report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ReportActivity.class);
+                intent.putExtra("id", event.getID());
+                intent.putExtra("category", "e");
+                startActivity(intent);
+            }
+        });
         event.setKrafters(controller.getScheduledKrafters(event.getID(), context));
 
         TextView numSignedUp = (TextView)findViewById(R.id.numVendorsSigned);
