@@ -1,20 +1,17 @@
 package com.team6.krafty;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +25,7 @@ import java.util.HashMap;
 public class KrafterProfileActivity extends AppCompatActivity {
 
     private cardAdapter ca;
-    private HashMap<String, Product> products;
+    private HashMap<String, String> products;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +41,8 @@ public class KrafterProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to get user data.", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Checks if the profile is a Krafter
         if(profile.getUserType() != 2){
             FrameLayout fl = findViewById(R.id.krafterFrame);
             View v = getLayoutInflater().inflate(R.layout.krafterprofile, fl, false);
@@ -70,6 +69,27 @@ public class KrafterProfileActivity extends AppCompatActivity {
                 total = total.substring(0, total.lastIndexOf("\n"));
             }
             t.setText(total);
+
+            ProductController pc = new ProductController();
+            products = pc.getKrafterProducts(un,this);
+            RecyclerView rv = findViewById(R.id.recProducts);
+            try {
+                ca = new cardAdapter(getbmps(), getProdNames());
+                rv.setAdapter(ca);
+                rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            }
+            catch(Exception e){
+                Log.d("CA ERROR", e.getMessage());
+            }
+
+            /*
+            // Listener to launch product details
+            ca.setListener(new cardAdapter.Listener() {
+                @Override
+                public void onClick(int position) {
+                    Intent intent = new Intent(getApplicationContext(), ViewProductActivity.class);
+                }
+            });*/
         }
         TextView tv = findViewById(R.id.username);
         tv.setText(profile.getUsername());
@@ -89,6 +109,52 @@ public class KrafterProfileActivity extends AppCompatActivity {
         } else {
             imgProfile.setBackgroundColor(Color.rgb(188, 225, 232));
         }
+    }
+
+    /**
+     * method to get bitmap images of products of a Krafter
+     * @return a Bitmap array of images
+     */
+    private  Bitmap[] getbmps(){
+        Bitmap[] bmp = new Bitmap[products.size()];
+        String [] names  = getProdNames();
+        for(int i = 0; i < products.size(); i++){
+            bmp[i] = getBmp(products.get(names[i]));
+        }
+        return bmp;
+    }
+
+    /**
+     * method to get names of products of a Krafter
+     * @return a String array of names
+     */
+    private  String[] getProdNames(){
+        int k = 0;
+        String[] names = new String[products.size()];
+        for(String i: products.keySet()){
+            names[k] = i;
+            k++;
+        }
+        return names;
+
+    }
+
+    private Bitmap getBmp(String image){
+        Bitmap bmp;
+        if(!(image == null) && !image.equals("no image") && !image.equals("") ) {
+            try{
+                byte[] encodeByte = Base64.decode(image.replace("<", "+"), Base64.DEFAULT);
+                bmp = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            } catch (IllegalArgumentException e){
+
+                Log.d("MATERIAL IMAGE ERROR", "bad image base-64");
+                bmp = null;
+            }
+        }
+        else{
+            bmp = null;
+        }
+        return bmp;
     }
 
 }

@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 public class SessionManager {
     private static DBManager dbManager = DBManager.getInstance();
     private static String token;

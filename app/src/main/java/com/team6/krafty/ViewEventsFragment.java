@@ -36,7 +36,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.IOException;
 import java.util.List;
 
-
+/**
+ * Fragment used to display events on a map
+ */
 public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
 
  private GoogleMap mMap;
@@ -44,6 +46,14 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
     private View v;
     private boolean locationPermission;
 
+    /**
+     * Method called on object instantiation. Inflates XML file fragment_view_events.xml
+     * @param inflater LayoutInflater to inflate the xml file
+     * @param container Containing object for the inflated xml
+     * @param savedInstanceState Bundle containing state information that can be used on fragment
+     *                                   relaunch or resume to restore state
+     * @return Inflated xml object
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_view_events, container, false);
@@ -55,6 +65,9 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
         return v;
     }
 
+    /**
+     * Method called once the xml is loaded. Loads the mapFrame and floating button for create event
+     */
     @Override
     public void onStart(){
         super.onStart();
@@ -75,7 +88,11 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
+    /**
+     * Method to display the Google map with the current location in the center. Also calls the
+     * method AsyncEventGetter to display Event markers on the map
+     * @param googleMap google map
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -102,7 +119,9 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
         mMap.setOnInfoWindowClickListener(new WindowListener());
     }
 
-
+    /**
+     * Listener for Event markers. Starts the ViewSpecificEvent activity.
+     */
     private class WindowListener implements GoogleMap.OnInfoWindowClickListener {
 
         @Override
@@ -114,6 +133,9 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    /**
+     * Class to fetch events from the database and AddMarkers to the map
+     */
     private class AsyncEventGetter extends AsyncTask<Void, Void, Void>{
         @Override
         public Void doInBackground(Void...args){
@@ -131,6 +153,9 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    /**
+     * Method to request permission for device location info access
+     */
     @TargetApi(23)
     private void getPermission(){
         ActivityCompat.requestPermissions(this.getActivity(),
@@ -139,7 +164,12 @@ public class ViewEventsFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-
+    /**
+     * Method to update locationPermission if granted
+     * @param requestCode request code to check if thr request was sent
+     * @param permissions array for permission
+     * @param grantResults array of the response
+     */
     public void onRequestPermissionsResult(int requestCode,String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case 200: {

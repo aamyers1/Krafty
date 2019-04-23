@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class ProductController {
     private boolean isCreated;
-    private HashMap<String, Product> products;
+    private HashMap<String, String> products;
 
     public boolean createProduct(String name, String description, String image, int quantity, HashMap<Integer, Integer> mats, float price, final Context context){
         isCreated = true;
@@ -75,7 +75,7 @@ public class ProductController {
         return null;
     }
 
-    public HashMap<String, Product> getKrafterProducts(final String username, final Context context){
+    public HashMap<String, String> getKrafterProducts(final String username, final Context context){
         Thread t = new Thread(new Runnable(){
             @Override
             public void run(){

@@ -235,12 +235,10 @@ public class ViewSpecificEvent extends AppCompatActivity{
     private class onBusinessClick implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-            //TODO this is where we GO TO PROFILE OF USER CLICKED....
             String username = event.getKrafters().keySet().toArray()[(int)id].toString();
             Intent intent = new Intent(getApplicationContext(), KrafterProfileActivity.class);
             intent.putExtra("username", username);
             startActivity(intent);
-            Toast.makeText(getApplicationContext(),username, Toast.LENGTH_SHORT).show();
         }
     }
 

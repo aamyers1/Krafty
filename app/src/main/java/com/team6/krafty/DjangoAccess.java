@@ -643,8 +643,8 @@ public boolean checkUsername(String username){
     }
 
     @Override
-    public HashMap<String, Product> getKrafterProducts(String username, String token) {
-        HashMap<String, Product> products = new HashMap<>();
+    public HashMap<String, String> getKrafterProducts(String username, String token) {
+        HashMap<String, String> products = new HashMap<>();
         HttpURLConnection connection = generatePostConnection("/api/krafters/products/");
         connection.setRequestProperty("Authorization", "token " + token);
         String string = "username="+username;
@@ -652,7 +652,7 @@ public boolean checkUsername(String username){
         byte[] request = string.getBytes();
         String response = getResponse(connection,request);
         if(response.contains("ERROR") || response.contains("http") || response.contains("unexpected end of stream")){
-            throw new KraftyRuntimeException("Failed to get scheduled Krafters", null);
+            throw new KraftyRuntimeException("Failed to get  Krafter's prodcuts", null);
         }
 
         try {
@@ -661,13 +661,13 @@ public boolean checkUsername(String username){
             JSONArray jsonArray = primaryObject.getJSONArray("result");
             //iterate through each array value
             for (int i = 0; i < jsonArray.length(); i++) {
-                //get the object, create a new material with it, and add to inventory
+                //get the object, create a new product with it, and add to hashmap
                 JSONObject prodObject = jsonArray.getJSONObject(i);
                 String name = prodObject.getString("name");
                 String image = prodObject.getString("image");
-                String desc = prodObject.getString("desc");
-                Product product = new Product(name, image, desc);
-                products.put(name, product);
+                //String desc = prodObject.getString("description");
+                //Product product = new Product(name, image, desc);
+                products.put(name, image);
             }
         } catch (JSONException e){
             throw new KraftyRuntimeException("Failed to get download products", null);
