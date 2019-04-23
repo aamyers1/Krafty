@@ -1,5 +1,7 @@
 package com.team6.krafty;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -66,6 +68,36 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
         String[] matNames = Inventory.getMaterialCaptions();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,matNames);
         matSpinner.setAdapter(arrayAdapter);
+
+        ca.setListener(new cardAdapter.Listener() {
+            @Override
+            public void onClick(final int position) {
+                new AlertDialog.Builder(ModifyProductActivity.this)
+                        .setTitle("Confirmation")
+                        .setMessage("Do you want to remove this Material?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                int id = 0;
+                                String[] matNames =getMatNames();
+                                for (int i=0; i <matNames.length; i ++){
+                                    String matName = "";
+                                    if (matNames[i].equals(ca.getCaption(position)))
+                                        matName = matNames[i].substring(0,matNames[i].indexOf(":"));
+                                    id = Inventory.getMaterialByName(matName).getId();
+                                }
+                                materials.remove(id);
+                                nullifyAdapter();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Toast.makeText(getApplicationContext(), "Material not removed.", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+            }
+        });
 
         Button btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
@@ -143,17 +175,30 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
         if(resultCode == RESULT_OK && requestCode == 100){
             Uri imageUri = data.getData();
 
-            //Put image in imageview
+
             ImageView imgProfile = findViewById(R.id.productImg);
-            imgProfile.setImageURI(imageUri);
+            imgProfile.setImageDrawable(null);
+            imgProfile.setBackgroundColor(Color.rgb(188, 225, 232));
 
             //Convert image to bitmap, then into base64
             Bitmap imageAsBitmap = null;
             try {
                 imageAsBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                Validator.validateImage(imageAsBitmap, "Product Image");
             } catch (IOException e) { //for file not found
                 e.printStackTrace();
+            } catch (KraftyRuntimeException e){
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            } catch (RuntimeException e){
+                if (e.getMessage().contains("draw too large")){
+                    Toast.makeText(this, "Image too large", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
+
+            //Put image in imageview
+            imgProfile.setImageURI(imageUri);
             ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();

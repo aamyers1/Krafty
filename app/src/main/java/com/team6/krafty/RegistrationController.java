@@ -94,7 +94,6 @@ public class RegistrationController {
         }
     }
 
-
     //checks if a username is already taken based on a User object
     private boolean checkUsername(final User user){
         //NETWORKING MUST BE DONE IN A DIFFERENT THREAD THAN MAIN

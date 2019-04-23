@@ -32,10 +32,16 @@ public class SessionManager {
 
     //checks if a user is logged in;
     public static boolean isLoggedIn(Context context){
-        if(!getToken(context).equals("0")){
-            return true;
+        if (dbManager.isOnline()){
+            if(!getToken(context).equals("0")){
+                return true;
+            }
+            return false;
         }
-        return false;
+        else
+            if(logout(context))
+                Toast.makeText(context, "Network connection error!", Toast.LENGTH_SHORT).show();
+        return  false;
     }
 
     //logs the user in using the username and password provided

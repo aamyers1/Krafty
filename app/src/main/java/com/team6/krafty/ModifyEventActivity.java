@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -131,6 +132,7 @@ public class ModifyEventActivity extends AppCompatActivity {
         Bitmap bmp = null;
         LatLng theLatLng = null;
 
+        ImageView ivImage = findViewById(R.id.imgEvent);
         EditText eName = findViewById(R.id.eventName);
         TextView tvStartDate = findViewById(R.id.tvStartDate);
         TextView tvEndDate = findViewById(R.id.tvEndDate);
@@ -155,7 +157,6 @@ public class ModifyEventActivity extends AppCompatActivity {
         tables = sw.isChecked();
 
         try{
-            Validator.validateImage();
             Validator.validateNameEditText(eName,"Name");
             Validator.validateDateSet(tvStartDate, "START");
             Validator.validateDateSet(tvEndDate, "END");
@@ -263,18 +264,30 @@ public class ModifyEventActivity extends AppCompatActivity {
         //If result was ok and was of PICK_IMAGE activity
         if(resultCode == RESULT_OK && requestCode == 100){
             Uri imageUri = data.getData();
-
-            //Put image in imageview
             ImageView imgProfile = findViewById(R.id.imgEvent);
-            imgProfile.setImageURI(imageUri);
+            imgProfile.setImageDrawable(null);
+            imgProfile.setBackgroundColor(Color.rgb(188, 225, 232));
 
             //Convert image to bitmap, then into base64
             Bitmap imageAsBitmap = null;
             try {
                 imageAsBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                Validator.validateImage(imageAsBitmap, "Event Image");
             } catch (IOException e) { //for file not found
                 e.printStackTrace();
+            } catch (KraftyRuntimeException e){
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            } catch (RuntimeException e){
+                if (e.getMessage().contains("draw too large")){
+                    Toast.makeText(this, "Image too large", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
+
+            //Put image in imageview
+            imgProfile.setImageURI(imageUri);
+
             ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();

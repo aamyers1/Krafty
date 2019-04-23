@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -28,6 +29,26 @@ public class DjangoAccess implements DBAccessImpl {
       }
       return djangoAccess;
   }
+
+    /**
+     * tests for active network connection to the server
+     * @return boolean if the network connection was successful.
+     */
+    public boolean isOnline(){
+        Runtime runtime = Runtime.getRuntime();
+        try{
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        }
+        catch (IOException e) {
+
+        }
+        catch (InterruptedException e){
+
+        }
+        return false;
+    }
 
     //sets up the basic url connection for ANY post database transaction
     //the api path must be specified
@@ -150,7 +171,7 @@ public boolean checkUsername(String username){
   //do not refactor unless we have other get requests
   public void getMaterial(String token){
     try {
-      URL url = new URL("http://75.128.150.130:2283/api/material/view/");
+      URL url = new URL("http://kraftyapp.servehttp.com/api/material/view/");
       try {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -239,8 +260,10 @@ public boolean checkUsername(String username){
     else{
       request ="username=" + username;
     }
+      Log.d("REQUEST: " , request);
     byte[] query = request.getBytes();
     String response = getResponse(connection, query);
+    Log.d("RESPONSE: " , response);
     try {
       User profile = new User();
       profile.parseJson(new JSONObject(response));
@@ -256,7 +279,7 @@ public boolean checkUsername(String username){
   public ArrayList<Event> getAllEvents(String token){
     ArrayList<Event> eventsList = new ArrayList<>();
     try {
-      URL url = new URL("http://75.128.150.130:2283/api/event/view/");
+      URL url = new URL("http://kraftyapp.servehttp.com/api/event/view/");
       try {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -430,7 +453,7 @@ public boolean checkUsername(String username){
 
   public void getProducts(String token) {
       try {
-          URL url = new URL("http://75.128.150.130:2283/api/product/view/");
+          URL url = new URL("http://kraftyapp.servehttp.com/api/product/view/");
           try {
               HttpURLConnection connection = (HttpURLConnection) url.openConnection();
               connection.setRequestMethod("GET");
@@ -590,6 +613,12 @@ public boolean checkUsername(String username){
       }
     }
 
+    /**
+     * Creates a task object within the database
+     * @param task The task object to be sent to the database
+     * @param token The user's token used for authentication
+     * @throws KraftyRuntimeException
+     */
     public void createTask(Task task, String token) throws KraftyRuntimeException {
         HttpURLConnection connection = generatePostConnection("/api/schedule/product/");
         connection.setRequestProperty("Authorization", "token " + token);
@@ -611,5 +640,38 @@ public boolean checkUsername(String username){
         catch (Exception e){
 
         }
+    }
+
+    @Override
+    public HashMap<String, Product> getKrafterProducts(String username, String token) {
+        HashMap<String, Product> products = new HashMap<>();
+        HttpURLConnection connection = generatePostConnection("/api/krafters/products/");
+        connection.setRequestProperty("Authorization", "token " + token);
+        String string = "username="+username;
+
+        byte[] request = string.getBytes();
+        String response = getResponse(connection,request);
+        if(response.contains("ERROR") || response.contains("http") || response.contains("unexpected end of stream")){
+            throw new KraftyRuntimeException("Failed to get scheduled Krafters", null);
+        }
+
+        try {
+            JSONObject primaryObject = new JSONObject(response);
+            //then get the array of objects within the primaryObject
+            JSONArray jsonArray = primaryObject.getJSONArray("result");
+            //iterate through each array value
+            for (int i = 0; i < jsonArray.length(); i++) {
+                //get the object, create a new material with it, and add to inventory
+                JSONObject prodObject = jsonArray.getJSONObject(i);
+                String name = prodObject.getString("name");
+                String image = prodObject.getString("image");
+                String desc = prodObject.getString("desc");
+                Product product = new Product(name, image, desc);
+                products.put(name, product);
+            }
+        } catch (JSONException e){
+            throw new KraftyRuntimeException("Failed to get download products", null);
+        }
+        return products;
     }
 }
