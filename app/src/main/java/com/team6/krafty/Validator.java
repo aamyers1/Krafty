@@ -1,13 +1,18 @@
 package com.team6.krafty;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.internal.Objects;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -20,8 +25,20 @@ public class Validator{
     }
 
     //TODO validate image. need to decide on criteria
-    public static void validateImage(){
+    public static void validateImage(Bitmap imageAsBitmap, String field){
 
+
+        if (imageAsBitmap.getWidth() < 30){
+            throw new KraftyRuntimeException("Image width too small.", null);
+        } else if (imageAsBitmap.getWidth() > 4000){
+            throw new KraftyRuntimeException("Image width too large.", null);
+        }
+
+        if (imageAsBitmap.getHeight() < 30){
+            throw new KraftyRuntimeException("Image height too small.", null);
+        } else if (imageAsBitmap.getHeight() > 4000){
+            throw new KraftyRuntimeException("Image height too large.", null);
+        }
     }
 
     public static void validateUsername(EditText et)throws KraftyRuntimeException{

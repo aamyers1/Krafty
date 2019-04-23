@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -190,17 +191,30 @@ public class CreateProductActivity extends AppCompatActivity implements AdapterV
         if(resultCode == RESULT_OK && requestCode == 100){
             Uri imageUri = data.getData();
 
-            //Put image in imageview
             ImageView imgProfile = findViewById(R.id.productImg);
-            imgProfile.setImageURI(imageUri);
+            imgProfile.setImageDrawable(null);
+            imgProfile.setBackgroundColor(Color.rgb(188, 225, 232));
 
             //Convert image to bitmap, then into base64
             Bitmap imageAsBitmap = null;
             try {
                 imageAsBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                Validator.validateImage(imageAsBitmap, "Product Image");
             } catch (IOException e) { //for file not found
                 e.printStackTrace();
+            } catch (KraftyRuntimeException e){
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            } catch (RuntimeException e){
+                if (e.getMessage().contains("draw too large")){
+                    Toast.makeText(this, "Image too large", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
+
+            //Put image in imageview
+            imgProfile.setImageURI(imageUri);
+
             ByteArrayOutputStream byteArrOutStrm = new ByteArrayOutputStream();
             imageAsBitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrOutStrm);
             byte[] bArr = byteArrOutStrm.toByteArray();
