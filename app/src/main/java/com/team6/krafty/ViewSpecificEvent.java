@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -225,7 +226,15 @@ public class ViewSpecificEvent extends AppCompatActivity{
         public void onItemClick(AdapterView<?> l, View v, int position, long id) {
             //TODO this is where we GO TO PROFILE OF USER CLICKED....
             String username = event.getKrafters().keySet().toArray()[(int)id].toString();
+            Bundle bundle = new Bundle();
+            bundle.putString("username", username);
 
+            Fragment fragment = new ProfileFragment();
+            fragment.setArguments(bundle);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
             Toast.makeText(getApplicationContext(),username, Toast.LENGTH_SHORT).show();
         }
     }

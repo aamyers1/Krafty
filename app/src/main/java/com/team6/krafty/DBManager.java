@@ -1,5 +1,6 @@
 package com.team6.krafty;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,11 +9,11 @@ class DBManager {
     private static volatile DBManager instance;
     private static DBAccessImpl impl = null;
 
-    //TODO: need to check the network connectivity before we try to connect to the api!
-
     private DBManager() {
-        impl = new DjangoAccess();
+            impl = new DjangoAccess();
     }
+
+
 
     public static DBManager getInstance() {
         if (instance == null){
@@ -26,7 +27,10 @@ class DBManager {
     public DBAccessImpl getImpl() {
         return impl;
     }
+
+
     public void setImpl(DBAccessImpl theImpl) {impl = theImpl;}
+    public boolean isOnline(){return getImpl().isOnline();}
     public boolean checkEmail(String email){return getImpl().checkEmail(email);}
     public boolean checkUsername(String username){return getImpl().checkUsername(username);}
     public String createUser(User user){return getImpl().createUser(user);}
@@ -52,5 +56,6 @@ class DBManager {
     public HashMap<String,String> getEventKrafters(int eventId, String token){return getImpl().getEventKrafters(eventId, token);}
     public void getSchedule(String token){getImpl().getSchedule(token);}
     public void createTask(Task task, String token){getImpl().createTask(task, token);}
+    public HashMap<String, Product> getKrafterProducts(String username, String token){return getImpl().getKrafterProducts(username, token);}
 
 }

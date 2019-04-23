@@ -1,5 +1,7 @@
 package com.team6.krafty;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -66,6 +68,36 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
         String[] matNames = Inventory.getMaterialCaptions();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,matNames);
         matSpinner.setAdapter(arrayAdapter);
+
+        ca.setListener(new cardAdapter.Listener() {
+            @Override
+            public void onClick(final int position) {
+                new AlertDialog.Builder(ModifyProductActivity.this)
+                        .setTitle("Confirmation")
+                        .setMessage("Do you want to remove this Material?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                int id = 0;
+                                String[] matNames =getMatNames();
+                                for (int i=0; i <matNames.length; i ++){
+                                    String matName = "";
+                                    if (matNames[i].equals(ca.getCaption(position)))
+                                        matName = matNames[i].substring(0,matNames[i].indexOf(":"));
+                                    id = Inventory.getMaterialByName(matName).getId();
+                                }
+                                materials.remove(id);
+                                nullifyAdapter();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Toast.makeText(getApplicationContext(), "Material not removed.", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+            }
+        });
 
         Button btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {

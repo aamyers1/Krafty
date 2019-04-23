@@ -43,6 +43,12 @@ public class Product {
         t.start();
     }
 
+    public Product(String name, String description, String image){
+        this.name = name;
+        this.description = description;
+        this.image = image;
+    }
+
     public void setBmp(Bitmap bmp) {
         this.bmp = bmp;
     }

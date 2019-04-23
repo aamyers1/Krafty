@@ -7,10 +7,12 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ProductController {
     private boolean isCreated;
+    private HashMap<String, Product> products;
 
     public boolean createProduct(String name, String description, String image, int quantity, HashMap<Integer, Integer> mats, float price, final Context context){
         isCreated = true;
@@ -71,6 +73,25 @@ public class ProductController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public HashMap<String, Product> getKrafterProducts(final String username, final Context context){
+        Thread t = new Thread(new Runnable(){
+            @Override
+            public void run(){
+                DBManager dbManager = DBManager.getInstance();
+                products =  dbManager.getKrafterProducts(username,SessionManager.getToken(context));
+            }
+        });
+        t.start();
+        try{
+            t.join();
+            return products;
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return  null;
     }
 
     public void deleteProduct(final int id, final Context context){

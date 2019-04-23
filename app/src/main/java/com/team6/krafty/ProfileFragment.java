@@ -1,10 +1,14 @@
 package com.team6.krafty;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +18,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 /**
  * Fragment used to display current user's profile information.
  */
 public class ProfileFragment extends Fragment {
+
+    private cardAdapter ca;
+    private HashMap<String, Product> products;
 
     /**
      * Method called on object instantiation. Inflates XML file fragment_profile.xml
@@ -44,20 +53,43 @@ public class ProfileFragment extends Fragment {
      */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        Button btn = view.findViewById(R.id.updateButton);
-        //links to the update profile activity
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //switch to update fragment
-                Fragment fragment = new UpdateProfileFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.addToBackStack(null);
-                ft.replace(R.id.content_frame, fragment);
-                ft.commit();
+
+        User profile;
+        DBManager dbManager = DBManager.getInstance();
+        String username;
+        Bundle arguments = getArguments();
+        if (arguments == null) {
+            profile = SessionManager.getUser();
+            Button btn = view.findViewById(R.id.updateButton);
+            //links to the update profile activity
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //switch to update fragment
+                    Fragment fragment = new UpdateProfileFragment();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.addToBackStack(null);
+                    ft.replace(R.id.content_frame, fragment);
+                    ft.commit();
+                }
+            });
+        }
+        else {
+            username = getArguments().getString("username");
+            String token = SessionManager.getToken(getView().getContext());
+            profile = dbManager.getUser(token, username);
+
+            products = dbManager.getKrafterProducts(username,token);
+            RecyclerView rv = view.findViewById(R.id.recProducts);
+            try {
+                ca = new cardAdapter(getbmps(), getProdNames());
+                rv.setAdapter(ca);
+                rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
             }
-        });
-        User profile = SessionManager.getUser();
+            catch(Exception e){
+                Log.d("CA ERROR", e.getMessage());
+            }
+        }
         if (profile == null){
             Toast.makeText(getContext(), "Failed to get user data.", Toast.LENGTH_SHORT).show();
             return;
@@ -107,6 +139,26 @@ public class ProfileFragment extends Fragment {
         } else {
             imgProfile.setBackgroundColor(Color.rgb(188, 225, 232));
         }
+    }
+
+    private  Bitmap[] getbmps(){
+        Bitmap[] bmp = new Bitmap[products.size()];
+        String [] names  = getProdNames();
+        for(int i = 0; i < products.size(); i++){
+            bmp[i] = products.get(names[i]).getBmp();
+        }
+        return bmp;
+    }
+
+    private  String[] getProdNames(){
+        int k = 0;
+        String[] names = new String[products.size()];
+        for(String i: products.keySet()){
+                names[k] = i;
+                k++;
+            }
+            return names;
+
     }
 
 }
