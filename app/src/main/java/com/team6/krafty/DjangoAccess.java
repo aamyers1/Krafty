@@ -263,6 +263,7 @@ public boolean checkUsername(String username){
       Log.d("REQUEST: " , request);
     byte[] query = request.getBytes();
     String response = getResponse(connection, query);
+      Log.d("RESPONSE", "response: " + response);
     try {
       User profile = new User();
       profile.parseJson(new JSONObject(response));
@@ -651,7 +652,8 @@ public boolean checkUsername(String username){
 
         byte[] request = string.getBytes();
         String response = getResponse(connection,request);
-        if(response.contains("ERROR") || response.contains("http") || response.contains("unexpected end of stream")){
+        if(!response.contains("OK")){
+            Log.d("response", response);
             throw new KraftyRuntimeException("Failed to get  Krafter's prodcuts", null);
         }
 
@@ -664,13 +666,17 @@ public boolean checkUsername(String username){
                 //get the object, create a new product with it, and add to hashmap
                 JSONObject prodObject = jsonArray.getJSONObject(i);
                 String name = prodObject.getString("name");
-                String image = prodObject.getString("image");
+                String image = "";
+                if(prodObject.has("image")) {
+                    image = prodObject.getString("image");
+                }
                 //String desc = prodObject.getString("description");
                 //Product product = new Product(name, image, desc);
                 products.put(name, image);
             }
         } catch (JSONException e){
-            throw new KraftyRuntimeException("Failed to get download products", null);
+            Log.d("KPRODSRESP",response);
+            //throw new KraftyRuntimeException("Failed to get download products", null);
         }
         return products;
     }

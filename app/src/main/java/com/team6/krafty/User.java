@@ -60,15 +60,27 @@ public class User {
             this.last = json.getString("last");
             this.city = json.getString("city");
             this.state = json.getString("state");
-            this.imageString = json.getString("image");
-            parseBitmap();
+            if(json.has("image")) {
+                this.imageString = json.getString("image");
+                parseBitmap();
+            }
             this.bio = json.getString("bio");
-            this.website = json.getString("website");
-            this.etsy = json.getString("etsy");
-            this.facebook = json.getString("facebook");
-            this.instagram = json.getString("instagram");
+            if(json.has("website")) {
+                this.website = json.getString("website");
+            }
+            if(json.has("etsy")) {
+                this.etsy = json.getString("etsy");
+            }
+            if(json.has("facebook")) {
+                this.facebook = json.getString("facebook");
+            }
+            if(json.has("instagram")) {
+                this.instagram = json.getString("instagram");
+            }
             this.dateJoined = json.getString("datejoined");
-            this.businessName = json.getString("businessname");
+            if(json.has("businessname")) {
+                this.businessName = json.getString("businessname");
+            }
         }
         catch (Exception e){
             Log.d("ERROR PARSING USER", e.getMessage());

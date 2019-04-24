@@ -42,33 +42,30 @@ public class KrafterProfileActivity extends AppCompatActivity {
             return;
         }
 
-        // Checks if the profile is a Krafter
-        if(profile.getUserType() != 2){
-            FrameLayout fl = findViewById(R.id.krafterFrame);
-            View v = getLayoutInflater().inflate(R.layout.krafterprofile, fl, false);
-            TextView t = v.findViewById(R.id.Fields);
-            StringBuilder krafterInfo = new StringBuilder();
-            if(profile.getBusinessName()!= null && !profile.getBusinessName().equals("")){
-                krafterInfo.append("Business Name: " + profile.getBusinessName() + "\n");
-            }
-            if(profile.getWebsite()!=null && !profile.getWebsite().equals("")){
-                krafterInfo.append("Website: " + profile.getWebsite() + "\n");
-            }
-            if(profile.getEtsy()!=null && !profile.getEtsy().equals("")){
-                krafterInfo.append("Etsy: " + profile.getEtsy() + "\n");
-            }
-            if(profile.getFacebook()!=
-                    null && !profile.getFacebook().equals("")){
-                krafterInfo.append("Facebook: " + profile.getFacebook() + "\n");
-            }
-            if(profile.getInstagram()!=null && !profile.getInstagram().equals("")){
-                krafterInfo.append("Instagram: " + profile.getInstagram() + "\n");
-            }
-            String total = krafterInfo.toString();
-            if(!total.equals("")){
-                total = total.substring(0, total.lastIndexOf("\n"));
-            }
-            t.setText(total);
+        FrameLayout fl = findViewById(R.id.krafterFrame);
+        View v = getLayoutInflater().inflate(R.layout.krafterprofile, fl, true);
+        TextView t = v.findViewById(R.id.Fields);
+        StringBuilder krafterInfo = new StringBuilder();
+        if(profile.getBusinessName()!= null && !profile.getBusinessName().equals("")){
+            krafterInfo.append("Business Name: " + profile.getBusinessName() + "\n");
+        }
+        if(profile.getWebsite()!=null && !profile.getWebsite().equals("")){
+            krafterInfo.append("Website: " + profile.getWebsite() + "\n");
+        }
+        if(profile.getEtsy()!=null && !profile.getEtsy().equals("")){
+            krafterInfo.append("Etsy: " + profile.getEtsy() + "\n");
+        }
+        if(profile.getFacebook()!=null && !profile.getFacebook().equals("")){
+            krafterInfo.append("Facebook: " + profile.getFacebook() + "\n");
+        }
+        if(profile.getInstagram()!=null && !profile.getInstagram().equals("")){
+            krafterInfo.append("Instagram: " + profile.getInstagram() + "\n");
+        }
+        String total = krafterInfo.toString();
+        if(!total.equals("")){
+            total = total.substring(0, total.lastIndexOf("\n"));
+        }
+        t.setText(total);
 
             ProductController pc = new ProductController();
             products = pc.getKrafterProducts(un,this);
@@ -90,7 +87,7 @@ public class KrafterProfileActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), ViewProductActivity.class);
                 }
             });*/
-        }
+
         TextView tv = findViewById(R.id.username);
         tv.setText(profile.getUsername());
         tv = findViewById(R.id.joinDate);
