@@ -28,6 +28,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * GUI controller class for Modify Product activity
+ */
 public class ModifyProductActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private String encodedImage = "";
     private int id;
@@ -35,6 +38,11 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
     private HashMap<Integer, Integer> materials;
     Product p;
 
+    /**
+     * Constructs the Activity and its components by inflating the xml, setting listeners to components,
+     * and initializing necessary variables.
+     * @param savedInstanceState previous saved instance if any
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +145,10 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
         et.setText(String.valueOf(p.getQuantity()));
     }
 
+    /**
+     * Listener for update button click. Validates the fields and updates the
+     * product in the database
+     */
     public void onSubmitClick(){
         EditText pName = findViewById(R.id.etName);
         EditText pQuant = findViewById(R.id.etQuantity);
@@ -166,7 +178,12 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
 
     }
 
-
+    /**
+     * Gets the result of a request for a gallery image from the user
+     * @param requestCode Code that identifies the request from others
+     * @param resultCode Code that signals the state of the result
+     * @param data Data returned from the request (Image data)
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -206,15 +223,30 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
         }
     }
 
+    /**
+     * Necessary method for the spinner adapter
+     * @param parent AdapterView
+     * @param view View
+     * @param position Selected item index
+     * @param id id of the selected item
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
     }
 
+    /**
+     * Necessary method for spinner adapter. If nothing selected, do nothing.
+     * @param arg0
+     */
     public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
+
     }
 
+    /**
+     * Gets all material names based on the Inventory
+     * @return String array of material names
+     */
     public String[] getMatNames(){
         String[] names = new String[materials.size()];
         int [] ids = getIds();
@@ -224,6 +256,10 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
         return names;
     }
 
+    /**
+     * Gets all Bitmap images from the array of materials
+     * @return Bitmap image array
+     */
     public Bitmap[] getbmps(){
         Bitmap[] bmp = new Bitmap[materials.size()];
         int [] ids = getIds();
@@ -235,11 +271,18 @@ public class ModifyProductActivity extends AppCompatActivity implements AdapterV
         return bmp;
     }
 
+    /**
+     * Nullifies adapter when data is updated externally
+     */
     public void nullifyAdapter(){
         ca.updateData(getbmps(), getMatNames());
         ca.notifyDataSetChanged();
     }
 
+    /**
+     * Gets the IDs of the materials in the materials HashMap
+     * @return Array of integer material IDs
+     */
     public int[] getIds(){
         int k = 0;
         int[] ids = new int[materials.size()];

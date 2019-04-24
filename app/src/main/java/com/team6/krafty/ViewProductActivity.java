@@ -27,20 +27,30 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * GUI controller class for view Product activity
+ */
 public class ViewProductActivity extends AppCompatActivity  {
 
     private int id;
     private Product product;
     cardAdapter ca;
     private HashMap<Integer, Integer> materials;
-    
+
+    /**
+     * Method called on object instantiation. Inflates XML file activity_view_product.xml
+     * @param savedInstanceState previous saved instance if any
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_product);
      }
 
+    /**
+     * Method called once xml is loaded, populates all the containers with data from the event
+     * Also calls Buttons and recycler view setup method
+      */
      @Override
     public void onStart(){
         super.onStart();
@@ -72,6 +82,10 @@ public class ViewProductActivity extends AppCompatActivity  {
          setButtonsAndViews();
     }
 
+    /**
+     * Sets Update and delete buttons, and recycler view to show materials used to create the product,
+     * depending on if the user is the creator of the product
+     */
     public void setButtonsAndViews(){
         SharedPreferences sp = getApplicationContext().getSharedPreferences("session", Context.MODE_PRIVATE);
         String username = sp.getString("username", "test");
@@ -102,6 +116,10 @@ public class ViewProductActivity extends AppCompatActivity  {
 
     }
 
+    /**
+     * Gets names of materials for the recycler view
+     * @return string array of material names
+     */
     public String[] getMatNames(){
         String[] names = new String[materials.size()];
         int [] ids = getIds();
@@ -111,6 +129,11 @@ public class ViewProductActivity extends AppCompatActivity  {
 
         return names;
     }
+
+    /**
+     * gets bitmap images of materials for the recycler view
+     * @return bitmap array of material images
+     */
     public Bitmap[] getbmps(){
         Bitmap[] bmp = new Bitmap[materials.size()];
         int [] ids = getIds();
@@ -120,6 +143,10 @@ public class ViewProductActivity extends AppCompatActivity  {
         return bmp;
     }
 
+    /**
+     * gets ids of materials for the recycler view
+     * @return int array of material ids
+     */
     public int[] getIds(){
         int k = 0;
         int[] ids = new int[materials.size()];
@@ -130,7 +157,9 @@ public class ViewProductActivity extends AppCompatActivity  {
         return ids;
     }
 
-
+    /**
+     * listener for update button click. starts ModifyProductActivity
+     */
     private class onUpdateClick implements View.OnClickListener{
 
         @Override
@@ -142,6 +171,9 @@ public class ViewProductActivity extends AppCompatActivity  {
         }
     }
 
+    /**
+     * listener for delete button click. deletes product
+     */
     private class onDeleteClick implements View.OnClickListener {
 
         @Override

@@ -28,6 +28,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * GUI controller class for view specific event activity
+ */
 public class ViewSpecificEvent extends AppCompatActivity{
 
     private int id;
@@ -36,11 +39,19 @@ public class ViewSpecificEvent extends AppCompatActivity{
     private HashMap <Integer, User> krafterList;
     private ListView krafterListView;
 
+    /**
+     * Method called on object instantiation. Inflates XML file activity_view_event.xml
+     * @param savedInstanceState previous saved instance if any
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_event);
     }
 
+    /**
+     * Method called once xml is loaded, populates all the containers with data from the event
+     * Also sets Buttons
+     */
     @Override
     public void onStart(){
         super.onStart();
@@ -132,6 +143,12 @@ public class ViewSpecificEvent extends AppCompatActivity{
 
         setButtons();
     }
+
+    /**
+     * Method to set update and delete buttons, depending on if the current user is the original
+     * event creator. Also sets schedule/unschedule buttons depending upon if the user is scheduled.
+     * Also sets listeners for button clicks.
+     */
     private void setButtons(){
         SharedPreferences sp = getApplicationContext().getSharedPreferences("session", Context.MODE_PRIVATE);
         String username = sp.getString("username", "test");
@@ -162,6 +179,9 @@ public class ViewSpecificEvent extends AppCompatActivity{
         }
     }
 
+    /**
+     * Listener for schedule button click. Adds event to user's schedule
+     */
     private class onScheduleClick implements View.OnClickListener{
 
         @Override
@@ -175,6 +195,9 @@ public class ViewSpecificEvent extends AppCompatActivity{
         }
     }
 
+    /**
+     * Listener for unschedule click. Removes from the user's schedule
+     */
     private class onUnscheduleClick implements View.OnClickListener{
         @Override
         public void onClick(View view){
@@ -188,6 +211,9 @@ public class ViewSpecificEvent extends AppCompatActivity{
         }
     }
 
+    /**
+     * Listener for update button click. calls ModifyEventActivity
+     */
     private class onUpdateClick implements View.OnClickListener{
 
         @Override
@@ -198,6 +224,9 @@ public class ViewSpecificEvent extends AppCompatActivity{
         }
     }
 
+    /**
+     * Listener for delete button click. Deletes event
+     */
     private class onDeleteClick implements View.OnClickListener {
 
             @Override
@@ -222,6 +251,9 @@ public class ViewSpecificEvent extends AppCompatActivity{
         }
     }
 
+    /**
+     * Lists all the Krafter's attending the event by their business name
+     */
     private void fillListView(){
         ArrayList<String> krafterBusinesses = event.getKraftersBusinesses();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -232,6 +264,10 @@ public class ViewSpecificEvent extends AppCompatActivity{
         krafterListView.setAdapter(arrayAdapter);
     }
 
+    /**
+     * Listener for click on Business names of Krafters from a list view.
+     * Calls the KrafterProfileActivity
+     */
     private class onBusinessClick implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> l, View v, int position, long id) {
@@ -242,6 +278,10 @@ public class ViewSpecificEvent extends AppCompatActivity{
         }
     }
 
+    /**
+     * Method to set the weight of ListView based on number of children
+     * @param listView ListView element that contains the businesses attending
+     */
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null)
