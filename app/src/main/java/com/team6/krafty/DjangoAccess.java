@@ -50,8 +50,12 @@ public class DjangoAccess implements DBAccessImpl {
         return false;
     }
 
-    //sets up the basic url connection for ANY post database transaction
-    //the api path must be specified
+    /**
+     * sets up the basic url connection for ANY post database transaction
+     * @param APIPath the path for specific api
+     * @return connection for API Post request
+     * @throws KraftyRuntimeException
+     */
   public HttpURLConnection generatePostConnection(String APIPath)throws KraftyRuntimeException{
     HttpURLConnection connection;
     try {
@@ -68,7 +72,11 @@ public class DjangoAccess implements DBAccessImpl {
     }
   }
 
-  //  public  String getResponse(HttpURLConnection connection, byte[] request){}
+    /**
+     * Checks if the email is already used by a registered account
+     * @param email to be checked
+     * @return boolean if its available
+     */
   public boolean checkEmail(String email){
     HttpURLConnection connection = generatePostConnection("/api/user/email/");
     String APICall = "email=" + email;
@@ -82,7 +90,12 @@ public class DjangoAccess implements DBAccessImpl {
     }
   }
 
-  //sends byte stream and gets the response as a string to return to calling method.
+    /**
+     * sends byte stream and gets the response as a string to return to calling method.
+     * @param connection
+     * @param request
+     * @return response string
+     */
   public String getResponse(HttpURLConnection connection, byte[] request){
     try{
       connection.connect();
@@ -111,7 +124,12 @@ public class DjangoAccess implements DBAccessImpl {
     }
   }
 
-public boolean checkUsername(String username){
+    /**
+     * hecks if the username is already used by a registered account
+     * @param username
+     * @return boolean if its available
+     */
+    public boolean checkUsername(String username){
     HttpURLConnection connection = generatePostConnection("/api/user/username/");
     String APIcall ="username="+username;
     byte[] post = APIcall.getBytes();
@@ -122,7 +140,11 @@ public boolean checkUsername(String username){
     return false;
   }
 
-  //creates a new User in the database.
+    /**
+     * creates a new User in the database.
+      * @param user
+     * @return response string
+     */
   public String createUser(User user){
     String APIPath =  "/api/user/create/";
     String request = user.createJson();
@@ -131,8 +153,11 @@ public boolean checkUsername(String username){
     String response = getResponse(connection, post);
     return response;
   }
-
-  //updates existing user in the database.
+    /**
+     * updates existing user in the database.
+     * @param user
+     * @param token for authentication
+     */
     public void updateProfile(User user,String token){
         HttpURLConnection connection = generatePostConnection("/api/user/modify/");
         //extra header for authorization
@@ -147,7 +172,12 @@ public boolean checkUsername(String username){
 
     }
 
-  //returns token string if user successfully logged in or null obj if not successful
+    /**
+     * Checks credentials for authentication
+      * @param username
+     * @param password
+     * @return returns token string if user successfully logged in or null obj if not successful
+     */
   public String login( String username, String password){
 
     HttpURLConnection connection = generatePostConnection("/api/login/");
@@ -169,6 +199,11 @@ public boolean checkUsername(String username){
   }
 
   //do not refactor unless we have other get requests
+
+    /**
+     * gets all materials of a user
+      * @param token for authentication
+     */
   public void getMaterial(String token){
     try {
       URL url = new URL("http://kraftyapp.servehttp.com/api/material/view/");
@@ -203,6 +238,11 @@ public boolean checkUsername(String username){
 
   }
 
+    /**
+     * creates a new material
+     * @param material
+     * @param token for authentication
+     */
   public void createMaterial(Material material, String token){
       HttpURLConnection connection = generatePostConnection("/api/material/create/");
       connection.setRequestProperty ("Authorization", "token " + token);
@@ -224,6 +264,11 @@ public boolean checkUsername(String username){
     }
   }
 
+    /**
+     * Modifies a material
+     * @param material
+     * @param token for authentication
+     */
   public void modifyMaterial(Material material, String token){
     HttpURLConnection connection = generatePostConnection("/api/material/update/");
     //extra header for authorization
@@ -237,6 +282,11 @@ public boolean checkUsername(String username){
     }
   }
 
+    /**
+     * deletes a material
+     * @param id
+     * @param token for authentication
+     */
   public void deleteMaterial(int id, String token){
     HttpURLConnection connection = generatePostConnection("/api/material/delete/");
     //extra header for authorization
@@ -250,6 +300,12 @@ public boolean checkUsername(String username){
     }
   }
 
+    /**
+     * gets a user with a given username
+     * @param token for autehtication
+     * @param username
+     * @return the user
+     */
   public User getUser(String token, String username){
     HttpURLConnection connection = generatePostConnection("/api/user/view/");
     connection.setRequestProperty("Authorization", "token " + token);
@@ -277,6 +333,11 @@ public boolean checkUsername(String username){
     }
   }
 
+    /**
+     * Gets all events
+     * @param token
+     * @return ArrayList of all events
+     */
   public ArrayList<Event> getAllEvents(String token){
     ArrayList<Event> eventsList = new ArrayList<>();
     try {
@@ -327,6 +388,12 @@ public boolean checkUsername(String username){
     return null;
   }
 
+    /**
+     * gets a specific event with the given id
+     * @param id
+     * @param token for authentication
+     * @return Event
+     */
   public Event getSpecificEvent(int id, String token){
     HttpURLConnection connection = generatePostConnection("/api/event/viewspecific/");
     String string = "id="+id;
@@ -350,6 +417,11 @@ public boolean checkUsername(String username){
     }
   }
 
+    /**
+     * creates a new event
+     * @param event
+     * @param token for authentication
+     */
   public void createEvent(Event event, String token){
     HttpURLConnection connection = generatePostConnection("/api/event/create/");
     //extra header for authorization
@@ -370,6 +442,11 @@ public boolean checkUsername(String username){
     }
   }
 
+    /**
+     * delets an event
+     * @param id
+     * @param token for authentication
+     */
   public void deleteEvent(int id, String token){
     HttpURLConnection connection = generatePostConnection("/api/event/delete/");
     //extra header for authorization
@@ -383,6 +460,12 @@ public boolean checkUsername(String username){
     }
   }
 
+    /**
+     * updates event
+     * @param jsonString of the event
+     * @param token for authentication
+     * @throws KraftyRuntimeException
+     */
   public void updateEvent(String jsonString, String token)throws KraftyRuntimeException{
     HttpURLConnection connection = generatePostConnection("/api/event/modify/");
     connection.setRequestProperty("Authorization", "token " + token);
@@ -398,6 +481,12 @@ public boolean checkUsername(String username){
     }
   }
 
+    /**
+     * Add an event to schedule
+     * @param eventId
+     * @param token for authentication
+     * @throws KraftyRuntimeException
+     */
     public void scheduleForEvent(Integer eventId, String token ) throws KraftyRuntimeException {
         HttpURLConnection connection = generatePostConnection("/api/schedule/event/");
         connection.setRequestProperty("Authorization", "token " + token);
@@ -415,6 +504,13 @@ public boolean checkUsername(String username){
         }
     }
 
+    /**
+     * remove an event from schedule
+     * @param scheduleItemId
+     * @param token for authentication
+     * @param type whether its event for producr
+     * @throws KraftyRuntimeException
+     */
     public void unscheduleForEvent(Integer scheduleItemId, String token, String type) throws KraftyRuntimeException {
         HttpURLConnection connection = generatePostConnection("/api/schedule/delete/");
         connection.setRequestProperty("Authorization", "token " + token);
@@ -431,6 +527,12 @@ public boolean checkUsername(String username){
         }
     }
 
+    /**
+     * creare a new product
+      * @param product
+     * @param token for authentication
+     * @throws KraftyRuntimeException
+     */
   public void createProduct(Product product, String token) throws KraftyRuntimeException{
     HttpURLConnection connection = generatePostConnection("/api/product/create/");
     connection.setRequestProperty("Authorization", "token " + token);
@@ -452,6 +554,10 @@ public boolean checkUsername(String username){
     }
   }
 
+    /**
+     * gets all products of a user
+     * @param token for authentication
+     */
   public void getProducts(String token) {
       try {
           URL url = new URL("http://kraftyapp.servehttp.com/api/product/view/");
@@ -490,6 +596,13 @@ public boolean checkUsername(String username){
 
 
     // todo: handle exception in KraftyException
+
+    /**
+     * gets specific product
+     * @param id
+     * @param token for authentication
+     * @return Product object
+     */
     public Product getProduct(int id, String token){
         HttpURLConnection connection = generatePostConnection("/api/product/viewspecific/");
         String string = "id=" + id;
@@ -505,6 +618,12 @@ public boolean checkUsername(String username){
         return  product;
     }
 
+    /**
+     * deletes a product
+     * @param id
+     * @param token for authentication
+     * @throws KraftyRuntimeException
+     */
     public void deleteProduct(int id, String token) throws KraftyRuntimeException{
         HttpURLConnection connection = generatePostConnection("/api/product/delete/");
         //extra header for authorization
@@ -518,6 +637,12 @@ public boolean checkUsername(String username){
         }
     }
 
+    /**
+     * updates a product
+     * @param jsonString of the updated product
+     * @param token for authentication
+     * @throws KraftyRuntimeException
+     */
     public void updateProduct(String jsonString, String token)throws KraftyRuntimeException{
         HttpURLConnection connection = generatePostConnection("/api/product/modify/");
         connection.setRequestProperty("Authorization", "token " + token);
@@ -527,6 +652,11 @@ public boolean checkUsername(String username){
             throw new KraftyRuntimeException("Update Failed!", null);
         }
     }
+
+    /**
+     * parses materials
+     * @param jsonObject
+     */
     private static void parseForMats(String jsonObject){
         try {
             //first attempt to get the JSONObject
@@ -547,6 +677,12 @@ public boolean checkUsername(String username){
         }
     }
 
+    /**
+     * get all krafters attending an event
+     * @param eventId
+     * @param token for authentication
+     * @return HashMap of krafters' usernames and business names
+     */
     public HashMap<String, String> getEventKrafters(int eventId, String token){
       HashMap<String, String> krafters = new HashMap<>();
         HttpURLConnection connection = generatePostConnection("/api/schedule/krafters/");
@@ -579,6 +715,10 @@ public boolean checkUsername(String username){
         return krafters;
     }
 
+    /**
+     * gets the schedule of a user
+     * @param token for authentication
+     */
     public void getSchedule(String token){
       HttpURLConnection connection = generatePostConnection("/api/schedule/view/");
       connection.setRequestProperty ("Authorization", "token " + token);
@@ -643,7 +783,12 @@ public boolean checkUsername(String username){
         }
     }
 
-    @Override
+    /**
+     * gets all products of a given krafter
+     * @param username
+     * @param token for authentication
+     * @return
+     */
     public HashMap<String, String> getKrafterProducts(String username, String token) {
         HashMap<String, String> products = new HashMap<>();
         HttpURLConnection connection = generatePostConnection("/api/krafters/products/");
@@ -681,6 +826,14 @@ public boolean checkUsername(String username){
         return products;
     }
 
+    /**
+     * creates a report against events
+     * @param token
+     * @param report
+     * @param type
+     * @param id
+     * @throws KraftyRuntimeException
+     */
     public void createReport(String token, String report, String type, int id) throws KraftyRuntimeException{
         HttpURLConnection connection = generatePostConnection("/api/report/");
         connection.setRequestProperty("Authorization", "token " + token);
