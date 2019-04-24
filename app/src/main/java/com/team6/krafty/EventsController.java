@@ -28,6 +28,10 @@ public class EventsController {
 
     }
 
+    /**
+     * Gets descriptions from all events to use to populate map markers
+     * @return String array of descriptions
+     */
     public String[] getDescriptions(){
         String[] descriptions = new String[eventsList.size()];
         for(int i = 0; i < eventsList.size(); i++){
@@ -36,6 +40,10 @@ public class EventsController {
         return descriptions;
     }
 
+    /**
+     * Gets IDS for all events for map markers
+     * @return Integer array of ID values
+     */
     public int[] getIdentities(){
         int[] identities = new int[eventsList.size()];
         for(int i = 0; i < eventsList.size(); i++){
@@ -44,6 +52,10 @@ public class EventsController {
         return identities;
     }
 
+    /**
+     * Gets all latlng values for each event in the database to populate map with markers
+     * @return Array of latlng objects
+     */
     public LatLng[] getltlng(){
         if (eventsList == null){
             eventsList = new ArrayList<Event>();
@@ -56,6 +68,10 @@ public class EventsController {
         return ltLng;
     }
 
+    /**
+     * Gets array list of event names used to populate the events map
+     * @return Array of String event names
+     */
     public String[] getNames(){
         String[] names = new String[eventsList.size()];
         for(int i = 0; i < eventsList.size(); i ++){
@@ -64,6 +80,10 @@ public class EventsController {
         return names;
     }
 
+    /**
+     * Gets all event details from the database
+     * @param context calling context
+     */
     public void fetchEvents(final Context context){
         Thread t = new Thread(new Runnable() {
             @Override
@@ -80,11 +100,21 @@ public class EventsController {
         }
     }
 
+    /**
+     * Retrieves the Events from the database as an ArrayList of events
+     * @param context Context of the requesting class
+     */
     public void retrieve(Context context){
         eventsList = new ArrayList<>();
         eventsList = dbManager.getAllEvents(SessionManager.getToken(context));
     }
 
+    /**
+     * Used to retrieve one event's specific details based on id
+     * @param id ID of the requested event
+     * @param context Context of teh calling object
+     * @return
+     */
     public Event getSpecificEvent(final int id, final Context context){
         theEvent = null;
         Thread t = new Thread(new Runnable() {
@@ -103,6 +133,12 @@ public class EventsController {
         return null;
     }
 
+    /**
+     * Deletes an event from the database.
+     * @param id ID of the event to be deleted
+     * @param context Context of the calling object
+     * @return
+     */
     public boolean deleteEvent(final int id, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
         token = SessionManager.getToken(context);
@@ -139,6 +175,12 @@ public class EventsController {
         }
     }
 
+    /**
+     * Creates a new event in the database
+     * @param event Event object to be inserted into database
+     * @param context Context of calling object
+     * @return boolean of creation success
+     */
     public boolean createEvent(final Event event, final Context context){
         //first get the user token so the db knows who the material will belong to (assume exists)
         token = SessionManager.getToken(context);
@@ -174,6 +216,13 @@ public class EventsController {
         }
     }
 
+    /**
+     * Updates an event details in the database
+     * @param event Event object being updated
+     * @param id ID of the event being updated
+     * @param context Context of the calling object
+     * @return Bool representing success of the operation
+     */
     public boolean updateEvent(Event event, int id,final Context context){
         String json = event.createJson();
         final String request = json + "&id=" + id;
@@ -209,7 +258,11 @@ public class EventsController {
     }
 
 
-
+    /**
+     * Parses the image from base64 encoding to bitmap
+     * @param encodedImage String image base64 encoded
+     * @return Bitmap of the image
+     */
     public Bitmap parseEventImage(String encodedImage){
         Bitmap bmp = null;
         if(!encodedImage.equals("null") && !encodedImage.equals("no image") && !encodedImage.equals("") ) {
@@ -224,6 +277,12 @@ public class EventsController {
         return bmp;
     }
 
+    /**
+     * Gets all krafters who have scheduled to be at the event
+     * @param eventId ID of event
+     * @param context Context of the calling class
+     * @return Hashmap of the usernames and business names of krafters
+     */
     public HashMap <String, String> getScheduledKrafters(final int eventId, final Context context){
         final String token = SessionManager.getToken(context);
         krafters = new HashMap<>();

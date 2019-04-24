@@ -34,11 +34,17 @@ import java.util.Date;
 import java.util.List;
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * Class to create a new event
+ */
 public class
 CreateEventActivity  extends AppCompatActivity {
     private String encodedImage = "";
 
-
+    /**
+     * Called when activity is created. Sets toolbar and view objects as well as setting listeners for events
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +126,9 @@ CreateEventActivity  extends AppCompatActivity {
     }
 
 
-    //handles submit click
+    /**
+     * Handles the submit click
+     */
     public void onSubmitClick(){
         //essentially just gathers strings from various editTexts
 
@@ -203,6 +211,9 @@ CreateEventActivity  extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handles date picking event for start date
+     */
     private DatePickerDialog.OnDateSetListener startDatePickerListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -212,6 +223,9 @@ CreateEventActivity  extends AppCompatActivity {
         }
     };
 
+    /**
+     * Handles date picking event for end date
+     */
     private DatePickerDialog.OnDateSetListener endDatePickerListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -221,6 +235,9 @@ CreateEventActivity  extends AppCompatActivity {
         }
     };
 
+    /**
+     * handles time picker for start time
+     */
     private TimePickerDialog.OnTimeSetListener endTimePickerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hour, int minute) {
@@ -239,6 +256,9 @@ CreateEventActivity  extends AppCompatActivity {
         }
     };
 
+    /**
+     * Handles time picker for end time
+     */
     private TimePickerDialog.OnTimeSetListener startTimePickerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hour, int minute) {
@@ -256,7 +276,12 @@ CreateEventActivity  extends AppCompatActivity {
         }
     };
 
-    //For results of requests
+    /**
+     * Handles results of requests
+     * @param requestCode Code to distinguish different requests
+     * @param resultCode Code to process result
+     * @param data Intent data processed
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);

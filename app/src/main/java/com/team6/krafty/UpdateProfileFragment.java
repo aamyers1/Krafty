@@ -33,12 +33,19 @@ import static android.app.Activity.RESULT_OK;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment that allows a user to update their profile information
  */
 public class UpdateProfileFragment extends Fragment {
     static DBManager dbManager = DBManager.getInstance();
     private String encodedImage = "";
 
+    /**
+     * Called on fragment creation to inflate XML
+     * @param inflater inflates the XML
+     * @param container Parent container of the fragment
+     * @param savedInstanceState Bundle of previous information
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,7 +54,11 @@ public class UpdateProfileFragment extends Fragment {
     }
 
 
-
+    /**
+     * Called once the above method finishes. Sets view fields and listeners
+     * @param view Containing view
+     * @param savedInstanceState Bundle for previous state information
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         String token = SessionManager.getToken(getView().getContext());
@@ -73,6 +84,9 @@ public class UpdateProfileFragment extends Fragment {
 
     }
 
+    /**
+     * click listener to update profile in the database
+     */
     public void onUpdateClick(){
         EditText uFirst = getView().findViewById(R.id.etFirst);
         EditText uLast = getView().findViewById(R.id.etLast);
@@ -115,6 +129,9 @@ public class UpdateProfileFragment extends Fragment {
         }
     }
 
+    /**
+     * Asynchronous inner class to fill fields without hanging the application
+     */
     private class FillFields extends AsyncTask<String, Void, User> {
 
         @Override
@@ -230,6 +247,12 @@ public class UpdateProfileFragment extends Fragment {
         }
     }
 
+    /**
+     * Gets the image from gallery
+     * @param requestCode requesting code
+     * @param resultCode result code for success or failure
+     * @param data the intent data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

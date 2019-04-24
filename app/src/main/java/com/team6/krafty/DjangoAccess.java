@@ -595,8 +595,6 @@ public class DjangoAccess implements DBAccessImpl {
   }
 
 
-    // todo: handle exception in KraftyException
-
     /**
      * gets specific product
      * @param id
